@@ -1,218 +1,149 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mekong Intelligence | Strategic Market Dominance</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        mi: {
-                            dark1: '#0f172a',
-                            dark2: '#1e293b',
-                            blue: '#455674',
-                            cyan: '#2bacc3',
-                            accent: '#367b95',
-                            light: '#f1f5f9'
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f1f5f9; }
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(43, 172, 195, 0.1); }
-        .tier-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .tier-card:hover { transform: translateY(-10px); border-color: #2bacc3; }
-        .azure-glow { box-shadow: 0 0 40px -10px rgba(43, 172, 195, 0.3); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+        body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(43, 172, 195, 0.2); }
+        .azure-glow { box-shadow: 0 0 50px -10px rgba(43, 172, 195, 0.25); }
+        .cyan-text { color: #2bacc3; }
+        .cyan-bg { background-color: #2bacc3; }
+        .mi-border { border-color: rgba(69, 86, 116, 0.3); }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="selection:bg-cyan-500/30">
 
-    <nav class="fixed w-full z-[100] glass border-b border-mi-blue/20">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-mi-cyan rounded shadow-lg flex items-center justify-center">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-mi-dark1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <span class="text-xl font-black tracking-tighter text-white uppercase">Mekong <span class="text-mi-cyan">Intelligence</span></span>
+    <nav class="fixed w-full z-[100] glass border-b border-white/5 py-5">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <span class="text-xl font-black uppercase tracking-tighter">Mekong <span class="cyan-text">Intelligence</span></span>
+            <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">
+                <a href="#tiers" class="hover:opacity-100 transition-opacity">Strategic Tiers</a>
+                <a href="#founder" class="hover:opacity-100 transition-opacity">The Architect</a>
             </div>
-            <div class="hidden md:flex gap-8 text-[10px] font-bold text-mi-light/50 uppercase tracking-[0.2em]">
-                <a href="#strategy" class="hover:text-mi-cyan transition-colors">Strategic Focus</a>
-                <a href="#tiers" class="hover:text-mi-cyan transition-colors">Investment</a>
-                <a href="#results" class="hover:text-mi-cyan transition-colors">Founder</a>
-            </div>
-            <button onclick="toggleModal('call')" class="hidden md:block border border-mi-cyan text-mi-cyan px-5 py-2 rounded font-bold text-xs hover:bg-mi-cyan hover:text-mi-dark1 transition-all uppercase tracking-widest">Book Strategy</button>
+            <a href="https://t.me/mekongintelligence" class="border border-[#2bacc3] cyan-text px-5 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-[#2bacc3] hover:text-slate-900 transition-all">Direct Contact</a>
         </div>
     </nav>
 
-    <section class="relative pt-48 pb-32 overflow-hidden">
-        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-mi-cyan/5 blur-[150px] rounded-full animate-pulse-slow"></div>
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl">
-                <span class="inline-block px-4 py-1 bg-mi-cyan/10 border border-mi-cyan/30 rounded-full text-mi-cyan text-[10px] font-black tracking-[0.3em] mb-8 uppercase">Direct Market Intervention</span>
-                <h1 class="text-6xl md:text-8xl font-black text-white mb-8 leading-[0.9] tracking-tighter">
-                    STOP COMPETING. <br/><span class="text-mi-cyan">START DOMINATING.</span>
-                </h1>
-                <p class="text-xl text-mi-light/60 mb-12 leading-relaxed max-w-2xl font-light">
-                    Mekong Intelligence isn't an agency. We are the <span class="text-white font-semibold">Architects</span> of market authority. We engineer high-stakes digital dominance for firms that refuse to be second.
-                </p>
-                <div class="flex flex-wrap gap-6">
-                    <button onclick="toggleModal('call')" class="bg-mi-cyan text-mi-dark1 px-10 py-5 rounded font-black text-sm uppercase tracking-widest hover:bg-white transition-all azure-glow">Scale Your Brand</button>
-                    <button onclick="scrollToTiers()" class="border border-mi-blue/50 text-mi-light/80 px-10 py-5 rounded font-black text-sm uppercase tracking-widest hover:border-mi-cyan transition-all">View Tiers</button>
-                </div>
-            </div>
+    <section class="pt-48 pb-20 px-6 container mx-auto">
+        <div class="max-w-4xl">
+            <span class="cyan-text text-[10px] font-black tracking-[0.4em] uppercase mb-4 block">Market Intervention Systems</span>
+            <h1 class="text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter uppercase italic text-white">Stop Playing.<br><span class="cyan-text">Start Ruling.</span></h1>
+            <p class="text-xl opacity-60 max-w-2xl mb-12 font-light leading-relaxed">We provide the elite-level strategy, competitive intelligence, and market positioning required to scale businesses from local leaders to global authorities.</p>
+            <button onclick="document.getElementById('tiers').scrollIntoView({behavior:'smooth'})" class="cyan-bg text-slate-900 px-10 py-5 rounded font-black uppercase tracking-widest hover:brightness-110 transition-all azure-glow">Access Strategy</button>
         </div>
     </section>
 
-    <section id="tiers" class="py-32 bg-mi-dark1 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-24">
-                <h2 class="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter">Strategic Tiers</h2>
-                <div class="w-20 h-1 bg-mi-cyan mx-auto"></div>
+    <section id="tiers" class="py-24 px-6 bg-slate-900/40">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black uppercase tracking-tighter mb-4 italic">Strategic Investment Tiers</h2>
+                <div class="w-20 h-1 cyan-bg mx-auto"></div>
             </div>
 
             <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
-                <div class="tier-card bg-mi-dark2/50 border border-mi-blue/20 rounded-3xl p-8 flex flex-col relative overflow-hidden">
-                    <div class="mb-8">
-                        <span class="text-mi-cyan text-[10px] font-black tracking-widest uppercase">Tier 0</span>
-                        <h3 class="text-2xl font-bold text-white mt-2 leading-tight">Quick Audit</h3>
-                        <div class="mt-4 flex items-baseline gap-2 text-white">
-                            <span class="text-4xl font-black">$150</span>
-                            <span class="text-mi-light/30 line-through text-sm">$300</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-10 flex-1 text-sm text-mi-light/70">
-                        <li class="flex items-center gap-3">✓ Digital Presence Audit</li>
-                        <li class="flex items-center gap-3">✓ Analytics Health Check</li>
-                        <li class="flex items-center gap-3">✓ GEO/AI Search Review</li>
+                
+                <div class="glass p-8 rounded-3xl flex flex-col mi-border">
+                    <span class="cyan-text text-[10px] font-black tracking-widest uppercase">Tier 0</span>
+                    <h3 class="text-2xl font-black mt-2 mb-4 italic uppercase">72H Audit</h3>
+                    <div class="text-3xl font-black mb-1 text-white">$150 <span class="text-sm opacity-30 line-through font-normal">$300</span></div>
+                    <p class="text-[9px] cyan-text font-bold mb-6 italic uppercase">*Limited Offer (2 Months Only)</p>
+                    <ul class="text-sm opacity-70 space-y-3 mb-10 flex-grow leading-tight">
+                        <li>• Social & Digital Presence Audit</li>
+                        <li>• Analytics Health Check</li>
+                        <li>• Channel Performance Eval</li>
+                        <li>• SEO & SEM Review</li>
+                        <li>• GEO (Gen Engine) Diagnostic</li>
+                        <li>• AEO (AI Results) Check</li>
                     </ul>
-                    <button onclick="toggleModal('audit')" class="w-full bg-mi-blue/20 border border-mi-blue/30 text-white py-4 rounded-xl font-bold hover:bg-mi-cyan hover:text-mi-dark1 transition-all">Secure Audit</button>
+                    <div class="pt-6 border-t border-white/5">
+                        <p class="text-[10px] font-bold text-white mb-2 uppercase">Deliverables:</p>
+                        <p class="text-[11px] opacity-60 leading-relaxed">15-min Video Breakdown & 1-Page PDF Action Summary (3 Key Items)</p>
+                    </div>
                 </div>
 
-                <div class="tier-card bg-mi-dark2/50 border border-mi-blue/20 rounded-3xl p-8 flex flex-col">
-                    <div class="mb-8">
-                        <span class="text-mi-light/40 text-[10px] font-black tracking-widest uppercase">Tier 1</span>
-                        <h3 class="text-2xl font-bold text-white mt-2 leading-tight">Foundation</h3>
-                        <div class="mt-4 text-white">
-                            <span class="text-4xl font-black">$2,500</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-10 flex-1 text-sm text-mi-light/70">
-                        <li class="flex items-center gap-3">✓ Competitor SWOT Analysis</li>
-                        <li class="flex items-center gap-3">✓ Brand Positioning</li>
-                        <li class="flex items-center gap-3">✓ 3-Month Execution Roadmap</li>
+                <div class="glass p-8 rounded-3xl flex flex-col mi-border">
+                    <span class="opacity-40 text-[10px] font-black tracking-widest uppercase">Tier 1</span>
+                    <h3 class="text-2xl font-black mt-2 mb-4 italic uppercase">Foundation</h3>
+                    <div class="text-3xl font-black mb-6 text-white">$2,500</div>
+                    <ul class="text-sm opacity-70 space-y-3 mb-10 flex-grow leading-tight">
+                        <li>• Competitor SWOT Analysis</li>
+                        <li>• Brand Positioning & Messaging</li>
+                        <li>• Target Audience Mapping</li>
+                        <li>• 3-Month Execution Roadmap</li>
                     </ul>
-                    <button onclick="toggleModal('foundation')" class="w-full bg-mi-blue/20 border border-mi-blue/30 text-white py-4 rounded-xl font-bold hover:bg-mi-cyan hover:text-mi-dark1 transition-all">Start Build</button>
+                    <div class="pt-6 border-t border-white/5">
+                        <p class="text-[10px] font-bold text-white mb-2 uppercase">Status:</p>
+                        <p class="text-[11px] opacity-60 leading-relaxed">One-time Strategy Build. ($2,200 if following Tier 0 Audit)</p>
+                    </div>
                 </div>
 
-                <div class="tier-card bg-mi-dark2 border-2 border-mi-cyan rounded-3xl p-8 flex flex-col relative scale-105 z-10 azure-glow">
-                    <div class="absolute top-0 right-0 bg-mi-cyan text-mi-dark1 text-[10px] font-black px-4 py-2 rounded-bl-xl">POPULAR</div>
-                    <div class="mb-8">
-                        <span class="text-mi-cyan text-[10px] font-black tracking-widest uppercase">Tier 2</span>
-                        <h3 class="text-2xl font-bold text-white mt-2 leading-tight">Growth Partner</h3>
-                        <div class="mt-4 text-white flex items-baseline gap-1">
-                            <span class="text-4xl font-black">$800</span>
-                            <span class="text-sm opacity-50">/mo</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-10 flex-1 text-sm text-white font-medium">
-                        <li class="flex items-center gap-3">✓ Continuous Monitoring</li>
-                        <li class="flex items-center gap-3">✓ Weekly Strategy Alerts</li>
-                        <li class="flex items-center gap-3">✓ Priority Telegram Access</li>
+                <div class="glass p-8 rounded-3xl flex flex-col border-[#2bacc3] azure-glow relative scale-105 z-10 bg-[#1e293b]">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 cyan-bg text-slate-900 text-[8px] font-black px-4 py-1 rounded-full uppercase">Most Effective</div>
+                    <span class="cyan-text text-[10px] font-black tracking-widest uppercase">Tier 2</span>
+                    <h3 class="text-2xl font-black mt-2 mb-4 italic uppercase">Partner</h3>
+                    <div class="text-3xl font-black mb-6 text-white">$800<span class="text-sm opacity-40 font-normal">/mo</span></div>
+                    <ul class="text-sm space-y-3 mb-10 flex-grow leading-tight font-medium">
+                        <li>• Continuous Market Monitoring</li>
+                        <li>• Weekly Strategy Alerts</li>
+                        <li>• Channel Performance Audit</li>
+                        <li>• Market Trend Identification</li>
+                        <li>• Priority Telegram Access</li>
                     </ul>
-                    <button onclick="toggleModal('partnership')" class="w-full bg-mi-cyan text-mi-dark1 py-4 rounded-xl font-black shadow-lg hover:bg-white transition-all">Become a Partner</button>
+                    <button class="w-full cyan-bg text-slate-900 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest">Secure Partnership</button>
                 </div>
 
-                <div class="tier-card bg-mi-dark2/50 border border-mi-blue/20 rounded-3xl p-8 flex flex-col">
-                    <div class="mb-8">
-                        <span class="text-mi-light/40 text-[10px] font-black tracking-widest uppercase">Tier 3</span>
-                        <h3 class="text-2xl font-bold text-white mt-2 leading-tight">Full Brand Build</h3>
-                        <div class="mt-4 text-white">
-                            <span class="text-2xl font-bold">Custom Pricing</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-10 flex-1 text-sm text-mi-light/70">
-                        <li class="flex items-center gap-3">✓ Full Visual Identity</li>
-                        <li class="flex items-center gap-3">✓ 3-min Brand Story Video</li>
-                        <li class="flex items-center gap-3 text-mi-cyan">✓ 3 Months Growth FREE</li>
+                <div class="glass p-8 rounded-3xl flex flex-col mi-border">
+                    <span class="opacity-40 text-[10px] font-black tracking-widest uppercase">Tier 3</span>
+                    <h3 class="text-2xl font-black mt-2 mb-4 italic uppercase">Identity</h3>
+                    <div class="text-3xl font-black mb-6 text-white">Custom</div>
+                    <ul class="text-sm opacity-70 space-y-3 mb-10 flex-grow leading-tight">
+                        <li>• Full Visual Brand Identity</li>
+                        <li>• 3-Minute Brand Story Video</li>
+                        <li>• High-Impact Campaign Strategy</li>
+                        <li>• 3 Months Mgmt. INCLUDED</li>
                     </ul>
-                    <button onclick="toggleModal('fullbuild')" class="w-full bg-mi-blue/20 border border-mi-blue/30 text-white py-4 rounded-xl font-bold hover:bg-mi-cyan hover:text-mi-dark1 transition-all">Contact Us</button>
+                    <button class="w-full border border-white/10 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all">Enquire</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="results" class="py-32 bg-mi-dark2/30">
-        <div class="container mx-auto px-6">
-            <div class="max-w-6xl mx-auto bg-mi-dark1 rounded-[3rem] p-12 border border-mi-blue/20 flex flex-col lg:flex-row items-center gap-16 azure-glow">
-                <div class="w-full lg:w-2/5">
-                    <div class="relative rounded-3xl overflow-hidden aspect-[4/5] border border-mi-blue/30">
-                        <img src="vosumtey.jpg" alt="Vosumtey" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-mi-dark1 to-transparent opacity-60"></div>
-                    </div>
-                </div>
-                <div class="w-full lg:w-3/5">
-                    <span class="text-mi-cyan text-[10px] font-black tracking-[0.4em] uppercase">The Architect</span>
-                    <h2 class="text-4xl md:text-5xl font-black text-white mt-4 mb-8 leading-tight">Vosumtey SENG</h2>
-                    <p class="text-xl text-mi-light/60 leading-relaxed mb-8">
-                        Generic agencies waste your time. I engineer dominance. From scaling <span class="text-white font-bold underline decoration-mi-cyan">ANANT Law</span> to leading <span class="text-white font-bold underline decoration-mi-cyan">EuroCham’s</span> digital authority, I don't follow trends—I create them. When you work with me, you work with the founder directly.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="https://t.me/mekongintelligence" class="bg-mi-dark2 p-4 rounded-2xl border border-mi-blue/30 text-mi-cyan hover:border-mi-cyan transition-all">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                        </a>
-                        <a href="#" class="bg-mi-dark2 p-4 rounded-2xl border border-mi-blue/30 text-mi-cyan hover:border-mi-cyan transition-all">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                        </a>
-                    </div>
+    <section class="py-20 px-6 container mx-auto">
+        <div class="glass p-12 rounded-[2.5rem] border-[#455674]/40 flex flex-col md:flex-row justify-between items-center gap-10 bg-gradient-to-br from-slate-900 to-[#1e293b]">
+            <div>
+                <h3 class="text-3xl font-black uppercase mb-4 text-white italic tracking-tighter">Market Intelligence <span class="cyan-text">Add-On</span></h3>
+                <p class="text-slate-400 max-w-xl font-light">Real-time competitive intelligence tracking. We monitor your rivals' digital movements daily so you can strike first.</p>
+            </div>
+            <div class="text-center md:text-right">
+                <div class="text-5xl font-black text-white mb-2">+$250<span class="text-sm opacity-40 font-normal">/mo</span></div>
+                <span class="text-[10px] cyan-text font-black uppercase tracking-widest border border-[#2bacc3]/30 px-3 py-1 rounded-full">Available for Tiers 1-3</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="founder" class="py-32 px-6 container mx-auto">
+        <div class="max-w-5xl glass p-12 rounded-[3rem] flex flex-col md:flex-row gap-16 items-center mx-auto relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-[#2bacc3]/5 blur-[100px]"></div>
+            <div class="w-56 h-56 flex-shrink-0 rounded-3xl overflow-hidden border border-white/10 azure-glow">
+                <img src="vosumtey.jpg" alt="Vosumtey" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+            </div>
+            <div class="relative z-10">
+                <span class="cyan-text text-[10px] font-black tracking-[0.4em] uppercase mb-2 block">The Architect</span>
+                <h2 class="text-5xl font-black uppercase italic mb-8 tracking-tighter text-white">Vosumtey SENG</h2>
+                <p class="text-lg opacity-60 leading-relaxed mb-8 font-light italic">
+                    "I don't follow trends. I build the systems that force others to react. From scaling <span class="text-white font-bold">ANANT Law</span> to leading <span class="text-white font-bold">EuroCham’s</span> digital authority, my work defines the digital edge."
+                </p>
+                <div class="flex gap-8">
+                    <a href="https://t.me/mekongintelligence" class="cyan-text font-black text-[10px] uppercase tracking-[0.3em] hover:text-white transition-colors">Telegram</a>
+                    <a href="#" class="opacity-30 font-black text-[10px] uppercase tracking-[0.3em] hover:opacity-100 transition-opacity">LinkedIn</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <div id="bookingModal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-mi-dark1/95 backdrop-blur-xl" onclick="toggleModal()"></div>
-        <div class="relative bg-mi-dark2 w-full max-w-lg rounded-[2.5rem] p-10 border border-mi-cyan/30 shadow-2xl">
-            <h2 id="modalTitle" class="text-3xl font-black text-white mb-2 uppercase tracking-tight">Book Session</h2>
-            <p id="modalPkg" class="text-mi-cyan font-bold text-sm mb-8 uppercase tracking-widest"></p>
-            <form class="space-y-6">
-                <input type="text" placeholder="YOUR NAME" class="w-full bg-mi-dark1 border border-mi-blue/30 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-mi-cyan transition-all">
-                <input type="text" placeholder="TELEGRAM OR EMAIL" class="w-full bg-mi-dark1 border border-mi-blue/30 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-mi-cyan transition-all">
-                <textarea placeholder="WHAT IS YOUR GROWTH BOTTLENECK?" class="w-full bg-mi-dark1 border border-mi-blue/30 rounded-xl px-6 py-4 text-white h-32 focus:outline-none focus:border-mi-cyan transition-all"></textarea>
-                <button type="button" onclick="alert('Sent. Expect contact within 24h.')" class="w-full bg-mi-cyan text-mi-dark1 py-5 rounded-xl font-black uppercase tracking-widest hover:bg-white transition-all">Submit Strategy Request</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function toggleModal(pkg = '') {
-            const modal = document.getElementById('bookingModal');
-            const pkgTitle = document.getElementById('modalPkg');
-            
-            if (pkg) {
-                pkgTitle.innerText = pkg.toUpperCase();
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        function scrollToTiers() {
-            document.getElementById('tiers').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
 </body>
 </html>
