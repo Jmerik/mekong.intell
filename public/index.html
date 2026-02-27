@@ -120,8 +120,8 @@
                 setIsSubmitting(true);
                 
                 try {
-                    // REPLACE THIS URL with your actual Render URL
-                    const BACKEND_URL = 'https://MI-backend.onrender.com/api/book';
+                    // Use a relative path so the browser sends it to the same server hosting the page
+                    const BACKEND_URL = '/api/book';
                     
                     const response = await fetch(BACKEND_URL, {
                         method: 'POST',
