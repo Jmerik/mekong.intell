@@ -1,0 +1,17 @@
+{
+  "name": "mekong-intelligence-app",
+  "version": "1.0.0",
+  "description": "Full-stack application for Mekong Intelligence",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
