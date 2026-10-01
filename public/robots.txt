@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mekongintel.live/sitemap.xml
