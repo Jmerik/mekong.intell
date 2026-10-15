@@ -36,11 +36,19 @@ change per audience. Everything else is shared, so a fix lands on both pages at 
 
 - Project: `mekong-intelligence-v2` in the `jmeriks-projects` Vercel team (Hobby plan)
 - Address: https://mekong-intelligence-v2.vercel.app (first deployed 15 October 2026)
-- **Vercel Authentication is on**, so only people signed in to that Vercel account can open it. To show it
-  to someone else, use Project > Settings > Deployment Protection (shareable link or protection bypass).
-- Lead destinations (Telegram, Google Sheet) are **not set up yet**, so form submissions succeed but are only written to the function logs, which expire after 1 hour. Set them up before anyone submits a real request.
-- It was deployed from the command line and is **not connected to GitHub**. To update it, run
-  `npx vercel deploy --prod` from `v2/`, or connect the repo under Settings > Git (Root Directory `v2`).
+- **Access:** the project uses Vercel's Standard Protection (`all_except_custom_domains`), so the `*.vercel.app`
+  addresses should ask for a Vercel login. This was read from the project settings, not tested from outside:
+  open the address in a private window to confirm before sharing it. A custom domain would NOT be protected.
+  To let someone else in, use Project > Settings > Deployment Protection (shareable link or bypass).
+- **Connected to GitHub** (`Jmerik/mekong.intell`, production branch `main`) with **Root Directory `v2`**.
+  Every push builds a protected preview deployment. Merging to `main` redeploys this project's production
+  address. The live Render site is not affected by any of this.
+- Lead destinations (Telegram, Google Sheet) are **not set up yet**, so form submissions succeed but are only
+  written to the function logs, which expire after 1 hour. Set them up before anyone submits a real request.
+- To deploy by hand, run from the **repository root** (not from `v2/`), pinning the project so the CLI cannot
+  create a new one:
+  `VERCEL_ORG_ID=<team id> VERCEL_PROJECT_ID=prj_bWR5MoB23nkaSN6dbwriJ82ekCrz npx vercel deploy --prod --yes`
+  (ids are in `v2/.vercel/project.json` after `vercel link`; that folder is not committed).
 
 ## Deploy to a sample Vercel project
 
