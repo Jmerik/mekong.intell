@@ -1,0 +1,21 @@
+{
+  "name": "mekong-intelligence-v2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mekong Intelligence website v2: static pages plus a Vercel function for lead requests (preview build)",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "3.4.19"
+  }
+}
