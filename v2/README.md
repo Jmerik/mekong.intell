@@ -32,6 +32,16 @@ change per audience. Everything else is shared, so a fix lands on both pages at 
   Mekong region (Google Maps, Facebook, Telegram, Messenger); **international** = sells across borders
   (Google, AI answers, LinkedIn, email).
 
+## Current sample deployment
+
+- Project: `mekong-intelligence-v2` in the `jmeriks-projects` Vercel team (Hobby plan)
+- Address: https://mekong-intelligence-v2.vercel.app (first deployed 15 October 2026)
+- **Vercel Authentication is on**, so only people signed in to that Vercel account can open it. To show it
+  to someone else, use Project > Settings > Deployment Protection (shareable link or protection bypass).
+- Telegram variables are **not set yet**, so form submissions succeed but are only written to the function logs.
+- It was deployed from the command line and is **not connected to GitHub**. To update it, run
+  `npx vercel deploy --prod` from `v2/`, or connect the repo under Settings > Git (Root Directory `v2`).
+
 ## Deploy to a sample Vercel project
 
 1. In Vercel choose **Add New > Project**, import this repository.
