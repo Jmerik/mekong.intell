@@ -93,6 +93,7 @@ function Footer() {
                             <li><a className={linkClass} href="/international">International</a></li>
                             <li><a className={linkClass} href="/resources">Resources</a></li>
                             <li><a className={linkClass} href="/services">Services</a></li>
+                            <li><a className={linkClass} href="/sample-quick-look">Sample Quick Look</a></li>
                         </ul>
                     </div>
                     <div>
@@ -114,24 +115,32 @@ function Footer() {
     );
 }
 
-export default function Layout({ current, audience = 'general', children }) {
+// Holds the booking form's state. It wraps every page (see pages/index.jsx), so any component on the page,
+// including the page component itself, can call useModal().openModal(...). `audience` tags the leads.
+export function ModalProvider({ audience = 'general', children }) {
     const [request, setRequest] = useState(null);
     const openModal = useCallback((req) => setRequest(req), []);
     const close = useCallback(() => setRequest(null), []);
 
     return (
         <ModalContext.Provider value={{ openModal, audience }}>
-            <div className="min-h-screen flex flex-col selection:bg-mi-cyan/30 selection:text-white">
-                <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-mi-cyan focus:text-mi-dark1 focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
-                {SHOW_BANNER && (
-                    <p className="bg-mi-cyan text-mi-dark1 text-center text-sm font-semibold px-4 py-2">{SITE.previewBanner}</p>
-                )}
-                <Nav current={current} />
-                <main id="main" className="flex-1">{children}</main>
-                <Footer />
-                {request && <BookingModal request={request} audience={audience} onClose={close} />}
-                <Consent />
-            </div>
+            {children}
+            {request && <BookingModal request={request} audience={audience} onClose={close} />}
         </ModalContext.Provider>
+    );
+}
+
+export default function Layout({ current, children }) {
+    return (
+        <div className="min-h-screen flex flex-col selection:bg-mi-cyan/30 selection:text-white">
+            <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-mi-cyan focus:text-mi-dark1 focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
+            {SHOW_BANNER && (
+                <p className="bg-mi-cyan text-mi-dark1 text-center text-sm font-semibold px-4 py-2">{SITE.previewBanner}</p>
+            )}
+            <Nav current={current} />
+            <main id="main" className="flex-1">{children}</main>
+            <Footer />
+            <Consent />
+        </div>
     );
 }

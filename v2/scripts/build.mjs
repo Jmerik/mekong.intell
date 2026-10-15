@@ -76,7 +76,7 @@ await build({
     logLevel: 'warning'
 });
 const require = createRequire(path.join(root, 'package.json'));
-const { PAGES, renderPage } = require(ssrFile);
+const { PAGES, renderPage, FAQ } = require(ssrFile);
 
 const organization = {
     '@context': 'https://schema.org',
@@ -107,9 +107,28 @@ const person = {
     url: 'https://www.linkedin.com/in/vosumtey-seng/',
     worksFor: { '@type': 'ProfessionalService', name: 'Mekong Intelligence', url: `${siteUrl}/` }
 };
-const jsonLd = (kind) => {
-    const data = kind === 'organization' ? organization : kind === 'person' ? person : null;
-    return data ? `    <script type="application/ld+json">${JSON.stringify(data)}</script>\n` : '';
+// FAQPage: built from the same text visitors read (src/content/faq.js).
+const faqPage = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } }))
+};
+const article = (page) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: page.article.headline,
+    description: page.description,
+    datePublished: page.article.published,
+    dateModified: page.article.modified,
+    author: { '@type': 'Organization', name: 'Mekong Intelligence', url: `${siteUrl}/` },
+    publisher: { '@type': 'Organization', name: 'Mekong Intelligence', logo: { '@type': 'ImageObject', url: `${siteUrl}/image/logo.webp` } },
+    mainEntityOfPage: `${siteUrl}${page.path}`,
+    image: `${siteUrl}${page.ogImage || '/image/og-image.png'}`
+});
+const jsonLd = (page) => {
+    const kinds = [].concat(page.jsonLd || []);
+    const blocks = kinds.map((kind) => (kind === 'organization' ? organization : kind === 'person' ? person : kind === 'faq' ? faqPage : kind === 'article' ? article(page) : null)).filter(Boolean);
+    return blocks.map((data) => `    <script type="application/ld+json">${JSON.stringify(data)}</script>\n`).join('');
 };
 
 const template = fs.readFileSync(src('template.html'), 'utf8');
@@ -124,11 +143,13 @@ for (const page of PAGES) {
         .replaceAll('%%URL%%', `${siteUrl}${page.path === '/' ? '/' : page.path}`)
         .replaceAll('%%SITE%%', siteUrl)
         .replaceAll('%%ROBOTS%%', noindex || page.alwaysNoindex ? 'noindex, nofollow' : 'index, follow')
-        .replace('%%JSONLD%%', jsonLd(page.jsonLd))
+        .replaceAll('%%OG_IMAGE%%', `${siteUrl}${page.ogImage || '/image/og-image.png'}`)
+        .replace('%%JSONLD%%', () => jsonLd(page))
         .replace('%%CSS_HASH%%', cssHash)
         .replace('%%JS_HASH%%', jsHash)
         .replace('%%PAGE%%', page.id)
         .replace('%%APP%%', () => renderPage(page.id));
+    fs.mkdirSync(path.dirname(out(page.file)), { recursive: true });
     fs.writeFileSync(out(page.file), html);
 }
 

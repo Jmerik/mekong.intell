@@ -12,7 +12,8 @@ function PillarCard({ id, eyebrow, kind, headline, body, children }) {
                 <h3 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">{headline}</h3>
                 <p className="text-mi-light/85 text-base md:text-lg leading-relaxed">{body}</p>
             </div>
-            <div>{children}</div>
+            {/* The example screens are illustrations. On phones the real sample above carries the proof, so they are hidden. */}
+            <div className="hidden md:block">{children}</div>
         </article>
     );
 }
@@ -42,7 +43,7 @@ export default function Pillars({ audience }) {
                         <ReachedMock data={audience.reached} />
                     </PillarCard>
                 </div>
-                <p className="mt-6 text-center text-xs text-mi-light/70">Screens marked Example are illustrations, not client data.</p>
+                <p className="mt-6 hidden md:block text-center text-xs text-mi-light/70">Screens marked Example are illustrations, not client data.</p>
             </Container>
         </section>
     );

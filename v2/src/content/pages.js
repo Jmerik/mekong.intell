@@ -1,6 +1,8 @@
 // Page registry. The build script writes one HTML file per entry, and pages/index.jsx maps
 // each id to its component.
 
+import { GUIDES } from './guides.js';
+
 export const PAGES = [
     {
         id: 'home',
@@ -8,14 +10,16 @@ export const PAGES = [
         file: 'index.html',
         title: 'Mekong Intelligence | Stop Guessing. Start Growing with Data.',
         description: 'Brand and market intelligence for businesses in Cambodia and Vietnam. Get a free Quick Look at whether your business is Found, Trusted and Reached.',
-        jsonLd: 'organization'
+        ogImage: '/image/og-local.png',
+        jsonLd: ['organization', 'faq']
     },
     {
         id: 'international',
         path: '/international',
         file: 'international.html',
         title: 'Mekong Intelligence for international companies | Free Quick Look',
-        description: 'For companies selling across borders, into the Mekong region or out of it. Find out if you are Found, Trusted and Reached with a free Quick Look.'
+        description: 'For companies selling across borders, into the Mekong region or out of it. Find out if you are Found, Trusted and Reached with a free Quick Look.',
+        ogImage: '/image/og-international.png'
     },
     {
         id: 'resources',
@@ -24,6 +28,23 @@ export const PAGES = [
         title: 'Resources | Practical Guides. No Fluff. | Mekong Intelligence',
         description: 'Practical guides on AI search visibility, digital footprint auditing and lead response. Checklists you can use today.'
     },
+    {
+        id: 'sample',
+        path: '/sample-quick-look',
+        file: 'sample-quick-look.html',
+        title: 'Sample Quick Look: we checked our own business | Mekong Intelligence',
+        description: 'A real Quick Look on Mekong Intelligence itself: ratings, findings with sources and dates, and the fixes we would start with. Public information only.'
+    },
+    // One page per guide (content/guides.js), with Article structured data.
+    ...GUIDES.map((guide) => ({
+        id: `guide-${guide.slug}`,
+        path: `/resources/${guide.slug}`,
+        file: `resources/${guide.slug}.html`,
+        title: guide.title,
+        description: guide.description,
+        jsonLd: 'article',
+        article: { headline: guide.title, published: guide.published, modified: guide.updated }
+    })),
     {
         id: 'services',
         path: '/services',

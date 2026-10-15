@@ -8,7 +8,7 @@ export default function Privacy() {
         <Layout>
             <Container className="py-16 max-w-3xl">
                 <h1 className="text-4xl font-bold text-white mb-2">Privacy Policy</h1>
-                <p className="text-sm text-mi-light/70 mb-10">Last updated: 16 October 2026</p>
+                <p className="text-sm text-mi-light/70 mb-10">Last updated: 15 October 2026</p>
 
                 <div className="space-y-8 leading-relaxed text-mi-light/90">
                     <section>

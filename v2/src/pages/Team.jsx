@@ -47,6 +47,17 @@ export default function Team() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Only facts from the MI brand guide. No photo or bio supplied yet: replace the initials with a
+                        photo and add two lines about Jan's background when they are ready. */}
+                    <div className="mt-6 bg-mi-dark2 rounded-3xl p-6 md:p-8 border border-mi-blue/30 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-xl">
+                        <div className="w-20 h-20 shrink-0 rounded-full bg-mi-dark1 border-2 border-mi-cyan/60 text-mi-cyan text-2xl font-bold flex items-center justify-center" aria-hidden="true">JH</div>
+                        <div>
+                            <p className="inline-block px-3 py-1 bg-mi-blue/10 border border-mi-blue/30 rounded-full text-mi-cyan text-xs font-bold tracking-wider mb-2">PARTNER</p>
+                            <h2 className="text-2xl font-bold text-white">Jan Hanken</h2>
+                            <p className="text-mi-light/85 mt-1">Leads the German-speaking (DACH) segment. Material for German-speaking buyers is written in German.</p>
+                        </div>
+                    </div>
                 </Container>
             </section>
 

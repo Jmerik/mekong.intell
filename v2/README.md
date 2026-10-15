@@ -10,8 +10,10 @@ Vercel project to review it. **Do not point the public domain at it until the Qu
 | --- | --- |
 | `/` | The main landing page, for businesses in Cambodia and Vietnam: hero with the Quick Look search, Found / Trusted / Reached, the four steps |
 | `/international` | The same page for companies selling across borders, into the region or out of it |
+| `/sample-quick-look` | A real Quick Look on Mekong Intelligence itself: ratings, findings with sources and dates, fixes |
 | `/services` | The four steps in detail: timeline, scope, what is included. **No prices yet** (see below) |
-| `/resources` | Three practical guide grids: AI search, footprint auditing, conversion |
+| `/resources` | Index of the three guides |
+| `/resources/ai-search-visibility`, `/resources/digital-footprint-check`, `/resources/response-and-follow-up` | The guides, one page each, with byline, date and Article structured data |
 | `/team` | About Us: founder profile and how we work (`/about` redirects here) |
 | `/contact` | Message form, Telegram link, Phnom Penh office |
 | `/privacy` | Draft privacy policy |
@@ -93,7 +95,10 @@ Without Telegram variables, submitted leads are printed to the terminal.
 | --- | --- |
 | Hero copy, facts, the four services (names, timing, what is included), nav | `src/content/site.js` |
 | Local / International wording and examples | `src/content/audiences.js` |
-| Resources guides | `src/content/resources.js` |
+| The guides (text, dates, related guides) | `src/content/guides.js` |
+| The sample Quick Look (findings, ratings, fixes, date) | `src/content/sample.js` |
+| FAQ on the landing pages (also published as FAQPage structured data) | `src/content/faq.js` |
+| Share images (1200x630) | `scripts/og-images.mjs`, then commit `static/image/` |
 | Page titles and descriptions | `src/content/pages.js` |
 | Package and audience names (form, page and Telegram share them) | `shared/packages.js` |
 | Team, Contact, Services page, Privacy text | `src/pages/*.jsx` |
@@ -173,4 +178,38 @@ anyway, because each request will cost money.
   "Ask about this step" link. The Found / Trusted / Reached cards no longer have buttons.
 - **"Pricing" is "Services"** in the nav and the page, because it shows no prices.
 - Visitors on the main page are tagged Local in lead messages, so `/` and `/international` can be compared.
+
+## Phase 3 decisions (proof and content)
+
+- **Sample Quick Look = Mekong Intelligence itself, checked on 15 October 2026.** Every finding names its source and
+  date; anything not checked is marked N/A (that is why "Reached" is N/A and each area lists what was not assessed).
+  The ratings follow the brand words: Strong, Developing, Priority focus. The checks were web searches run with a
+  US-based search tool; the live site and Telegram page could not be opened from the build environment, so
+  nothing about their content is claimed. **To refresh or replace it:** re-run the checks, then edit
+  `src/content/sample.js` (date, findings, ratings and fixes together). **It is a draft: review every line before launch.**
+- **Landing page order:** hero, trust strip (process commitments only), the real sample, the three checks (their
+  example screens are hidden on phones because the sample carries the proof there), the four-step timeline, FAQ.
+  Main page length on a phone: about 7.7 screens.
+- **FAQ:** shown on both landing pages; the FAQPage structured data is only on `/` so the same questions are not
+  marked up twice.
+- **Guides:** one page each, written as short checklists with no statistics. The byline is "Mekong Intelligence"
+  (not a named person) until you decide who should be credited. Dates are ISO and feed the Article markup.
+- **Team page:** Jan Hanken added as Partner with two facts from the brand guide (leads the German-speaking segment;
+  material for that segment is written in German). Initials instead of a photo. Vosumtey Seng still has no pronouns.
+- **Per-audience share images** for `/` and `/international`; the other pages use the generic one.
+- **Not done on purpose: an EuroCham proof strip.** See "Open claim to confirm" below.
+
+## Open claim to confirm before launch
+
+The Team page says Vosumtey "led digital authority" at EuroCham and "grew a targeted audience of 20,000+ professionals
+with no ad spend". Public pages found on 15 October 2026 (EuroCham's team listing and a public LinkedIn profile)
+show the title Communications Officer, and nothing found supports the 20,000+ figure or "no ad spend". The wording
+comes from the previous live site and is unchanged. Either add a public source (for example a LinkedIn page's
+follower history or a published EuroCham report) and link it, or soften the sentence to what the public record shows.
+
+## Bug fixed in Phase 3
+
+Buttons on the Services, Resources and Team pages did nothing: those pages used the booking-form hook outside the
+component that provided it. Every page is now wrapped once, in `src/pages/index.jsx`, so it cannot happen again, and
+the browser test clicks a call-to-action button on every page that has one.
 
