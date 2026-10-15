@@ -37,7 +37,7 @@ function Nav({ current }) {
                     ))}
                     <div className="flex items-center gap-3">
                         <Button variant="outline" className="py-2 px-4 text-sm" onClick={() => open({ packageType: 'call' })}>Book a Call</Button>
-                        <Button variant="primary" className="py-2 px-4 text-sm" onClick={() => open({ packageType: 'quicklook' })}>Get Started</Button>
+                        <Button variant="primary" className="py-2 px-4 text-sm" onClick={() => open({ packageType: 'quicklook' })}>Free Quick Look</Button>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@ function Nav({ current }) {
                     ))}
                     <div className="flex flex-col gap-3 pt-2">
                         <Button variant="outline" onClick={() => open({ packageType: 'call' })}>Book a Call</Button>
-                        <Button variant="primary" onClick={() => open({ packageType: 'quicklook' })}>Get Started</Button>
+                        <Button variant="primary" onClick={() => open({ packageType: 'quicklook' })}>Free Quick Look</Button>
                     </div>
                 </div>
             )}
@@ -66,33 +66,33 @@ function Footer() {
     const linkClass = 'text-mi-light/80 hover:text-white transition-colors';
     return (
         <footer className="bg-mi-dark1 border-t border-mi-dark2">
-            <section className="py-16 text-center">
+            <section className="py-12 md:py-16 text-center">
                 <Container>
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Every engagement starts with the Free Quick Look.</h2>
-                    <p className="text-mi-light/80 mb-8 max-w-2xl mx-auto">
+                    <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">Every engagement starts with the Free Quick Look.</h2>
+                    <p className="text-mi-light/80 text-sm md:text-base mb-6 md:mb-8 max-w-2xl mx-auto">
                         We show you where you are Found, Trusted and Reached, and where to focus first. From there, you decide how deep you want to go.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="px-10 py-4 text-lg">{QUICK_LOOK.cta}</Button>
-                        <Button variant="outline" onClick={() => openModal({ packageType: 'call' })} className="px-10 py-4 text-lg">Book a Call</Button>
+                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">{QUICK_LOOK.cta}</Button>
+                        <Button variant="outline" onClick={() => openModal({ packageType: 'call' })} className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">Book a Call</Button>
                     </div>
                 </Container>
             </section>
 
-            <div className="border-t border-mi-dark2 py-12">
-                <Container className="grid gap-10 md:grid-cols-4 text-sm">
-                    <div className="md:col-span-2">
-                        <img src="/image/logo.webp" alt="Mekong Intelligence" width="199" height="256" loading="lazy" className="h-16 w-auto mb-4" />
-                        <p className="text-mi-light/80 max-w-sm">{SITE.tagline} Brand and market intelligence for Southeast Asia, based in {SITE.location}.</p>
+            <div className="border-t border-mi-dark2 py-10 md:py-12">
+                <Container className="grid grid-cols-2 gap-8 md:gap-10 md:grid-cols-4 text-sm">
+                    <div className="col-span-2">
+                        <img src="/image/logo.webp" alt="Mekong Intelligence" width="199" height="256" loading="lazy" className="h-14 md:h-16 w-auto mb-3 md:mb-4" />
+                        <p className="text-mi-light/80 max-w-sm">{SITE.tagline} Brand and market intelligence for businesses in Cambodia and Vietnam. Based in {SITE.location}.</p>
                         <p className="mt-3 text-mi-light/70">The Quick Look uses public information only.</p>
                     </div>
                     <div>
                         <h3 className="font-bold text-white mb-3">Explore</h3>
                         <ul className="space-y-2">
-                            <li><a className={linkClass} href="/local">Local businesses</a></li>
+                            <li><a className={linkClass} href="/">Local businesses</a></li>
                             <li><a className={linkClass} href="/international">International</a></li>
                             <li><a className={linkClass} href="/resources">Resources</a></li>
-                            <li><a className={linkClass} href="/pricing">Pricing</a></li>
+                            <li><a className={linkClass} href="/services">Services</a></li>
                         </ul>
                     </div>
                     <div>
@@ -105,7 +105,7 @@ function Footer() {
                         </ul>
                     </div>
                 </Container>
-                <Container className="mt-10 text-mi-light/70 text-sm">
+                <Container className="mt-8 md:mt-10 text-mi-light/70 text-sm">
                     <p>&copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> Mekong Intelligence. All rights reserved. {SITE.location}</p>
                     <CookieSettingsLink className="mt-2 underline hover:text-white" />
                 </Container>

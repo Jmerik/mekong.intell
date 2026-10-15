@@ -71,7 +71,7 @@ function AudienceSwitch({ current }) {
 
 export function Facts() {
     return (
-        <dl className="mt-14 grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
+        <dl className="mt-10 md:mt-14 grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
             {FACTS.map((fact) => (
                 <div key={fact.label} className="flex flex-col-reverse items-center">
                     <dt className="text-xs sm:text-sm text-mi-light/80 text-center">{fact.label}</dt>
@@ -82,26 +82,25 @@ export function Facts() {
     );
 }
 
-// `audience` is an entry from content/audiences.js, or undefined on the home page.
+// `audience` is an entry from content/audiences.js (the main page uses "local").
 export default function Hero({ audience, children }) {
     return (
-        <header className="relative overflow-hidden bg-mi-dark1 pt-14 pb-16 md:pt-20 md:pb-24">
+        <header className="relative overflow-hidden bg-mi-dark1 pt-12 pb-12 md:pt-20 md:pb-24">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-mi-blue/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" aria-hidden="true"></div>
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-mi-cyan/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" aria-hidden="true"></div>
 
             <Container className="relative z-10 text-center max-w-4xl">
-                {audience && <AudienceSwitch current={audience.id} />}
+                <AudienceSwitch current={audience.id} />
                 <p className="block w-fit mx-auto px-4 py-1 bg-mi-dark2 border border-mi-blue/30 rounded-full text-mi-cyan text-xs sm:text-sm font-semibold tracking-wider mb-6 animate-fade-in-up">
                     {HERO.label}
                 </p>
                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-white">
-                    {HERO.headlineLine1}<br />
+                    {HERO.headlineLine1}{' '}<br />
                     {HERO.headlineLine2}{' '}
                     <span className="whitespace-nowrap bg-clip-text text-transparent bg-gradient-to-r from-mi-cyan via-mi-blue to-mi-light">{HERO.headlineAccent}</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-mi-light/90 mb-3 max-w-3xl mx-auto">{HERO.subheadline}</p>
-                {audience && <p className="text-base text-mi-light/70 mb-10 max-w-2xl mx-auto">{audience.line}</p>}
-                {!audience && <div className="mb-10"></div>}
+                <p className="text-xl md:text-2xl font-semibold text-white mb-3">{HERO.subheadline}</p>
+                <p className="text-lg text-mi-light/85 mb-10 max-w-2xl mx-auto">{audience.line}</p>
 
                 <QuickLookPill />
                 {children}

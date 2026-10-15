@@ -10,6 +10,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const require = createRequire(import.meta.url);
 const bookHandler = require(path.join(root, 'api', 'book.js'));
+// Same redirects as Vercel, read from vercel.json so the two cannot drift apart.
+const redirects = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8')).redirects || [];
 
 const TYPES = {
     '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -30,6 +32,12 @@ function findFile(urlPath) {
 
 const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
+
+    const redirect = redirects.find((r) => r.source === url.pathname);
+    if (redirect) {
+        res.writeHead(redirect.permanent ? 308 : 307, { Location: redirect.destination });
+        return res.end();
+    }
 
     if (url.pathname === '/api/book') {
         // Same shape as the Vercel runtime: parsed req.body, res.status().json().

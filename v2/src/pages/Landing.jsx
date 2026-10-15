@@ -1,7 +1,6 @@
 import Layout from '../components/Layout.jsx';
 import Hero from '../components/Hero.jsx';
 import Pillars from '../components/Pillars.jsx';
-import Rhythm from '../components/Rhythm.jsx';
 import Services from '../components/Services.jsx';
 import { AUDIENCES } from '../content/audiences.js';
 
@@ -12,7 +11,6 @@ export default function Landing({ audienceId }) {
         <Layout audience={audience.id}>
             <Hero audience={audience} />
             <Pillars audience={audience} />
-            <Rhythm />
             <Services audience={audience} />
         </Layout>
     );

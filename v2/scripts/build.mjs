@@ -85,15 +85,15 @@ const organization = {
     url: `${siteUrl}/`,
     logo: `${siteUrl}/image/logo.webp`,
     image: `${siteUrl}/image/og-image.png`,
-    description: "Southeast Asia's brand and market intelligence firm. A free Quick Look shows whether your business is Found, Trusted and Reached.",
+    description: "Brand and market intelligence for businesses in Cambodia and Vietnam. A free Quick Look shows whether your business is Found, Trusted and Reached.",
     sameAs: ['https://t.me/mekongintelligence', 'https://www.linkedin.com/in/vosumtey-seng/'],
     founder: { '@type': 'Person', name: 'Vosumtey Seng', jobTitle: 'Founder & Chief Strategist', url: 'https://www.linkedin.com/in/vosumtey-seng/' },
     address: { '@type': 'PostalAddress', addressLocality: 'Phnom Penh', addressCountry: 'KH' },
-    areaServed: [{ '@type': 'Country', name: 'Cambodia' }, { '@type': 'Place', name: 'Southeast Asia' }],
+    areaServed: [{ '@type': 'Country', name: 'Cambodia' }, { '@type': 'Country', name: 'Vietnam' }],
     hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Intelligence Services',
-        itemListElement: ['Free Quick Look', 'The 7-Day Sprint', 'The 90-Day Blueprint', 'Market Intelligence Retainer'].map((name) => ({
+        itemListElement: ['Free Quick Look', '7-Day Sprint', '90-Day Blueprint', 'Market Intelligence Retainer'].map((name) => ({
             '@type': 'Offer', itemOffered: { '@type': 'Service', name }
         }))
     }

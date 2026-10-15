@@ -3,9 +3,9 @@
 
 const PACKAGES = {
     quicklook: { name: 'Free Quick Look', modalTitle: 'Request your Free Quick Look' },
-    sprint: { name: 'The 7-Day Sprint', modalTitle: 'Start the 7-Day Sprint' },
-    blueprint: { name: 'The 90-Day Blueprint', modalTitle: 'Discuss the 90-Day Blueprint' },
-    retainer: { name: 'Market Intelligence Retainer', modalTitle: 'Request the Market Intelligence Retainer' },
+    sprint: { name: '7-Day Sprint', modalTitle: 'Ask about the 7-Day Sprint' },
+    blueprint: { name: '90-Day Blueprint', modalTitle: 'Ask about the 90-Day Blueprint' },
+    retainer: { name: 'Market Intelligence Retainer', modalTitle: 'Ask about the Market Intelligence Retainer' },
     call: { name: 'Call request', modalTitle: 'Book a Call' },
     contact: { name: 'Contact form message', modalTitle: 'Send us a message' }
 };

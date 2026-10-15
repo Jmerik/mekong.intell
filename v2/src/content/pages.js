@@ -7,15 +7,8 @@ export const PAGES = [
         path: '/',
         file: 'index.html',
         title: 'Mekong Intelligence | Stop Guessing. Start Growing with Data.',
-        description: "Southeast Asia's brand and market intelligence firm. Get a free Quick Look at whether your business is Found, Trusted and Reached.",
+        description: 'Brand and market intelligence for businesses in Cambodia and Vietnam. Get a free Quick Look at whether your business is Found, Trusted and Reached.',
         jsonLd: 'organization'
-    },
-    {
-        id: 'local',
-        path: '/local',
-        file: 'local.html',
-        title: 'Mekong Intelligence for local businesses | Free Quick Look',
-        description: 'For businesses that sell in Cambodia and across the Mekong region. Find out if you are Found, Trusted and Reached with a free Quick Look.'
     },
     {
         id: 'international',
@@ -32,10 +25,10 @@ export const PAGES = [
         description: 'Practical guides on AI search visibility, digital footprint auditing and lead response. Checklists you can use today.'
     },
     {
-        id: 'pricing',
-        path: '/pricing',
-        file: 'pricing.html',
-        title: 'Pricing | Mekong Intelligence',
+        id: 'services',
+        path: '/services',
+        file: 'services.html',
+        title: 'Services | Mekong Intelligence',
         description: 'Four steps from a free Quick Look to a monthly Market Intelligence Retainer. See what each step includes.'
     },
     {

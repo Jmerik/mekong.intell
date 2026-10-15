@@ -41,11 +41,11 @@ export const Button = ({ children, variant = 'primary', className = '', onClick,
 };
 
 export const SectionHeader = ({ label, title, subtitle, centered = true, as: Tag = 'h2' }) => (
-    <div className={`mb-12 ${centered ? 'text-center' : 'text-left'}`}>
+    <div className={`mb-8 md:mb-12 ${centered ? 'text-center' : 'text-left'}`}>
         {label && <p className="text-mi-cyan text-sm font-bold tracking-widest uppercase mb-3">{label}</p>}
         <Tag className="text-3xl md:text-5xl font-bold text-white mb-4">{title}</Tag>
-        <div className={`h-1 w-24 bg-mi-cyan mb-6 ${centered ? 'mx-auto' : ''}`}></div>
-        {subtitle && <p className={`text-mi-light/80 text-lg max-w-2xl leading-relaxed ${centered ? 'mx-auto' : ''}`}>{subtitle}</p>}
+        <div className={`h-1 w-24 bg-mi-cyan mb-4 md:mb-6 ${centered ? 'mx-auto' : ''}`}></div>
+        {subtitle && <p className={`text-mi-light/80 text-base md:text-lg max-w-2xl leading-relaxed ${centered ? 'mx-auto' : ''}`}>{subtitle}</p>}
     </div>
 );
 

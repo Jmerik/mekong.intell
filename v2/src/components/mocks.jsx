@@ -9,8 +9,8 @@ const ExampleTag = () => (
 );
 
 const Panel = ({ label, children, ariaLabel }) => (
-    <div role="group" aria-label={ariaLabel} className="rounded-2xl bg-mi-dark1 border border-mi-blue/30 p-5 shadow-xl">
-        <div className="flex items-center justify-between mb-4">
+    <div role="group" aria-label={ariaLabel} className="rounded-2xl bg-mi-dark1 border border-mi-blue/30 p-4 md:p-5 shadow-xl">
+        <div className="flex items-center justify-between mb-3 md:mb-4">
             <span className="text-xs font-bold tracking-widest text-mi-light/70 uppercase">{label}</span>
             <ExampleTag />
         </div>
@@ -23,7 +23,7 @@ const Chip = ({ muted, children }) => (
 );
 
 const Row = ({ children, highlight, dashed }) => (
-    <li className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm ${highlight ? 'bg-mi-cyan/10 border border-mi-cyan/50 text-white' : dashed ? 'border border-dashed border-mi-light/30 text-mi-light/80' : 'bg-mi-dark2 text-mi-light/90'}`}>
+    <li className={`flex items-center justify-between gap-3 rounded-lg px-3 py-1.5 md:py-2 text-sm ${highlight ? 'bg-mi-cyan/10 border border-mi-cyan/50 text-white' : dashed ? 'border border-dashed border-mi-light/30 text-mi-light/80' : 'bg-mi-dark2 text-mi-light/90'}`}>
         {children}
     </li>
 );
@@ -31,7 +31,7 @@ const Row = ({ children, highlight, dashed }) => (
 export function FoundMock({ data }) {
     return (
         <Panel label="AI answer" ariaLabel="Example: how a brand appears in an AI answer, before and after">
-            <div className="flex items-center gap-2 rounded-lg bg-mi-dark2 px-3 py-2 text-sm text-white mb-4">
+            <div className="flex items-center gap-2 rounded-lg bg-mi-dark2 px-3 py-2 text-sm text-white mb-3 md:mb-4">
                 <Icons.Search size={16} className="text-mi-cyan shrink-0" />
                 <span>{data.prompt}</span>
             </div>
@@ -42,7 +42,7 @@ export function FoundMock({ data }) {
                 <Row dashed><span>Your brand</span><Chip muted>NOT MENTIONED</Chip></Row>
             </ul>
 
-            <div className="flex justify-center my-3 text-mi-cyan"><Icons.ArrowDown size={20} /></div>
+            <div className="flex justify-center my-2 text-mi-cyan"><Icons.ArrowDown size={20} /></div>
 
             <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-2">After</p>
             <ul className="space-y-2">

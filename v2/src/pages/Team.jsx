@@ -5,7 +5,7 @@ import { SITE, QUICK_LOOK } from '../content/site.js';
 const PILLARS = [
     { title: 'Rigorous data analysis', text: 'Every finding traces to a page, a date or a data source. Anything we cannot verify is marked N/A.' },
     { title: 'AI-driven workflows', text: 'AI processes the noise so the diagnosis is fast. People decide what matters.' },
-    { title: 'Market intelligence from Phnom Penh', text: 'Local knowledge of how buyers in Cambodia and the Mekong region search, trust and message.' }
+    { title: 'Market intelligence from Phnom Penh', text: 'Local knowledge of how buyers in Cambodia and Vietnam search, trust and message.' }
 ];
 
 export default function Team() {

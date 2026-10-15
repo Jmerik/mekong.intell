@@ -1,18 +1,18 @@
 // The two landing pages share every section; only the wording and the mock examples change.
 //
-//   local          businesses that sell to customers in Cambodia and across the Mekong region
-//   international  businesses that sell across borders, into the Mekong region or out of it
+//   local          the main page (/): businesses that sell to customers in Cambodia and Vietnam
+//   international  /international: businesses that sell across borders, into the region or out of it
 //
 // To adjust a landing page, edit its entry below. To add a third audience, add an entry here,
 // a page in content/pages.js, a key in shared/packages.js (AUDIENCES), and a route in pages/index.jsx.
+// Visitors on the main page (/) are tagged "Local" in lead messages.
 
 export const AUDIENCES = {
     local: {
         id: 'local',
-        path: '/local',
+        path: '/',
         switchLabel: 'Local',
-        chip: 'For local businesses in Cambodia and the Mekong region',
-        line: 'Built for businesses that sell to customers in Cambodia and across the Mekong region.',
+        line: 'Brand and market intelligence for businesses in Cambodia and Vietnam.',
         found: {
             body: 'When potential buyers search on Google or Maps, or ask AI search engines like ChatGPT and Claude, are you showing up, or is AI recommending your competitors instead?',
             prompt: 'Best accounting firm in Phnom Penh?',
@@ -39,8 +39,7 @@ export const AUDIENCES = {
         id: 'international',
         path: '/international',
         switchLabel: 'International',
-        chip: 'For companies selling across borders',
-        line: 'Built for companies that sell across borders, into the Mekong region or out of it.',
+        line: 'Brand and market intelligence for companies selling into or out of Cambodia and Vietnam.',
         found: {
             body: 'When buyers research suppliers and partners on Google or LinkedIn, or ask AI search engines like ChatGPT and Claude, are you showing up, or is AI recommending your competitors instead?',
             prompt: 'Best supplier of packaging in Vietnam?',

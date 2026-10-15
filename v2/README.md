@@ -8,29 +8,28 @@ Vercel project to review it. **Do not point the public domain at it until the Qu
 
 | Route | What it is |
 | --- | --- |
-| `/` | Gateway: brand headline, Quick Look search, a clear choice between the two landing pages |
-| `/local` | Landing page for businesses selling in Cambodia and the Mekong region |
-| `/international` | Landing page for companies selling across borders, into the region or out of it |
+| `/` | The main landing page, for businesses in Cambodia and Vietnam: hero with the Quick Look search, Found / Trusted / Reached, the four steps |
+| `/international` | The same page for companies selling across borders, into the region or out of it |
+| `/services` | The four steps in detail: timeline, scope, what is included. **No prices yet** (see below) |
 | `/resources` | Three practical guide grids: AI search, footprint auditing, conversion |
-| `/pricing` | The four steps: what is included, timeline, scope. **No prices yet** (see below) |
 | `/team` | About Us: founder profile and how we work (`/about` redirects here) |
 | `/contact` | Message form, Telegram link, Phnom Penh office |
 | `/privacy` | Draft privacy policy |
 
+`/local` redirects to `/` and `/pricing` redirects to `/services` (see `vercel.json`).
+
 ### How the two audiences are split
 
-`/local` and `/international` are **one page template** (`src/pages/Landing.jsx`) fed by two entries in
-`src/content/audiences.js`. Hero line, the three Found / Trusted / Reached examples, and the Sprint note
-change per audience. Everything else is shared, so a fix lands on both pages at once.
+`/` and `/international` are **one page template** (`src/pages/Landing.jsx`) fed by two entries in
+`src/content/audiences.js`. The line saying who we serve, the three Found / Trusted / Reached examples and
+one note under the 7-Day Sprint change per audience. Everything else is shared, so a fix lands on both pages.
 
-- `/` is the neutral entry point for search, referrals and the nav. It never auto-redirects by IP or language.
-- Campaigns, QR codes and Telegram bios should link straight to `/local` or `/international`.
-- The Local | International switch at the top of each landing page lets a visitor change their mind.
-- Every request carries its audience (and which card was clicked) into the Telegram message, so you can
-  see which page produced a lead.
-- Assumed meaning, easy to change in `audiences.js`: **local** = sells to customers in Cambodia and the
-  Mekong region (Google Maps, Facebook, Telegram, Messenger); **international** = sells across borders
-  (Google, AI answers, LinkedIn, email).
+- The main page is the "local" version, because Cambodia and Vietnam are the core markets. Leads from it are
+  tagged **Local** in Telegram and the sheet; leads from `/international` are tagged **International**.
+- A Local | International switch at the top of each page lets a visitor change their mind.
+- Campaigns, QR codes and Telegram bios for cross-border buyers should link to `/international`.
+- Move to three real audience pages (Local, Entering the region, Selling to Western and German-speaking buyers)
+  when those offers differ in substance. See `audiences.js` for how to add one.
 
 ## Current sample deployment
 
@@ -92,12 +91,12 @@ Without Telegram variables, submitted leads are printed to the terminal.
 
 | To change | Edit |
 | --- | --- |
-| Hero copy, facts, Rhythm steps, the four services, nav | `src/content/site.js` |
+| Hero copy, facts, the four services (names, timing, what is included), nav | `src/content/site.js` |
 | Local / International wording and examples | `src/content/audiences.js` |
 | Resources guides | `src/content/resources.js` |
 | Page titles and descriptions | `src/content/pages.js` |
 | Package and audience names (form, page and Telegram share them) | `shared/packages.js` |
-| Team, Contact, Pricing, Privacy text | `src/pages/*.jsx` |
+| Team, Contact, Services page, Privacy text | `src/pages/*.jsx` |
 | Colours | `tailwind.config.js` |
 
 `dist/` is generated on every deploy and is not committed.
@@ -125,12 +124,12 @@ anyway, because each request will cost money.
 
 ## Decisions made (change freely)
 
-- **No prices.** The brand rules say not to quote prices while Cambodia pricing is tested. `/pricing`
+- **No prices.** The brand rules say not to quote prices while Cambodia pricing is tested. `/services`
   shows timeline, scope and inclusions, with "Shared after your Quick Look". Set real values in
-  `PRICE_LABEL` in `src/pages/Pricing.jsx` when agreed.
-- **"Subscribe Now" is "Request the Retainer".** There is no checkout; every paid step opens a request form.
+  `PRICE_LABEL` in `src/pages/ServicesPage.jsx` when agreed.
+- **No checkout.** Every paid step opens a request form ("Ask about this step"); there is no "Subscribe Now".
 - **Full Build and the Dashboard add-on are gone.** The Dashboard is now part of the Retainer, as in the brief.
-- **Day 35 recount** stays under the Blueprint card and as its own "Count" node in the Rhythm, as in the brief.
+- **Day 35 recount** sits on the 90-Day Blueprint card as a highlighted milestone, as in the brief.
 - **"Fix: 3 critical fixes live in 7 days"** (the brief said "menu fixes"; treated as a typo).
 - **Soft wording:** "leaking", "bleeding money" and "walk away silently" became calmer phrasing to match the
   consultative voice. "Rivals" became "competitors".
@@ -158,3 +157,20 @@ anyway, because each request will cost money.
 - [ ] Prices decided (or confirmed as "shared on a call")
 - [ ] Redirect or replace the current live site; keep the old image URLs working
 - [ ] Submit `/sitemap.xml` in Google Search Console and mark `generate_lead` as a key event in Analytics
+
+## Phase 2 decisions (structure and conversion)
+
+- **One set of names everywhere:** Free Quick Look, 7-Day Sprint, 90-Day Blueprint, Market Intelligence Retainer.
+  They are defined once (`SERVICES` in `src/content/site.js` and `PACKAGES` in `shared/packages.js`) and used on the
+  cards, the Services page, the forms, Telegram, the sheet and the structured data. **Still to do outside this repo:**
+  update the MI brand guide and the audit and teaser templates to the same names, and map them to Tier 1 / 2 / 3.
+- **Hero wording:** label "DATA-LED MARKET INTELLIGENCE", then "Look. Fix. Count.", then one line saying who and where
+  ("Brand and market intelligence for businesses in Cambodia and Vietnam."). "Optimization engine" is gone because it
+  reads like software. The alternative considered: label "BRAND & MARKET INTELLIGENCE", subline "A clear path from
+  diagnosis to growth." Both are one-line edits in `content/site.js` and `content/audiences.js`.
+- **The orbit diagram is gone.** The four steps now run as one timeline (Day 0, days 1 to 7, 90 days, monthly).
+- **One primary action:** "Request my Free Quick Look", plus "Book a Call" as the secondary. The other steps use a plain
+  "Ask about this step" link. The Found / Trusted / Reached cards no longer have buttons.
+- **"Pricing" is "Services"** in the nav and the page, because it shows no prices.
+- Visitors on the main page are tagged Local in lead messages, so `/` and `/international` can be compared.
+

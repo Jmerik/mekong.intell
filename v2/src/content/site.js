@@ -24,12 +24,13 @@ export const SITE = {
     previewBanner: 'Preview build. The Quick Look scanner is not connected yet.'
 };
 
+// First screen. The line saying who we serve and where comes from the audience (content/audiences.js).
 export const HERO = {
-    label: 'DATA-LED DIGITAL OPTIMIZATION ENGINE',
+    label: 'DATA-LED MARKET INTELLIGENCE',
     headlineLine1: 'Stop Guessing.',
     headlineLine2: 'Start Growing',
     headlineAccent: 'with Data.',
-    subheadline: 'Look. Fix. Count. Your complete digital optimization engine.',
+    subheadline: 'Look. Fix. Count.',
     placeholder: 'Your website or company name',
     button: QUICK_LOOK.cta,
     note: {
@@ -45,22 +46,16 @@ export const FACTS = [
     { value: 'Day 35', label: 'Numbers Recounted' }
 ];
 
-export const RHYTHM = [
-    { label: 'Look', text: 'Diagnostics and competitor benchmarks, based on public information.' },
-    { label: 'Fix', text: '3 critical fixes live in 7 days.' },
-    { label: 'Count', text: 'Baseline recount on day 35.' },
-    { label: 'Blueprint', text: '90-day growth roadmap.' },
-    { label: 'Retainer', text: 'Weekly market updates and competitor alerts.' }
-];
-
-// The four-step service ladder. `package` is the key in shared/packages.js.
+// The four-step ladder, in order. Product names are the ones used everywhere: cards, forms, Telegram,
+// the Services page and the structured data. `package` is the key in shared/packages.js.
 export const SERVICES = [
     {
         step: 'Step 1',
         package: 'quicklook',
-        badge: 'Free Diagnostic',
-        title: 'The Free Quick Look',
-        description: 'A free first read of your digital footprint: where you are Found, Trusted and Reached, and where to focus first.',
+        name: 'Free Quick Look',
+        when: 'Day 0',
+        promise: 'Where you are Found, Trusted and Reached',
+        description: 'A free first read of your digital footprint, and where to focus first.',
         button: QUICK_LOOK.cta,
         scope: 'No credit card required',
         includes: [
@@ -73,10 +68,10 @@ export const SERVICES = [
     {
         step: 'Step 2',
         package: 'sprint',
-        badge: 'Rapid Execution',
-        title: '3 Fixes Live in 7 Days',
+        name: '7-Day Sprint',
+        when: 'Days 1 to 7',
+        promise: '3 fixes live in 7 days',
         description: 'Direct deployment of critical search visibility, trust signals, and conversion fixes.',
-        button: 'Start Sprint',
         timeline: '7 days',
         scope: 'Fixed scope',
         includes: [
@@ -88,10 +83,11 @@ export const SERVICES = [
     {
         step: 'Step 3',
         package: 'blueprint',
-        badge: 'Strategic Growth',
-        title: 'Full Optimization Engine',
-        description: 'Complete data-led roadmap, baseline recount on day 35, and scalable channel execution.',
-        button: 'Discuss the Blueprint',
+        name: '90-Day Blueprint',
+        when: '90 days',
+        promise: 'Roadmap, and a recount on day 35',
+        milestone: 'Day 35: baseline recount',
+        description: 'A complete data-led growth roadmap, with the numbers recounted on day 35 and scalable channel execution.',
         timeline: '90 days',
         scope: 'Roadmap and recount',
         includes: [
@@ -104,10 +100,10 @@ export const SERVICES = [
     {
         step: 'Step 4',
         package: 'retainer',
-        badge: 'Continuous Edge',
-        title: 'Market Intelligence Retainer',
+        name: 'Market Intelligence Retainer',
+        when: 'Monthly',
+        promise: 'Weekly market updates',
         description: 'Weekly market updates, competitor tracking, and AI search monitoring delivered straight to your operations.',
-        button: 'Request the Retainer',
         timeline: 'Monthly',
         scope: 'Standalone subscription',
         includes: [
@@ -123,6 +119,6 @@ export const SERVICES = [
 export const NAV = [
     { label: 'About Us', href: '/team' },
     { label: 'Resources', href: '/resources' },
-    { label: 'Pricing', href: '/pricing' },
+    { label: 'Services', href: '/services' },
     { label: 'Contact', href: '/contact' }
 ];
