@@ -2,6 +2,13 @@
 // Brand voice: consultative, plain short sentences, evidence only, no crisis language.
 // Write " - " instead of em or en dashes.
 
+// The Quick Look is prepared by hand until the scanner is connected, so the promise is a delivery time.
+// Change it here and every page, form and message follows.
+export const QUICK_LOOK = {
+    cta: 'Request my Free Quick Look',
+    delivery: 'within 2 working days'
+};
+
 export const SITE = {
     name: 'Mekong Intelligence',
     tagline: 'Stop Guessing. Start Growing.',
@@ -24,10 +31,10 @@ export const HERO = {
     headlineAccent: 'with Data.',
     subheadline: 'Look. Fix. Count. Your complete digital optimization engine.',
     placeholder: 'Your website or company name',
-    button: 'Get Free Quick Look',
+    button: QUICK_LOOK.cta,
     note: {
         live: 'Instant analysis on whether your business is Found, Trusted, and Reached. No credit card required.',
-        manual: 'A free first read on whether your business is Found, Trusted, and Reached. Based on public information only. No credit card required.'
+        manual: `A free first read on whether your business is Found, Trusted, and Reached. Delivered ${QUICK_LOOK.delivery}, based on public information only. No credit card required.`
     }
 };
 
@@ -54,13 +61,13 @@ export const SERVICES = [
         badge: 'Free Diagnostic',
         title: 'The Free Quick Look',
         description: 'A free first read of your digital footprint: where you are Found, Trusted and Reached, and where to focus first.',
-        button: 'Get Free Quick Look',
+        button: QUICK_LOOK.cta,
         scope: 'No credit card required',
         includes: [
             'Found, Trusted and Reached check',
             'Based on public information only',
             'Anything we cannot verify is marked N/A',
-            'Delivered to your email or Telegram'
+            `Delivered to your email ${QUICK_LOOK.delivery}`
         ]
     },
     {

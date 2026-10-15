@@ -12,7 +12,7 @@ export default function Contact() {
                 <Container className="max-w-3xl">
                     <p className="text-mi-cyan text-sm font-bold tracking-widest uppercase mb-3">Contact</p>
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">Let's talk.</h1>
-                    <p className="text-xl text-mi-light/85">Send a short message, or reach us directly on Telegram. We typically respond within 2 hours on Telegram.</p>
+                    <p className="text-xl text-mi-light/85">Send a short message and we will reply by email, or reach us directly on Telegram. We typically respond within 2 hours on Telegram.</p>
                 </Container>
             </header>
 
@@ -43,8 +43,7 @@ export default function Contact() {
                         </div>
                         <div className="bg-mi-dark2 border border-mi-blue/20 rounded-3xl p-6">
                             <h2 className="text-xl font-bold text-white mb-3">Office</h2>
-                            <p className="flex items-start gap-3 text-mi-light/85"><Icons.MapPin size={20} className="text-mi-cyan shrink-0 mt-0.5" /><span>{SITE.location}<br /><span className="text-mi-light/70">Street address to follow.</span></span></p>
-                            <p className="flex items-start gap-3 text-mi-light/85 mt-4"><Icons.Mail size={20} className="text-mi-cyan shrink-0 mt-0.5" /><span>Email address to follow.</span></p>
+                            <p className="flex items-start gap-3 text-mi-light/85"><Icons.MapPin size={20} className="text-mi-cyan shrink-0 mt-0.5" /><span>{SITE.location}</span></p>
                         </div>
                     </aside>
                 </Container>

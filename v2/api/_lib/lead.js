@@ -25,11 +25,10 @@ function validateLead(body = {}) {
     for (const [field, max] of Object.entries(LIMITS)) {
         if (lead[field].length > max) errors[field] = `Please keep this under ${max} characters.`;
     }
-    if (!lead.name) errors.name = 'Please enter your name.';
+    // The Quick Look only needs a website (or company name) and an email. Name, Telegram and phone are optional.
+    // Every other request also needs a name so we know who to reply to.
+    if (!lead.name && lead.packageType !== 'quicklook') errors.name = 'Please enter your name.';
     if (!EMAIL_RE.test(lead.email)) errors.email = 'Please enter a valid email address.';
-    if (!lead.telegram && !lead.phone) {
-        errors.contact = 'Please add a Telegram username or a phone number.';
-    }
     if (lead.telegram && !TELEGRAM_RE.test(lead.telegram)) errors.telegram = 'Telegram usernames are 5 to 32 letters, numbers or underscores.';
     if (lead.phone && !PHONE_RE.test(lead.phone)) errors.phone = 'Please enter a valid phone number.';
     if (!PACKAGES[lead.packageType]) errors.packageType = 'Unknown request type.';

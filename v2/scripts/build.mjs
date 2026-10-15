@@ -8,7 +8,8 @@
 //   SITE_URL        Public address used in canonical and share tags. Defaults to the Vercel URL, then https://mekongintel.live
 //   NOINDEX         Anything except "0" keeps the site out of search engines (default). Set NOINDEX=0 at launch.
 //   PREVIEW_BANNER  "0" hides the preview banner. Defaults to hidden once NOINDEX=0, shown otherwise.
-//   GA_ID           Google Analytics measurement ID. Analytics is left out entirely when this is empty.
+//   GA_ID           Google Analytics measurement ID. Analytics (and the cookie banner) are left out when empty.
+//                   Analytics only loads in the browser after a visitor accepts the cookie banner.
 import { build } from 'esbuild';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -32,9 +33,16 @@ fs.rmSync(path.join(root, 'dist'), { recursive: true, force: true });
 fs.mkdirSync(out('assets'), { recursive: true });
 fs.cpSync(path.join(root, 'static'), out('.'), { recursive: true });
 
+// Self-hosted font (SIL Open Font License): one variable file, latin subset, plus its license.
+const fontDir = path.join(root, 'node_modules', '@fontsource-variable', 'inter');
+fs.mkdirSync(out('fonts'), { recursive: true });
+fs.copyFileSync(path.join(fontDir, 'files', 'inter-latin-wght-normal.woff2'), out('fonts/inter-latin-wght-normal.woff2'));
+fs.copyFileSync(path.join(fontDir, 'LICENSE'), out('fonts/LICENSE.txt'));
+
 const define = {
     'process.env.NODE_ENV': '"production"',
-    'process.env.PREVIEW_BANNER': JSON.stringify(showBanner ? '1' : '0')
+    'process.env.PREVIEW_BANNER': JSON.stringify(showBanner ? '1' : '0'),
+    'process.env.GA_ID': JSON.stringify(gaId)
 };
 
 await build({
@@ -104,15 +112,6 @@ const jsonLd = (kind) => {
     return data ? `    <script type="application/ld+json">${JSON.stringify(data)}</script>\n` : '';
 };
 
-if (gaId) {
-    fs.writeFileSync(out('analytics.js'),
-        `// Google Analytics (gtag.js). Its own file so the Content-Security-Policy can forbid inline scripts.\n` +
-        `window.dataLayer = window.dataLayer || [];\nfunction gtag() { dataLayer.push(arguments); }\nwindow.gtag = gtag;\ngtag('js', new Date());\ngtag('config', '${gaId}');\n`);
-}
-const analytics = gaId
-    ? `    <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>\n    <script src="/analytics.js"></script>\n`
-    : '';
-
 const template = fs.readFileSync(src('template.html'), 'utf8');
 const cssHash = hash(out('assets/styles.css'));
 const jsHash = hash(out('assets/app.js'));
@@ -126,7 +125,6 @@ for (const page of PAGES) {
         .replaceAll('%%SITE%%', siteUrl)
         .replaceAll('%%ROBOTS%%', noindex || page.alwaysNoindex ? 'noindex, nofollow' : 'index, follow')
         .replace('%%JSONLD%%', jsonLd(page.jsonLd))
-        .replace('%%ANALYTICS%%', analytics)
         .replace('%%CSS_HASH%%', cssHash)
         .replace('%%JS_HASH%%', jsHash)
         .replace('%%PAGE%%', page.id)

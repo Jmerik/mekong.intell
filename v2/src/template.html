@@ -27,13 +27,11 @@
     <meta name="twitter:description" content="%%DESCRIPTION%%">
     <meta name="twitter:image" content="%%SITE%%/image/og-image.png">
 %%JSONLD%%
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/inter-latin-wght-normal.woff2">
     <link rel="preload" as="image" href="/image/logo.webp" type="image/webp">
     <link rel="stylesheet" href="/assets/styles.css?v=%%CSS_HASH%%">
     <script defer src="/assets/app.js?v=%%JS_HASH%%"></script>
-%%ANALYTICS%%</head>
+</head>
 <body class="bg-mi-dark1 text-mi-light">
     <div id="root" data-page="%%PAGE%%">%%APP%%</div>
     <noscript>

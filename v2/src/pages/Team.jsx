@@ -1,6 +1,6 @@
 import Layout, { useModal } from '../components/Layout.jsx';
 import { Container, Button, Icons } from '../components/ui.jsx';
-import { SITE } from '../content/site.js';
+import { SITE, QUICK_LOOK } from '../content/site.js';
 
 const PILLARS = [
     { title: 'Rigorous data analysis', text: 'Every finding traces to a page, a date or a data source. Anything we cannot verify is marked N/A.' },
@@ -62,7 +62,7 @@ export default function Team() {
                         ))}
                     </div>
                     <div className="mt-12 text-center">
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">Get Free Quick Look</Button>
+                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">{QUICK_LOOK.cta}</Button>
                     </div>
                 </Container>
             </section>

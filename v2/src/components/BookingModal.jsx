@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SITE } from '../content/site.js';
+import { SITE, QUICK_LOOK } from '../content/site.js';
 import LeadForm, { requestTitle } from './LeadForm.jsx';
 import { Button, Icons } from './ui.jsx';
 
@@ -61,7 +61,7 @@ export default function BookingModal({ request, audience, onClose }) {
                             <h2 id="booking-title" className="text-2xl font-bold text-white mb-2 pr-8">{title}</h2>
                             <p className="text-mi-light/80 mb-6 text-sm">
                                 {isQuickLook
-                                    ? 'Tell us where to look and where to send the result. Free, based on public information only, no credit card required.'
+                                    ? `Tell us where to look and where to send the result. Free, delivered ${QUICK_LOOK.delivery}, based on public information only. No credit card required.`
                                     : 'Fill out the details below. We typically respond within 2 hours on Telegram, or by phone or email if you prefer.'}
                             </p>
                             <LeadForm packageType={packageType} audience={audience} focus={focus} initialWebsite={website} idPrefix="m" onSuccess={setDone} />
@@ -76,7 +76,7 @@ export default function BookingModal({ request, audience, onClose }) {
                                 <p className="text-mi-light/80 mb-8">
                                     {SITE.scannerEnabled
                                         ? <>Your Quick Look for <span className="text-mi-cyan font-bold">{done.website}</span> is being prepared. We will send it to {done.email}.</>
-                                        : <>Thanks. We will prepare your Quick Look for <span className="text-mi-cyan font-bold">{done.website}</span> and send it to {done.email}. It is based on public information only.</>}
+                                        : <>Thanks. We will prepare your Quick Look for <span className="text-mi-cyan font-bold">{done.website}</span> and send it to {done.email} {QUICK_LOOK.delivery}. It is based on public information only.</>}
                                 </p>
                             ) : (
                                 <p className="text-mi-light/80 mb-8">

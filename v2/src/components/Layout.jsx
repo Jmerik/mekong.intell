@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { SITE, NAV } from '../content/site.js';
+import { SITE, NAV, QUICK_LOOK } from '../content/site.js';
 import { Button, Icons, Container } from './ui.jsx';
 import BookingModal from './BookingModal.jsx';
+import Consent, { CookieSettingsLink } from './Consent.jsx';
 
 // Replaced at build time by scripts/build.mjs (PREVIEW_BANNER=0 hides the banner for launch).
 const SHOW_BANNER = process.env.PREVIEW_BANNER === '1';
@@ -72,7 +73,7 @@ function Footer() {
                         We show you where you are Found, Trusted and Reached, and where to focus first. From there, you decide how deep you want to go.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="px-10 py-4 text-lg">Get Free Quick Look</Button>
+                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="px-10 py-4 text-lg">{QUICK_LOOK.cta}</Button>
                         <Button variant="outline" onClick={() => openModal({ packageType: 'call' })} className="px-10 py-4 text-lg">Book a Call</Button>
                     </div>
                 </Container>
@@ -106,6 +107,7 @@ function Footer() {
                 </Container>
                 <Container className="mt-10 text-mi-light/70 text-sm">
                     <p>&copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> Mekong Intelligence. All rights reserved. {SITE.location}</p>
+                    <CookieSettingsLink className="mt-2 underline hover:text-white" />
                 </Container>
             </div>
         </footer>
@@ -128,6 +130,7 @@ export default function Layout({ current, audience = 'general', children }) {
                 <main id="main" className="flex-1">{children}</main>
                 <Footer />
                 {request && <BookingModal request={request} audience={audience} onClose={close} />}
+                <Consent />
             </div>
         </ModalContext.Provider>
     );

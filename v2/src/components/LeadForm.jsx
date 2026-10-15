@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { PACKAGES, AUDIENCES } from '../../shared/packages.js';
-import { SITE } from '../content/site.js';
+import { SITE, QUICK_LOOK } from '../content/site.js';
 import { Button } from './ui.jsx';
 
 const inputClass = 'w-full bg-mi-dark1 border border-mi-blue/30 rounded-lg p-3 text-white placeholder:text-mi-light/50 focus:border-mi-cyan focus:outline-none focus:ring-2 focus:ring-mi-cyan/40 transition-colors';
 const labelClass = 'block text-mi-light/80 text-xs uppercase font-bold mb-2';
+const optional = <span className="normal-case font-normal"> (optional)</span>;
 
 const FieldError = ({ id, message }) => (message ? <p id={id} className="mt-1 text-xs text-red-300">{message}</p> : null);
 
-// One form for every request. The Quick Look asks for the minimum; the contact page also takes a message.
+// One form for every request.
+//   Quick Look: website or company name + email. Name, Telegram and phone sit in an optional section.
+//   Everything else: name + email. Telegram and phone are optional.
 export default function LeadForm({ packageType, audience = 'general', focus = '', initialWebsite = '', onSuccess, idPrefix = 'lead', showAudience = false }) {
     const isQuickLook = packageType === 'quicklook';
     const [form, setForm] = useState({
@@ -23,10 +26,6 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
 
     const submit = async (e) => {
         e.preventDefault();
-        if (!form.telegram.trim() && !form.phone.trim()) {
-            setErrors({ contact: 'Please add a Telegram username or a phone number so we can reach you.' });
-            return;
-        }
         setErrors({});
         setSubmitting(true);
         try {
@@ -51,6 +50,39 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
         }
     };
 
+    const nameField = (
+        <div>
+            <label htmlFor={id('name')} className={labelClass}>Name{isQuickLook && optional}</label>
+            <input id={id('name')} name="name" required={!isQuickLook} maxLength={100} type="text" autoComplete="name" placeholder="Your full name"
+                className={inputClass} aria-invalid={!!errors.name} aria-describedby={describedBy('name')}
+                value={form.name} onChange={update('name')} />
+            <FieldError id={`${id('name')}-error`} message={errors.name} />
+        </div>
+    );
+
+    const contactFields = (
+        <fieldset aria-describedby={id('contact-hint')}>
+            <legend className="sr-only">Faster ways to reach you</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label htmlFor={id('telegram')} className={labelClass}>Telegram username{optional}</label>
+                    <input id={id('telegram')} name="telegram" maxLength={64} type="text" autoComplete="off" placeholder="@username"
+                        className={inputClass} aria-invalid={!!errors.telegram} aria-describedby={describedBy('telegram')}
+                        value={form.telegram} onChange={update('telegram')} />
+                    <FieldError id={`${id('telegram')}-error`} message={errors.telegram} />
+                </div>
+                <div>
+                    <label htmlFor={id('phone')} className={labelClass}>Phone / WhatsApp{optional}</label>
+                    <input id={id('phone')} name="phone" maxLength={32} type="tel" autoComplete="tel" placeholder="+855 ..."
+                        className={inputClass} aria-invalid={!!errors.phone} aria-describedby={describedBy('phone')}
+                        value={form.phone} onChange={update('phone')} />
+                    <FieldError id={`${id('phone')}-error`} message={errors.phone} />
+                </div>
+            </div>
+            <p id={id('contact-hint')} className="mt-2 text-xs text-mi-light/70">We reply by email. Add Telegram or a phone number if you prefer a quicker reply there.</p>
+        </fieldset>
+    );
+
     return (
         <form onSubmit={submit} className="space-y-4">
             {/* Honeypot for bots: hidden from people and screen readers. */}
@@ -61,9 +93,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
 
             {packageType !== 'contact' && (
                 <div>
-                    <label htmlFor={id('website')} className={labelClass}>
-                        Website or company name {!isQuickLook && <span className="normal-case font-normal">(optional)</span>}
-                    </label>
+                    <label htmlFor={id('website')} className={labelClass}>Website or company name{!isQuickLook && optional}</label>
                     <input id={id('website')} name="website" required={isQuickLook} maxLength={300} type="text" autoComplete="url" placeholder="https://... or your company name"
                         className={inputClass} aria-invalid={!!errors.website} aria-describedby={describedBy('website')}
                         value={form.website} onChange={update('website')} />
@@ -71,13 +101,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
                 </div>
             )}
 
-            <div>
-                <label htmlFor={id('name')} className={labelClass}>Name</label>
-                <input id={id('name')} name="name" required maxLength={100} type="text" autoComplete="name" placeholder="Your full name"
-                    className={inputClass} aria-invalid={!!errors.name} aria-describedby={describedBy('name')}
-                    value={form.name} onChange={update('name')} />
-                <FieldError id={`${id('name')}-error`} message={errors.name} />
-            </div>
+            {!isQuickLook && nameField}
 
             <div>
                 <label htmlFor={id('email')} className={labelClass}>Email</label>
@@ -87,32 +111,23 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
                 <FieldError id={`${id('email')}-error`} message={errors.email} />
             </div>
 
-            <fieldset aria-describedby={id('contact-hint')}>
-                <legend className="sr-only">How should we reach you?</legend>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor={id('telegram')} className={labelClass}>Telegram username</label>
-                        <input id={id('telegram')} name="telegram" maxLength={64} type="text" autoComplete="off" placeholder="@username"
-                            className={inputClass} aria-invalid={!!(errors.telegram || errors.contact)} aria-describedby={describedBy('telegram')}
-                            value={form.telegram} onChange={update('telegram')} />
-                        <FieldError id={`${id('telegram')}-error`} message={errors.telegram} />
+            {isQuickLook ? (
+                <details className="rounded-lg border border-mi-blue/30 px-4 py-3 group" open={!!(errors.name || errors.telegram || errors.phone)}>
+                    <summary className="cursor-pointer text-sm font-semibold text-mi-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-mi-cyan rounded">
+                        Add your name or a faster way to reach you (optional)
+                    </summary>
+                    <div className="space-y-4 mt-4">
+                        {nameField}
+                        {contactFields}
                     </div>
-                    <div>
-                        <label htmlFor={id('phone')} className={labelClass}>Phone / WhatsApp</label>
-                        <input id={id('phone')} name="phone" maxLength={32} type="tel" autoComplete="tel" placeholder="+855 ..."
-                            className={inputClass} aria-invalid={!!(errors.phone || errors.contact)} aria-describedby={describedBy('phone')}
-                            value={form.phone} onChange={update('phone')} />
-                        <FieldError id={`${id('phone')}-error`} message={errors.phone} />
-                    </div>
-                </div>
-                <p id={id('contact-hint')} className={`mt-2 text-xs ${errors.contact ? 'text-red-300' : 'text-mi-light/70'}`}>
-                    {errors.contact || 'Telegram or phone. One of the two is enough.'}
-                </p>
-            </fieldset>
+                </details>
+            ) : (
+                contactFields
+            )}
 
             {showAudience && (
                 <div>
-                    <label htmlFor={id('audience')} className={labelClass}>I sell <span className="normal-case font-normal">(optional)</span></label>
+                    <label htmlFor={id('audience')} className={labelClass}>I sell{optional}</label>
                     <select id={id('audience')} name="audience" className={inputClass} value={form.audience} onChange={update('audience')}>
                         <option value="general">Select one...</option>
                         <option value="local">To customers in Cambodia and the Mekong region</option>
@@ -123,7 +138,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
 
             {!isQuickLook && (
                 <div>
-                    <label htmlFor={id('message')} className={labelClass}>Message <span className="normal-case font-normal">(optional)</span></label>
+                    <label htmlFor={id('message')} className={labelClass}>Message{optional}</label>
                     <textarea id={id('message')} name="message" rows={4} maxLength={1500} placeholder="Anything we should know before we reply?"
                         className={inputClass} aria-invalid={!!errors.message} aria-describedby={describedBy('message')}
                         value={form.message} onChange={update('message')} />
@@ -138,10 +153,10 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
             )}
 
             <Button type="submit" className="w-full mt-2" disabled={submitting}>
-                {submitting ? 'Sending...' : isQuickLook ? 'Get my Free Quick Look' : packageType === 'contact' ? 'Send message' : 'Send request'}
+                {submitting ? 'Sending...' : isQuickLook ? QUICK_LOOK.cta : packageType === 'contact' ? 'Send message' : 'Send request'}
             </Button>
             <p className="text-xs text-mi-light/70 text-center">
-                We only use these details to reply to you. See our <a href="/privacy" className="underline hover:text-white">privacy policy</a>.
+                {isQuickLook && <>Free. Delivered {QUICK_LOOK.delivery}. </>}We only use these details to reply to you. See our <a href="/privacy" className="underline hover:text-white">privacy policy</a>.
             </p>
         </form>
     );

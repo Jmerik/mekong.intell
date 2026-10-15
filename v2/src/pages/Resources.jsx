@@ -1,6 +1,7 @@
 import Layout, { useModal } from '../components/Layout.jsx';
 import { Container, SectionHeader, Button } from '../components/ui.jsx';
 import { RESOURCE_GROUPS } from '../content/resources.js';
+import { QUICK_LOOK } from '../content/site.js';
 
 function QuickLookCta() {
     const { openModal } = useModal();
@@ -8,7 +9,7 @@ function QuickLookCta() {
         <div className="max-w-3xl mx-auto text-center bg-mi-dark2 border border-mi-cyan/40 rounded-3xl p-8 md:p-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Want this checked for your business?</h2>
             <p className="text-mi-light/85 mb-6">The Free Quick Look runs these checks for you, based on public information only.</p>
-            <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">Get Free Quick Look</Button>
+            <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">{QUICK_LOOK.cta}</Button>
         </div>
     );
 }

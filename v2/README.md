@@ -14,7 +14,7 @@ Vercel project to review it. **Do not point the public domain at it until the Qu
 | `/resources` | Three practical guide grids: AI search, footprint auditing, conversion |
 | `/pricing` | The four steps: what is included, timeline, scope. **No prices yet** (see below) |
 | `/team` | About Us: founder profile and how we work (`/about` redirects here) |
-| `/contact` | Message form, Telegram link, Phnom Penh office (address and email to follow) |
+| `/contact` | Message form, Telegram link, Phnom Penh office |
 | `/privacy` | Draft privacy policy |
 
 ### How the two audiences are split
@@ -38,7 +38,7 @@ change per audience. Everything else is shared, so a fix lands on both pages at 
 - Address: https://mekong-intelligence-v2.vercel.app (first deployed 15 October 2026)
 - **Vercel Authentication is on**, so only people signed in to that Vercel account can open it. To show it
   to someone else, use Project > Settings > Deployment Protection (shareable link or protection bypass).
-- Telegram variables are **not set yet**, so form submissions succeed but are only written to the function logs.
+- Lead destinations (Telegram, Google Sheet) are **not set up yet**, so form submissions succeed but are only written to the function logs, which expire after 1 hour. Set them up before anyone submits a real request.
 - It was deployed from the command line and is **not connected to GitHub**. To update it, run
   `npx vercel deploy --prod` from `v2/`, or connect the repo under Settings > Git (Root Directory `v2`).
 
@@ -47,9 +47,13 @@ change per audience. Everything else is shared, so a fix lands on both pages at 
 1. In Vercel choose **Add New > Project**, import this repository.
 2. Set **Root Directory** to `v2`. Framework preset: **Other**. Vercel reads `vercel.json`
    (build command `npm run build`, output `dist`) and deploys `api/book.js` as a serverless function.
-3. Add environment variables (Settings > Environment Variables):
-   - `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` so requests reach Telegram. Without them the form still
-     succeeds but the lead is only written to the function logs.
+3. Add environment variables (Settings > Environment Variables), then redeploy:
+   - `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`: instant notification in Telegram.
+   - `LEAD_SHEET_WEBHOOK_URL` and `LEAD_SHEET_SECRET`: a durable copy of every lead in a Google Sheet.
+     Setup takes about 5 minutes: see [`docs/lead-sheet-setup.md`](docs/lead-sheet-setup.md).
+   - Every lead goes to **all configured destinations**. The visitor sees success if at least one has it, and an
+     error only if every configured destination failed. With none configured, the form still succeeds but the
+     lead is only written to the function logs, which Vercel keeps for **1 hour** on the Hobby plan.
 4. Optional: `SITE_URL` to pin the address used in share tags (defaults to the Vercel URL).
 
 The preview is kept out of search engines three ways: `X-Robots-Tag` header (`vercel.json`), a
@@ -63,7 +67,7 @@ scanner is not connected.
 | `NOINDEX` | on | Anything except `0` keeps the site out of search engines. |
 | `PREVIEW_BANNER` | on while `NOINDEX` is on | `0` hides the preview banner. |
 | `SITE_URL` | Vercel URL, else `https://mekongintel.live` | Canonical, share and sitemap addresses. |
-| `GA_ID` | empty | Google Analytics measurement ID. Leave empty on previews so test visits do not pollute real data. |
+| `GA_ID` | empty | Google Analytics measurement ID. Leave empty on previews so test visits do not pollute real data. When set, a cookie banner appears and Google Analytics loads **only after a visitor accepts** it; a "Cookie settings" link in the footer lets them change their mind. With no ID there is no banner and no analytics code. |
 
 ## Run locally
 
@@ -92,8 +96,8 @@ Without Telegram variables, submitted leads are printed to the terminal.
 
 ## Scanner placeholder (next project)
 
-Today the Quick Look is a **free request**: the visitor leaves a website or company name plus contact
-details, and the lead goes to Telegram marked "Scanner not connected yet: prepare this Quick Look by hand".
+Today the Quick Look is a **free request**: the visitor leaves a website or company name plus an email,
+and the lead goes to Telegram and the lead sheet marked "Scanner not connected yet: prepare this Quick Look by hand".
 To connect the real scanner:
 
 1. Implement `runQuickLook()` in `api/_lib/scanner.js`. The input/output contract and the brand rules
@@ -126,8 +130,13 @@ anyway, because each request will cost money.
   not red/green, and a caption states they are not client data.
 - **Team page names only the founder, and uses no pronouns** because the site and earlier notes disagree.
   Add a second person in `src/pages/Team.jsx` when wanted.
-- **Contact:** email and street address read "to follow". The business is an individual business for now.
+- **Contact:** no public email or street address yet, so none is shown (the form replies by email). Add them in `src/pages/Contact.jsx` and the privacy policy when they exist. The business is an individual business for now.
 - **Hero search placeholder** reads "Your website or company name" so it fits on a phone.
+- **Quick Look form asks for two things:** website or company name, and email. Name, Telegram and phone are in an
+  optional section. Other requests ask for name and email, and Telegram or phone are optional everywhere.
+  The promise "delivered within 2 working days" lives in `QUICK_LOOK` in `src/content/site.js`.
+- **Fonts are served from this site** (Inter, one variable file, SIL Open Font License), so visitors' browsers
+  make no request to Google Fonts. The Content-Security-Policy no longer allows Google Fonts at all.
 - **Resources:** the three guide grids are written as short, checkable actions with no statistics.
 
 ## Launch checklist
@@ -135,7 +144,8 @@ anyway, because each request will cost money.
 - [ ] Scanner connected and `scannerEnabled` set to `true` (or the manual wording kept on purpose)
 - [ ] Set `NOINDEX=0`, `GA_ID`, `SITE_URL` in Vercel; remove the `X-Robots-Tag` header from `vercel.json`
 - [ ] Add Vercel WAF rate limiting in front of `/api/book`
-- [ ] Contact email and street address added (`src/pages/Contact.jsx`, privacy policy)
+- [ ] Contact email (and street address, if wanted) added (`src/pages/Contact.jsx`, privacy policy)
+- [ ] Lead Google Sheet and Telegram set up, a real test lead seen in both
 - [ ] Privacy policy reviewed
 - [ ] Prices decided (or confirmed as "shared on a call")
 - [ ] Redirect or replace the current live site; keep the old image URLs working

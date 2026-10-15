@@ -8,7 +8,7 @@ export default function Privacy() {
         <Layout>
             <Container className="py-16 max-w-3xl">
                 <h1 className="text-4xl font-bold text-white mb-2">Privacy Policy</h1>
-                <p className="text-sm text-mi-light/70 mb-10">Last updated: 15 October 2026</p>
+                <p className="text-sm text-mi-light/70 mb-10">Last updated: 16 October 2026</p>
 
                 <div className="space-y-8 leading-relaxed text-mi-light/90">
                     <section>
@@ -35,12 +35,13 @@ export default function Privacy() {
 
                     <section>
                         <h2 className="text-xl font-bold text-white mb-3">How your request is handled</h2>
-                        <p>Requests are delivered to us through Telegram, and the website is hosted by a third-party provider that keeps short-term server logs. These providers process the information only so that your request reaches us.</p>
+                        <p>Requests are delivered to us through Telegram and saved in a Google Sheet, so that a request is not lost if one of them is unavailable. The website is hosted by a third-party provider (Vercel) that keeps short-term server logs. These providers process the information only so that your request reaches us.</p>
                     </section>
 
-                    <section>
-                        <h2 className="text-xl font-bold text-white mb-3">Analytics</h2>
-                        <p>We may use Google Analytics to understand how visitors use the site, for example which pages are viewed and whether a request was sent. Google Analytics uses cookies and collects information such as approximate location, device and browser. You can block these cookies in your browser settings or with the <a className="text-mi-cyan underline" href="https://tools.google.com/dlpage/gaoptout" rel="noreferrer">Google Analytics opt-out add-on</a>.</p>
+                    <section id="analytics">
+                        <h2 className="text-xl font-bold text-white mb-3">Analytics and cookies</h2>
+                        <p>We may use Google Analytics to understand how visitors use the site, for example which pages are viewed and whether a request was sent. <strong className="text-white">It is switched off until you accept it</strong> in the cookie banner: before that, your browser does not contact Google and no analytics cookies are set. If you accept, Google Analytics uses cookies and collects information such as approximate location, device and browser. You can change your choice at any time with the &ldquo;Cookie settings&rdquo; link at the bottom of every page.</p>
+                        <p className="mt-3">The site's fonts are served from this site itself, not from Google.</p>
                     </section>
 
                     <section>

@@ -97,7 +97,7 @@ export default function Hero({ audience, children }) {
                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-white">
                     {HERO.headlineLine1}<br />
                     {HERO.headlineLine2}{' '}
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-mi-cyan via-mi-blue to-mi-light">{HERO.headlineAccent}</span>
+                    <span className="whitespace-nowrap bg-clip-text text-transparent bg-gradient-to-r from-mi-cyan via-mi-blue to-mi-light">{HERO.headlineAccent}</span>
                 </h1>
                 <p className="text-xl md:text-2xl text-mi-light/90 mb-3 max-w-3xl mx-auto">{HERO.subheadline}</p>
                 {audience && <p className="text-base text-mi-light/70 mb-10 max-w-2xl mx-auto">{audience.line}</p>}

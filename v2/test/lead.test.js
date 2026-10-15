@@ -11,13 +11,24 @@ test('accepts a valid lead with Telegram only', () => {
     assert.deepEqual(validateLead(valid).errors, {});
 });
 
-test('accepts a valid lead with phone only', () => {
-    const { errors } = validateLead({ ...valid, telegram: '', phone: '+855 12 345 678' });
-    assert.deepEqual(errors, {});
+test('Telegram and phone are both optional', () => {
+    assert.deepEqual(validateLead({ ...valid, telegram: '' }).errors, {});
+    assert.deepEqual(validateLead({ ...valid, telegram: '', phone: '+855 12 345 678' }).errors, {});
 });
 
-test('requires Telegram or phone', () => {
-    assert.ok(validateLead({ ...valid, telegram: '' }).errors.contact);
+test('a malformed Telegram username or phone number is still rejected when given', () => {
+    assert.ok(validateLead({ ...valid, telegram: 'a b' }).errors.telegram);
+    assert.ok(validateLead({ ...valid, phone: 'abc' }).errors.phone);
+});
+
+test('the Quick Look needs only a website or company name and an email', () => {
+    assert.deepEqual(validateLead({ email: 'a@b.co', website: 'example.com', packageType: 'quicklook' }).errors, {});
+    assert.ok(validateLead({ website: 'example.com', packageType: 'quicklook' }).errors.email);
+});
+
+test('other requests still need a name and an email', () => {
+    assert.ok(validateLead({ email: 'a@b.co', packageType: 'call' }).errors.name);
+    assert.ok(validateLead({ name: 'A B', packageType: 'call' }).errors.email);
 });
 
 test('Quick Look needs a website or company name, other requests do not', () => {
