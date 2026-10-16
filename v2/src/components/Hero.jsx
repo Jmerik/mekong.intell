@@ -4,12 +4,16 @@ import { AUDIENCE_LIST } from '../content/audiences.js';
 import { Icons, Button, Container } from './ui.jsx';
 import { FoundMock, TrustedMock, ReachedMock } from './mocks.jsx';
 import { useModal } from './Layout.jsx';
+import { DE } from '../content/de.js';
 
 // The main call to action: type a website or company name, then leave contact details in the form.
 // SCANNER PLACEHOLDER: today this opens the Quick Look request form. When the scanner is live,
 // this is where the instant analysis should start (see api/_lib/scanner.js).
 export function QuickLookPill() {
-    const { openModal } = useModal();
+    const { openModal, lang } = useModal();
+    const text = lang === 'de'
+        ? { label: DE.hero.label, placeholder: DE.hero.placeholder, button: DE.hero.button, missing: DE.hero.missing, note: DE.hero.note }
+        : { label: 'Website or company name', placeholder: HERO.placeholder, button: HERO.button, missing: 'Please enter your website or company name.', note: SITE.scannerEnabled ? HERO.note.live : HERO.note.manual };
     const inputRef = useRef(null);
     const [value, setValue] = useState('');
     const [missing, setMissing] = useState(false);
@@ -28,7 +32,7 @@ export function QuickLookPill() {
     return (
         <div className="max-w-2xl mx-auto">
             <form role="search" onSubmit={submit} className="rounded-2xl p-2 bg-mi-dark2/80 border border-mi-cyan/30 shadow-[0_0_60px_rgba(80,198,233,0.18)] flex flex-col sm:flex-row gap-2 focus-within:border-mi-cyan transition-colors">
-                <label htmlFor="ql-target" className="sr-only">Website or company name</label>
+                <label htmlFor="ql-target" className="sr-only">{text.label}</label>
                 <div className="flex-1 flex items-center gap-3 bg-mi-dark1 rounded-xl px-4">
                     <Icons.Search size={20} className="text-mi-cyan shrink-0" />
                     <input
@@ -37,7 +41,7 @@ export function QuickLookPill() {
                         type="text"
                         maxLength={300}
                         autoComplete="off"
-                        placeholder={HERO.placeholder}
+                        placeholder={text.placeholder}
                         aria-describedby={missing ? 'ql-error' : 'ql-note'}
                         aria-invalid={missing}
                         value={value}
@@ -45,12 +49,12 @@ export function QuickLookPill() {
                         className="w-full bg-transparent py-4 text-white placeholder:text-mi-light/60 focus:outline-none"
                     />
                 </div>
-                <Button type="submit" className="py-4 px-6 whitespace-nowrap">{HERO.button}</Button>
+                <Button type="submit" className="py-4 px-6 whitespace-nowrap">{text.button}</Button>
             </form>
             {missing ? (
-                <p id="ql-error" role="alert" className="mt-3 text-sm text-red-300">Please enter your website or company name.</p>
+                <p id="ql-error" role="alert" className="mt-3 text-sm text-red-300">{text.missing}</p>
             ) : (
-                <p id="ql-note" className="mt-3 text-sm text-mi-light/80">{SITE.scannerEnabled ? HERO.note.live : HERO.note.manual}</p>
+                <p id="ql-note" className="mt-3 text-sm text-mi-light/80">{text.note}</p>
             )}
         </div>
     );
@@ -70,10 +74,10 @@ function AudienceSwitch({ current }) {
     );
 }
 
-export function Facts() {
+export function Facts({ facts = FACTS }) {
     return (
         <dl className="mt-10 md:mt-14 grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
-            {FACTS.map((fact) => (
+            {facts.map((fact) => (
                 <div key={fact.label} className="flex flex-col-reverse items-center">
                     <dt className="text-xs sm:text-sm text-mi-light/80 text-center">{fact.label}</dt>
                     <dd className="text-2xl sm:text-3xl font-bold text-white">{fact.value}</dd>

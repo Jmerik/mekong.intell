@@ -22,6 +22,16 @@ export const PAGES = [
         ogImage: '/image/og-international.png'
     },
     {
+        id: 'de',
+        path: '/de',
+        file: 'de.html',
+        lang: 'de',
+        title: 'Mekong Intelligence | Marken- und Marktintelligenz für Südostasien',
+        description: 'Marken- und Marktintelligenz für Unternehmen aus Deutschland, Österreich und der Schweiz in Kambodscha und Vietnam. Kostenloser Quick Look: Werden Sie gefunden, ist Ihr Unternehmen vertrauenswürdig und erreichbar?',
+        ogImage: '/image/og-international.png',
+        jsonLd: ['faq-de']
+    },
+    {
         id: 'resources',
         path: '/resources',
         file: 'resources.html',
@@ -73,6 +83,25 @@ export const PAGES = [
         file: 'privacy.html',
         title: 'Privacy Policy | Mekong Intelligence',
         description: 'How Mekong Intelligence collects and uses the information you share with us.'
+    },
+    {
+        id: 'datenschutz',
+        path: '/datenschutz',
+        file: 'datenschutz.html',
+        lang: 'de',
+        title: 'Datenschutzerklärung | Mekong Intelligence',
+        description: 'Wie Mekong Intelligence die Angaben erhebt und verwendet, die Sie uns mitteilen.'
+    },
+    {
+        // Placeholder until the address and email are known: never indexed.
+        id: 'impressum',
+        path: '/impressum',
+        file: 'impressum.html',
+        lang: 'de',
+        title: 'Impressum | Mekong Intelligence',
+        description: 'Anbieterangaben von Mekong Intelligence.',
+        alwaysNoindex: true,
+        excludeFromSitemap: true
     },
     {
         id: 'notfound',

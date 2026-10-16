@@ -257,3 +257,16 @@ specification left it blank), a real email address for the contact page, the sco
 Entry Brief (its regulatory research is described as public information, not legal advice), and a check that the
 Telegram account behind "Connect on Telegram" is monitored.
 
+
+## German landing page (`/de`)
+
+- **Audience:** companies from Germany, Austria and Switzerland that buy, invest or expand in Cambodia and Vietnam, and regional companies that sell to German-speaking buyers. Leads are tagged "German-speaking (DE)".
+- **Content:** all German wording is in `src/content/de.js` (formal "Sie", no dashes, no prices). The page is `src/pages/LandingDe.jsx`. The three checks are cards, not tabs.
+- **Language plumbing:** `ModalProvider` takes `lang`; the nav, footer, search bar, example screens, booking dialog, form, field errors and cookie banner switch with it. English pages are unchanged.
+- **Also added:** `/datenschutz` (German draft of the privacy policy) and `/impressum` (placeholder, never indexed). `hreflang` links join `/` and `/de`. The English footer links to `/de`.
+- **Kept in English on purpose:** the product names (7-Day Sprint, 90-Day Blueprint, ...), the Telegram and sheet messages the team reads, and the contact page.
+- **Needs your decision before launch:**
+  1. Whether the Quick Look can really be delivered in German (the page says "Deutsch oder Englisch, wie Sie es wünschen").
+  2. The Impressum: postal address, email and the owner's name are missing. A German-language page aimed at German-speaking visitors normally needs them.
+  3. Whether EU data protection rules apply (they probably do for this audience) and what that adds to `/datenschutz`. Have both texts reviewed.
+  4. A German share image (the page uses the English international one).

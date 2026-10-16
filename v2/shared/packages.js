@@ -15,7 +15,8 @@ const PACKAGES = {
 const AUDIENCES = {
     general: 'General',
     local: 'Local',
-    international: 'International'
+    international: 'International',
+    de: 'German-speaking (DE)'
 };
 
 // Which of the three Quick Look checks a visitor clicked.

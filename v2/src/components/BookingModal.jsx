@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { SITE, QUICK_LOOK } from '../content/site.js';
 import LeadForm, { requestTitle } from './LeadForm.jsx';
 import { Button, Icons } from './ui.jsx';
+import { useModal } from './Layout.jsx';
+import { FORM_TEXT } from '../content/de.js';
 
 // Mounted only while open, so every opening starts on a fresh, empty form.
 export default function BookingModal({ request, audience, onClose }) {
@@ -11,7 +13,9 @@ export default function BookingModal({ request, audience, onClose }) {
     const onCloseRef = useRef(onClose);
     onCloseRef.current = onClose;
 
-    const title = requestTitle(packageType);
+    const { lang } = useModal();
+    const T = FORM_TEXT[lang] || null;
+    const title = requestTitle(packageType, lang);
     const isQuickLook = packageType === 'quicklook';
 
     // Focus the first field, close on Escape, keep Tab inside the dialog, lock background scroll.
@@ -51,7 +55,7 @@ export default function BookingModal({ request, audience, onClose }) {
     return (
         <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 bg-mi-dark1/90 backdrop-blur-sm overflow-y-auto" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
             <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="booking-title" className="bg-mi-dark2 border border-mi-blue/30 rounded-2xl w-full max-w-lg shadow-2xl relative animate-fade-in-up my-auto">
-                <button onClick={onClose} className="absolute top-4 right-4 text-mi-light/70 hover:text-white transition-colors" aria-label="Close form">
+                <button onClick={onClose} className="absolute top-4 right-4 text-mi-light/70 hover:text-white transition-colors" aria-label={T ? T.closeForm : 'Close form'}>
                     <Icons.X size={24} />
                 </button>
 
@@ -60,7 +64,7 @@ export default function BookingModal({ request, audience, onClose }) {
                         <>
                             <h2 id="booking-title" className="text-2xl font-bold text-white mb-2 pr-8">{title}</h2>
                             <p className="text-mi-light/80 mb-6 text-sm">
-                                {isQuickLook
+                                {T ? (isQuickLook ? T.quicklookIntro : T.otherIntro) : isQuickLook
                                     ? `Tell us where to look and where to send the result. Free, delivered ${QUICK_LOOK.delivery}, based on public information only. No credit card required.`
                                     : `Fill out the details below. We reply ${SITE.replyTime}.`}
                             </p>
@@ -71,8 +75,14 @@ export default function BookingModal({ request, audience, onClose }) {
                             <div className="w-16 h-16 bg-mi-cyan/20 rounded-full flex items-center justify-center mx-auto mb-6 text-mi-cyan">
                                 <Icons.CheckCircle2 size={32} />
                             </div>
-                            <h2 id="booking-title" className="text-2xl font-bold text-white mb-4">Request received</h2>
-                            {isQuickLook ? (
+                            <h2 id="booking-title" className="text-2xl font-bold text-white mb-4">{T ? T.received : 'Request received'}</h2>
+                            {T ? (
+                                <p className="text-mi-light/80 mb-8">
+                                    {isQuickLook
+                                        ? <>{T.quicklookDone(done.website, done.email)[0]}<span className="text-mi-cyan font-bold">{done.website}</span>{T.quicklookDone(done.website, done.email)[2]}</>
+                                        : <>{T.otherDone(title)[0]}<span className="text-mi-cyan font-bold">{title}</span>{T.otherDone(title)[2]}</>}
+                                </p>
+                            ) : isQuickLook ? (
                                 <p className="text-mi-light/80 mb-8">
                                     {SITE.scannerEnabled
                                         ? <>Your Quick Look for <span className="text-mi-cyan font-bold">{done.website}</span> is being prepared. We will send it to {done.email}.</>
@@ -83,7 +93,7 @@ export default function BookingModal({ request, audience, onClose }) {
                                     Thanks. We have received your request: <span className="text-mi-cyan font-bold">{title}</span>. We will be in touch shortly.
                                 </p>
                             )}
-                            <Button variant="secondary" onClick={onClose} className="mx-auto">Close</Button>
+                            <Button variant="secondary" onClick={onClose} className="mx-auto">{T ? T.close : 'Close'}</Button>
                         </div>
                     )}
                 </div>

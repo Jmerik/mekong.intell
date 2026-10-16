@@ -51,6 +51,12 @@ test('audience defaults to general and known values pass', () => {
     assert.deepEqual(validateLead({ ...valid, audience: 'local', focus: 'found' }).errors, {});
 });
 
+test('German page leads are tagged and show in the Telegram message', () => {
+    const { errors, lead } = validateLead({ ...quicklook, audience: 'de' });
+    assert.deepEqual(errors, {});
+    assert.match(formatTelegramMessage(lead), /Audience:<\/b> German-speaking \(DE\)/);
+});
+
 test('ignores non-string input instead of crashing', () => {
     const { errors } = validateLead({ name: { $gt: '' }, email: ['a@b.co'], packageType: 'call', telegram: '@abcde' });
     assert.ok(errors.name);

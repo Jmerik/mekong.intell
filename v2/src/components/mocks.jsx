@@ -3,9 +3,17 @@
 // Status chips use cyan and slate on purpose: the MI voice avoids red/green scoring.
 
 import { Icons } from './ui.jsx';
+import { useModal } from './Layout.jsx';
+
+// Fixed words inside the example screens, per page language.
+const TEXT = {
+    en: { example: 'Example', aiAnswer: 'AI answer', foundAria: 'Example: how a brand appears in an AI answer, before and after', before: 'Before', after: 'After', brand: 'Your brand', notMentioned: 'NOT MENTIONED', recommended: 'RECOMMENDED', storefront: 'Digital storefront', trustedAria: 'Example: a complete business profile with reviews', complete: 'Complete', inbox: 'Inbox', reachedAria: 'Example: first reply time dropping to instant', firstReply: 'First reply time', autoReply: 'Automatic first reply', autoText: 'Thanks for your message. We will reply shortly.', buttonsAria: 'Example contact buttons' },
+    de: { example: 'Beispiel', aiAnswer: 'KI-Antwort', foundAria: 'Beispiel: wie eine Marke in einer KI-Antwort erscheint, vorher und nachher', before: 'Vorher', after: 'Nachher', brand: 'Ihre Marke', notMentioned: 'NICHT GENANNT', recommended: 'EMPFOHLEN', storefront: 'Digitaler Auftritt', trustedAria: 'Beispiel: ein vollständiges Unternehmensprofil mit Bewertungen', complete: 'Vollständig', inbox: 'Posteingang', reachedAria: 'Beispiel: die Zeit bis zur ersten Antwort sinkt auf sofort', firstReply: 'Zeit bis zur ersten Antwort', autoReply: 'Automatische Erstantwort', autoText: 'Danke für Ihre Nachricht. Wir antworten in Kürze.', buttonsAria: 'Beispiel für Kontakt-Buttons' }
+};
+const useText = () => TEXT[useModal().lang] || TEXT.en;
 
 const ExampleTag = () => (
-    <span className="text-[10px] font-bold uppercase tracking-wider text-mi-cyan border border-mi-cyan/40 rounded px-2 py-0.5">Example</span>
+    <span className="text-[10px] font-bold uppercase tracking-wider text-mi-cyan border border-mi-cyan/40 rounded px-2 py-0.5">{useText().example}</span>
 );
 
 const Panel = ({ label, children, ariaLabel }) => (
@@ -29,24 +37,25 @@ const Row = ({ children, highlight, dashed }) => (
 );
 
 export function FoundMock({ data }) {
+    const t = useText();
     return (
-        <Panel label="AI answer" ariaLabel="Example: how a brand appears in an AI answer, before and after">
+        <Panel label={t.aiAnswer} ariaLabel={t.foundAria}>
             <div className="flex items-center gap-2 rounded-lg bg-mi-dark2 px-3 py-2 text-sm text-white mb-3 md:mb-4">
                 <Icons.Search size={16} className="text-mi-cyan shrink-0" />
                 <span>{data.prompt}</span>
             </div>
 
-            <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-2">Before</p>
+            <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-2">{t.before}</p>
             <ul className="space-y-2">
                 {data.others.map((name) => <Row key={name}>{name}</Row>)}
-                <Row dashed><span>Your brand</span><Chip muted>NOT MENTIONED</Chip></Row>
+                <Row dashed><span>{t.brand}</span><Chip muted>{t.notMentioned}</Chip></Row>
             </ul>
 
             <div className="flex justify-center my-2 text-mi-cyan"><Icons.ArrowDown size={20} /></div>
 
-            <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-2">After</p>
+            <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-2">{t.after}</p>
             <ul className="space-y-2">
-                <Row highlight><span className="font-bold">Your brand</span><Chip>RECOMMENDED</Chip></Row>
+                <Row highlight><span className="font-bold">{t.brand}</span><Chip>{t.recommended}</Chip></Row>
                 {data.others.map((name) => <Row key={name}>{name}</Row>)}
             </ul>
         </Panel>
@@ -54,8 +63,9 @@ export function FoundMock({ data }) {
 }
 
 export function TrustedMock({ data }) {
+    const t = useText();
     return (
-        <Panel label="Digital storefront" ariaLabel="Example: a complete business profile with reviews">
+        <Panel label={t.storefront} ariaLabel={t.trustedAria}>
             <div className="flex items-center gap-3 mb-4">
                 <span className="w-10 h-10 rounded-full bg-mi-cyan/20 text-mi-cyan flex items-center justify-center shrink-0"><Icons.MapPin size={20} /></span>
                 <div>
@@ -74,7 +84,7 @@ export function TrustedMock({ data }) {
                 {data.checks.map((item) => (
                     <Row key={item}>
                         <span className="flex items-center gap-2"><Icons.Check size={16} className="text-mi-cyan shrink-0" />{item}</span>
-                        <Chip muted>Complete</Chip>
+                        <Chip muted>{t.complete}</Chip>
                     </Row>
                 ))}
             </ul>
@@ -83,9 +93,10 @@ export function TrustedMock({ data }) {
 }
 
 export function ReachedMock({ data }) {
+    const t = useText();
     return (
-        <Panel label="Inbox" ariaLabel="Example: first reply time dropping to instant">
-            <p className="text-sm text-mi-light/80 mb-2">First reply time</p>
+        <Panel label={t.inbox} ariaLabel={t.reachedAria}>
+            <p className="text-sm text-mi-light/80 mb-2">{t.firstReply}</p>
             <div className="flex items-center gap-3 mb-5">
                 <span className="text-2xl font-bold text-mi-light/60 line-through decoration-1">{data.before}</span>
                 <Icons.ArrowRight size={22} className="text-mi-cyan shrink-0" />
@@ -93,11 +104,11 @@ export function ReachedMock({ data }) {
             </div>
 
             <div className="rounded-xl bg-mi-dark2 px-4 py-3 text-sm text-mi-light/90 mb-5">
-                <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-1">Automatic first reply</p>
-                Thanks for your message. We will reply shortly.
+                <p className="text-xs uppercase tracking-wider text-mi-light/70 mb-1">{t.autoReply}</p>
+                {t.autoText}
             </div>
 
-            <ul className="flex flex-wrap gap-2" aria-label="Example contact buttons">
+            <ul className="flex flex-wrap gap-2" aria-label={t.buttonsAria}>
                 {data.channels.map((name) => (
                     <li key={name} className="flex items-center gap-2 rounded-lg border-2 border-mi-cyan/60 px-3 py-2 text-sm font-bold text-mi-cyan">
                         {name === 'Email' ? <Icons.Mail size={16} /> : name === 'Telegram' ? <Icons.Send size={16} /> : name === 'LinkedIn' ? <Icons.Linkedin size={16} /> : <Icons.Message size={16} />}
