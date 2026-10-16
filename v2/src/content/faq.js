@@ -4,7 +4,7 @@
 
 import { QUICK_LOOK } from './site.js';
 
-export const FAQ = [
+const SHARED = [
     {
         question: 'What is the Free Quick Look?',
         answer: `A free first read on whether your business is Found, Trusted and Reached. You give us a website or company name and an email address. We send you a short, sourced summary ${QUICK_LOOK.delivery}.`
@@ -30,3 +30,28 @@ export const FAQ = [
         answer: 'You work directly with the founder, Vosumtey Seng, not with a junior account manager.'
     }
 ];
+
+// Each landing page gets the shared questions plus the ones its visitors actually ask.
+// The channel question sits second, right after the question about the Quick Look.
+const CHANNELS = {
+    local: {
+        question: 'Where do you look for a local business?',
+        answer: 'On Google and Google Maps, on Facebook and Telegram, and in AI assistants such as ChatGPT and Claude. Anything we cannot find or verify is marked N/A.'
+    },
+    international: {
+        question: 'What do you check for a company selling across borders?',
+        answer: 'Your website, your LinkedIn company page, Google and AI assistants such as ChatGPT and Claude. We look at what a buyer in your target market can see. Anything we cannot find or verify is marked N/A.'
+    }
+};
+const ENTRY = {
+    question: 'What is the Market Entry Brief?',
+    answer: 'A tailored brief for companies entering the Mekong region or expanding out of it: positioning, regulatory research from public sources and a map of the competition. The regulatory research is general information, not legal advice. It is not offered for local-only businesses.'
+};
+
+export const FAQ_BY_AUDIENCE = {
+    local: [SHARED[0], CHANNELS.local, ...SHARED.slice(1)],
+    international: [SHARED[0], CHANNELS.international, ...SHARED.slice(1, 5), ENTRY, SHARED[5]]
+};
+
+// The main page (local) keeps the name the structured data and older code use.
+export const FAQ = FAQ_BY_AUDIENCE.local;

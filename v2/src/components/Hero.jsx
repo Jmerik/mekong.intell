@@ -63,13 +63,19 @@ export function QuickLookPill() {
 // Local | International switch shown on the two landing pages.
 function AudienceSwitch({ current }) {
     return (
-        <nav aria-label="Choose your audience" className="inline-flex p-1 mb-8 rounded-full bg-mi-dark2 border border-mi-blue/30">
-            {AUDIENCE_LIST.map((a) => (
-                <a key={a.id} href={a.path} aria-current={a.id === current ? 'page' : undefined}
-                    className={`px-5 py-2 rounded-full text-sm font-bold transition-colors ${a.id === current ? 'bg-mi-cyan text-mi-dark1' : 'text-mi-light/80 hover:text-white'}`}>
-                    {a.switchLabel}
-                </a>
-            ))}
+        <nav aria-label="Choose your audience" className="mb-8">
+            <div className="inline-flex p-1 rounded-full bg-mi-dark2 border border-mi-blue/30">
+                {AUDIENCE_LIST.map((a) => (
+                    <a key={a.id} href={a.path} aria-current={a.id === current ? 'page' : undefined}
+                        className={`px-5 py-2 rounded-full text-sm font-bold transition-colors ${a.id === current ? 'bg-mi-cyan text-mi-dark1' : 'text-mi-light/80 hover:text-white'}`}>
+                        {a.switchLabel}
+                    </a>
+                ))}
+            </div>
+            <p className="mt-3 text-sm text-mi-light/80">
+                {AUDIENCE_LIST.find((a) => a.id === current).switchHint}{' '}
+                <a href="/de" lang="de" hrefLang="de" className="underline hover:text-white">Deutsch</a>
+            </p>
         </nav>
     );
 }

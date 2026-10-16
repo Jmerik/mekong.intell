@@ -17,7 +17,7 @@ export default function Landing({ audienceId }) {
             <SampleTeaser />
             <Pillars audience={audience} />
             <Services audience={audience} />
-            <Faq />
+            <Faq audienceId={audienceId} />
         </Layout>
     );
 }

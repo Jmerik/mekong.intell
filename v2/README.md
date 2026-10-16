@@ -270,3 +270,10 @@ Telegram account behind "Connect on Telegram" is monitored.
   2. The Impressum: postal address, email and the owner's name are missing. A German-language page aimed at German-speaking visitors normally needs them.
   3. Whether EU data protection rules apply (they probably do for this audience) and what that adds to `/datenschutz`. Have both texts reviewed.
   4. A German share image (the page uses the English international one).
+
+### Audience differences (added after the German page)
+
+- The audience switch on `/` and `/international` now says in one line who each page is for, and links to `/de`.
+- Each landing page has its own FAQ (`src/content/faq.js`, `FAQ_BY_AUDIENCE`) and its own FAQPage structured data: local asks where we look (Google, Maps, Facebook, Telegram), international adds the channels for buyers abroad and the Market Entry Brief.
+- Visitors whose browser is set to German see a dismissible link to `/de` on the English pages. It never redirects.
+- Not done yet: a separate sample Quick Look per audience, and a "which direction?" question in the hero (sell in the region, into it, or out of it).

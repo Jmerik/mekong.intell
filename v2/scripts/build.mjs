@@ -76,7 +76,7 @@ await build({
     logLevel: 'warning'
 });
 const require = createRequire(path.join(root, 'package.json'));
-const { PAGES, renderPage, FAQ, DE } = require(ssrFile);
+const { PAGES, renderPage, FAQ, FAQ_BY_AUDIENCE, DE } = require(ssrFile);
 
 const organization = {
     '@context': 'https://schema.org',
@@ -113,6 +113,11 @@ const faqPage = {
     '@type': 'FAQPage',
     mainEntity: FAQ.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } }))
 };
+const faqPageInternational = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_BY_AUDIENCE.international.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } }))
+};
 const faqPageDe = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -133,7 +138,7 @@ const article = (page) => ({
 });
 const jsonLd = (page) => {
     const kinds = [].concat(page.jsonLd || []);
-    const blocks = kinds.map((kind) => (kind === 'organization' ? organization : kind === 'person' ? person : kind === 'faq' ? faqPage : kind === 'faq-de' ? faqPageDe : kind === 'article' ? article(page) : null)).filter(Boolean);
+    const blocks = kinds.map((kind) => (kind === 'organization' ? organization : kind === 'person' ? person : kind === 'faq' ? faqPage : kind === 'faq-international' ? faqPageInternational : kind === 'faq-de' ? faqPageDe : kind === 'article' ? article(page) : null)).filter(Boolean);
     return blocks.map((data) => `    <script type="application/ld+json">${JSON.stringify(data)}</script>\n`).join('');
 };
 

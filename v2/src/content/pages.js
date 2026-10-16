@@ -19,7 +19,8 @@ export const PAGES = [
         file: 'international.html',
         title: 'Mekong Intelligence for international companies | Free Quick Look',
         description: 'For companies selling across borders, into the Mekong region or out of it. Find out if you are Found, Trusted and Reached with a free Quick Look.',
-        ogImage: '/image/og-international.png'
+        ogImage: '/image/og-international.png',
+        jsonLd: ['faq-international']
     },
     {
         id: 'de',

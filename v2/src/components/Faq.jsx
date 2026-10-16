@@ -1,9 +1,10 @@
-import { FAQ } from '../content/faq.js';
+import { FAQ_BY_AUDIENCE } from '../content/faq.js';
 import { SectionHeader, Container } from './ui.jsx';
 
 // Plain <details> elements: no JavaScript needed, keyboard accessible, and the text is in the page for
 // search engines and AI assistants. The same content is published as FAQPage structured data on the main page.
-export default function Faq() {
+export default function Faq({ audienceId = 'local' }) {
+    const FAQ = FAQ_BY_AUDIENCE[audienceId] || FAQ_BY_AUDIENCE.local;
     return (
         <section id="faq" className="py-14 md:py-20 bg-mi-dark2 border-t border-mi-dark1">
             <Container className="max-w-3xl">

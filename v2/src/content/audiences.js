@@ -12,6 +12,7 @@ export const AUDIENCES = {
         id: 'local',
         path: '/',
         switchLabel: 'Local',
+        switchHint: 'You sell to customers in Cambodia or Vietnam.',
         line: 'Brand and market intelligence for businesses in Cambodia and Vietnam.',
         found: {
             body: 'When potential buyers search on Google or Maps, or ask AI search engines like ChatGPT and Claude, are you showing up, or is AI recommending your competitors instead?',
@@ -39,6 +40,7 @@ export const AUDIENCES = {
         id: 'international',
         path: '/international',
         switchLabel: 'International',
+        switchHint: 'You sell across borders, into the region or out of it.',
         line: 'Brand and market intelligence for companies selling into or out of Cambodia and Vietnam.',
         found: {
             body: 'When buyers research suppliers and partners on Google or LinkedIn, or ask AI search engines like ChatGPT and Claude, are you showing up, or is AI recommending your competitors instead?',
