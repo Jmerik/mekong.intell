@@ -9,12 +9,12 @@ const PILLARS = [
 ];
 
 export default function Team() {
-    const { openModal } = useModal();
+    const { startQuickLook } = useModal();
     return (
         <Layout current="/team">
             <header className="bg-mi-dark1 pt-16 pb-12 text-center">
                 <Container className="max-w-3xl">
-                    <p className="text-mi-cyan text-sm font-bold tracking-widest uppercase mb-3">About Us</p>
+                    <p className="text-mi-cyan text-sm font-bold tracking-widest uppercase mb-3">Team</p>
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">A lean team. Strategic depth.</h1>
                     <p className="text-xl text-mi-light/85">Rigorous data analysis, AI-driven workflows and market intelligence expertise, based in Phnom Penh.</p>
                 </Container>
@@ -73,7 +73,7 @@ export default function Team() {
                         ))}
                     </div>
                     <div className="mt-12 text-center">
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">{QUICK_LOOK.cta}</Button>
+                        <Button onClick={startQuickLook} className="mx-auto">{QUICK_LOOK.cta}</Button>
                     </div>
                 </Container>
             </section>

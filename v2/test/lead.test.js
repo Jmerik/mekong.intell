@@ -80,3 +80,29 @@ test('rate limit blocks after the maximum and is per key', () => {
 test('scanner placeholder reports not_configured', async () => {
     assert.equal((await runQuickLook({ target: 'example.com' })).status, 'not_configured');
 });
+
+test('the contact form needs a business email or a Telegram username, not both', () => {
+    const base = { name: 'A B', packageType: 'contact' };
+    assert.deepEqual(validateLead({ ...base, email: 'a@b.co' }).errors, {});
+    assert.deepEqual(validateLead({ ...base, telegram: '@abcde' }).errors, {});
+    assert.ok(validateLead(base).errors.contact);
+    assert.ok(validateLead({ ...base, email: 'nope' }).errors.email);
+});
+
+test('other requests still need an email even if a Telegram username is given', () => {
+    assert.ok(validateLead({ name: 'A B', telegram: '@abcde', packageType: 'call' }).errors.email);
+});
+
+test('bottleneck and interest are checked against the allowed lists', () => {
+    const ok = { name: 'A B', email: 'a@b.co', packageType: 'contact' };
+    assert.deepEqual(validateLead({ ...ok, bottleneck: 'funnel', interest: 'entry' }).errors, {});
+    assert.ok(validateLead({ ...ok, bottleneck: 'other' }).errors.bottleneck);
+    assert.ok(validateLead({ ...ok, interest: 'contact' }).errors.interest);
+});
+
+test('Telegram message names the bottleneck and the service asked about', () => {
+    const lead = validateLead({ name: 'A B', email: 'a@b.co', packageType: 'contact', bottleneck: 'ai-search', interest: 'sprint' }).lead;
+    const msg = formatTelegramMessage(lead);
+    assert.match(msg, /AI Search Visibility \(GEO\/AEO\)/);
+    assert.match(msg, /7-Day Sprint/);
+});

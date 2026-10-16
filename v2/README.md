@@ -11,11 +11,11 @@ Vercel project to review it. **Do not point the public domain at it until the Qu
 | `/` | The main landing page, for businesses in Cambodia and Vietnam: hero with the Quick Look search, Found / Trusted / Reached, the four steps |
 | `/international` | The same page for companies selling across borders, into the region or out of it |
 | `/sample-quick-look` | A real Quick Look on Mekong Intelligence itself: ratings, findings with sources and dates, fixes |
-| `/services` | The four steps in detail: timeline, scope, what is included. **No prices yet** (see below) |
+| `/services` | The tiers in detail, with a Local Market / International / Regional toggle. **No prices yet** (see below) |
 | `/resources` | Index of the three guides |
 | `/resources/ai-search-visibility`, `/resources/digital-footprint-check`, `/resources/response-and-follow-up` | The guides, one page each, with byline, date and Article structured data |
-| `/team` | About Us: founder profile and how we work (`/about` redirects here) |
-| `/contact` | Message form, Telegram link, Phnom Penh office |
+| `/team` | Team: founder profile, partner and how we work (`/about` redirects here) |
+| `/contact` | Channels and office on the left, inquiry form on the right (`/contact?interest=sprint` pre-selects a service) |
 | `/privacy` | Draft privacy policy |
 
 `/local` redirects to `/` and `/pricing` redirects to `/services` (see `vercel.json`).
@@ -93,7 +93,7 @@ Without Telegram variables, submitted leads are printed to the terminal.
 
 | To change | Edit |
 | --- | --- |
-| Hero copy, facts, the four services (names, timing, what is included), nav | `src/content/site.js` |
+| Hero copy, facts, the services (names, timing, scope per market, what is included), the Market Entry Brief, nav, reply time | `src/content/site.js` |
 | Local / International wording and examples | `src/content/audiences.js` |
 | The guides (text, dates, related guides) | `src/content/guides.js` |
 | The sample Quick Look (findings, ratings, fixes, date) | `src/content/sample.js` |
@@ -212,4 +212,48 @@ follower history or a published EuroCham report) and link it, or soften the sent
 Buttons on the Services, Resources and Team pages did nothing: those pages used the booking-form hook outside the
 component that provided it. Every page is now wrapped once, in `src/pages/index.jsx`, so it cannot happen again, and
 the browser test clicks a call-to-action button on every page that has one.
+
+## Website specification of 16 October 2026 (applied to v2 only)
+
+The live Render site is untouched. What changed in v2:
+
+- **Nav:** Home, Services, Resources, Team, Contact Us, with the active page highlighted (the bar becomes a menu
+  below 1024px). "Book a Strategy Call" now goes to `/contact`. "Free Quick Look" scrolls to and focuses the
+  search bar when the page has one, and opens the form when it does not.
+- **Hero:** the slogan is the small tagline, the headline is "Southeast Asia's Brand & Market Intelligence Firm.",
+  then "Look. Fix. Count." and the line naming Cambodia and Vietnam. "Optimization engine" is not used. A strip of
+  product previews peeks up under the search bar on desktop (the Similarweb reference).
+- **Found | Trusted | Reached** is a tab set, one card at a time, with the three micro-buttons. Keyboard (arrows,
+  Home, End) and deep links (`/#trusted`) work. All three panels are in the HTML for search engines.
+- **Services:** per-step buttons link to `/contact?interest=...` ("Request the 7-Day Sprint", "Discuss the 90-Day
+  Blueprint", "Ask about the Retainer"). The Retainer carries an "Ongoing" badge.
+  **Market Entry Brief** is a fifth offer, shown on `/international` and in the International / Regional view of
+  `/services`, never for local-only businesses. `/services` has the Local Market | International / Regional toggle,
+  which changes the "Scope depth" text on each card.
+- **Contact:** Telegram, office and email on the left; on the right a form with name, one "business email or Telegram
+  handle" field, company or website, primary bottleneck, message and "Send Inquiry". The new fields reach Telegram
+  and the lead sheet (columns "Bottleneck" and "Interested in").
+  **If the lead sheet was set up before this change,** add those two columns before "Status", or delete the
+  "Leads" tab so it is recreated on the next lead.
+- **Footer:** the primary button focuses the search bar, the secondary goes to `/contact`.
+
+Where the specification was changed on purpose (all easy to reverse):
+
+- Product names stay **Free Quick Look, 7-Day Sprint, 90-Day Blueprint, Market Intelligence Retainer** (the
+  specification used "7-Day Fix", "Growth Blueprint" and "Partner Retainer"), so the day-7, day-35 and 90-day
+  timeline still holds together. Rename in `SERVICES` in `src/content/site.js` and `shared/packages.js`.
+- The page is called **Services** (`/services`), because it shows no prices. `/pricing` redirects to it.
+- Wording that conflicts with the MI voice or cannot be evidenced yet was softened: no "stop bleeding money", no
+  "POPULAR" badge, no "predictable outcomes", no "guaranteed within 24 hours" (the reply time is
+  `SITE.replyTime`, "within 1 working day"), no "instant automated 360 degree scan" until the scanner exists, no
+  "ROI audit" or "AI search rank".
+- One button label for the Quick Look ("Request my Free Quick Look"), and the footer headline stays "Every
+  engagement starts with the Free Quick Look" because "The Audit" is a retired name.
+- Colours are unchanged (`tailwind.config.js`). The specification names #455674 with #2bacc3 and #367b95. Confirm
+  whether those are the official values before changing them: #367b95 has low contrast on #455674.
+
+Open: the replacement team photo (needs the file), the intro text above the Found | Trusted | Reached tabs (the
+specification left it blank), a real email address for the contact page, the scope and country list for the Market
+Entry Brief (its regulatory research is described as public information, not legal advice), and a check that the
+Telegram account behind "Connect on Telegram" is monitored.
 

@@ -93,7 +93,7 @@ const organization = {
     hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Intelligence Services',
-        itemListElement: ['Free Quick Look', '7-Day Sprint', '90-Day Blueprint', 'Market Intelligence Retainer'].map((name) => ({
+        itemListElement: ['Free Quick Look', '7-Day Sprint', '90-Day Blueprint', 'Market Intelligence Retainer', 'Market Entry Brief'].map((name) => ({
             '@type': 'Offer', itemOffered: { '@type': 'Service', name }
         }))
     }

@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const sheet = require('../api/_lib/sheet');
 
-const lead = { name: 'Dara Sok', email: 'dara_sok@example.com', telegram: '@dara_sok', phone: '', website: 'example.com.kh', message: '=HYPERLINK("x")', audience: 'local', focus: 'found', packageType: 'quicklook' };
+const lead = { name: 'Dara Sok', email: 'dara_sok@example.com', telegram: '@dara_sok', phone: '', website: 'example.com.kh', message: '=HYPERLINK("x")', audience: 'local', focus: 'found', bottleneck: 'funnel', interest: 'sprint', packageType: 'quicklook' };
 
 test('sheet row follows the column order and carries the lead text untouched', () => {
     const row = sheet.toRow(lead, new Date('2026-10-15T12:00:00Z'));
@@ -10,7 +10,7 @@ test('sheet row follows the column order and carries the lead text untouched', (
     assert.equal(row[0], '2026-10-15T12:00:00.000Z');
     assert.deepEqual(row.slice(1, 5), ['Free Quick Look', 'Local', 'Found', 'Dara Sok']);
     assert.equal(row[9], '=HYPERLINK("x")'); // stored as plain text by the Apps Script, never as a formula
-    assert.equal(row[10], 'New');
+    assert.deepEqual(row.slice(10), ['Funnel Leakage / Low Conversions', '7-Day Sprint', 'New']);
 });
 
 test('sheet is only configured when both the URL and the secret are set', () => {

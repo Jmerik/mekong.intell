@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { HERO, FACTS, SITE } from '../content/site.js';
 import { AUDIENCE_LIST } from '../content/audiences.js';
 import { Icons, Button, Container } from './ui.jsx';
+import { FoundMock, TrustedMock, ReachedMock } from './mocks.jsx';
 import { useModal } from './Layout.jsx';
 
 // The main call to action: type a website or company name, then leave contact details in the form.
@@ -82,6 +83,21 @@ export function Facts() {
     );
 }
 
+// Product previews that peek up under the search bar (desktop only). Decorative: the same example screens
+// appear in full, with captions, in the Found / Trusted / Reached section below, so they are hidden from
+// screen readers here and fade out at the bottom.
+function HeroPreview({ audience }) {
+    return (
+        <div aria-hidden="true" className="hidden lg:block relative mt-14 h-72 overflow-hidden pointer-events-none select-none [mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)]">
+            <div className="absolute inset-x-0 top-0 mx-auto grid grid-cols-3 items-start gap-6 max-w-5xl text-left">
+                <div className="mt-8 -rotate-2 scale-95 opacity-70 origin-bottom-right"><TrustedMock data={audience.trusted} /></div>
+                <div className="relative z-10 shadow-[0_0_80px_rgba(80,198,233,0.25)] rounded-2xl"><FoundMock data={audience.found} /></div>
+                <div className="mt-8 rotate-2 scale-95 opacity-70 origin-bottom-left"><ReachedMock data={audience.reached} /></div>
+            </div>
+        </div>
+    );
+}
+
 // `audience` is an entry from content/audiences.js (the main page uses "local").
 export default function Hero({ audience, children }) {
     return (
@@ -89,15 +105,15 @@ export default function Hero({ audience, children }) {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-mi-blue/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" aria-hidden="true"></div>
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-mi-cyan/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" aria-hidden="true"></div>
 
-            <Container className="relative z-10 text-center max-w-4xl">
+            <Container className="relative z-10 text-center max-w-5xl">
                 <AudienceSwitch current={audience.id} />
-                <p className="block w-fit mx-auto px-4 py-1 bg-mi-dark2 border border-mi-blue/30 rounded-full text-mi-cyan text-xs sm:text-sm font-semibold tracking-wider mb-6 animate-fade-in-up">
-                    {HERO.label}
+                <p className="block w-fit mx-auto px-4 py-1 bg-mi-dark2 border border-mi-blue/30 rounded-full text-mi-cyan text-xs sm:text-sm font-semibold tracking-wide mb-6 animate-fade-in-up">
+                    {HERO.tagline}
                 </p>
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-white">
-                    {HERO.headlineLine1}{' '}<br />
-                    {HERO.headlineLine2}{' '}
-                    <span className="whitespace-nowrap bg-clip-text text-transparent bg-gradient-to-r from-mi-cyan via-mi-blue to-mi-light">{HERO.headlineAccent}</span>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 text-white">
+                    {HERO.headline.map((line, i) => (
+                        <span key={line} className={`block ${i === HERO.headlineAccentLine ? 'bg-clip-text text-transparent bg-gradient-to-r from-mi-cyan via-mi-blue to-mi-light' : ''}`}>{line}{i < HERO.headline.length - 1 ? ' ' : ''}</span>
+                    ))}
                 </h1>
                 <p className="text-xl md:text-2xl font-semibold text-white mb-3">{HERO.subheadline}</p>
                 <p className="text-lg text-mi-light/85 mb-10 max-w-2xl mx-auto">{audience.line}</p>
@@ -105,6 +121,9 @@ export default function Hero({ audience, children }) {
                 <QuickLookPill />
                 {children}
                 <Facts />
+            </Container>
+            <Container className="relative z-0 max-w-5xl">
+                <HeroPreview audience={audience} />
             </Container>
         </header>
     );

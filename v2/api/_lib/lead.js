@@ -1,4 +1,4 @@
-const { PACKAGES, AUDIENCES, FOCUS } = require('../../shared/packages');
+const { PACKAGES, AUDIENCES, FOCUS, BOTTLENECKS, INTERESTS } = require('../../shared/packages');
 
 const LIMITS = { name: 100, email: 254, telegram: 64, phone: 32, website: 300, message: 1500 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,6 +18,8 @@ function validateLead(body = {}) {
         message: clean(body.message),
         audience: clean(body.audience) || 'general',
         focus: clean(body.focus),
+        bottleneck: clean(body.bottleneck),
+        interest: clean(body.interest),
         packageType: clean(body.packageType)
     };
     const errors = {};
@@ -28,12 +30,20 @@ function validateLead(body = {}) {
     // The Quick Look only needs a website (or company name) and an email. Name, Telegram and phone are optional.
     // Every other request also needs a name so we know who to reply to.
     if (!lead.name && lead.packageType !== 'quicklook') errors.name = 'Please enter your name.';
-    if (!EMAIL_RE.test(lead.email)) errors.email = 'Please enter a valid email address.';
+    if (lead.packageType === 'contact') {
+        // The contact form has one field for "business email or Telegram handle": at least one of the two is needed.
+        if (!lead.email && !lead.telegram) errors.contact = 'Please add a business email or a Telegram username so we can reply.';
+        else if (lead.email && !EMAIL_RE.test(lead.email)) errors.email = 'Please enter a valid email address.';
+    } else if (!EMAIL_RE.test(lead.email)) {
+        errors.email = 'Please enter a valid email address.';
+    }
     if (lead.telegram && !TELEGRAM_RE.test(lead.telegram)) errors.telegram = 'Telegram usernames are 5 to 32 letters, numbers or underscores.';
     if (lead.phone && !PHONE_RE.test(lead.phone)) errors.phone = 'Please enter a valid phone number.';
     if (!PACKAGES[lead.packageType]) errors.packageType = 'Unknown request type.';
     if (!AUDIENCES[lead.audience]) errors.audience = 'Unknown audience.';
     if (lead.focus && !FOCUS[lead.focus]) errors.focus = 'Unknown focus.';
+    if (lead.bottleneck && !BOTTLENECKS[lead.bottleneck]) errors.bottleneck = 'Please choose one of the options.';
+    if (lead.interest && !INTERESTS.includes(lead.interest)) errors.interest = 'Unknown service.';
     if (lead.packageType === 'quicklook' && !lead.website) {
         errors.website = 'Please enter your website or company name.';
     }
@@ -59,7 +69,9 @@ function formatTelegramMessage(lead, { scannerNote } = {}) {
         row('Phone', lead.phone),
         row('Website / company', lead.website),
         row('Audience', AUDIENCES[lead.audience]),
-        row('Focus', FOCUS[lead.focus])
+        row('Focus', FOCUS[lead.focus]),
+        row('Bottleneck', BOTTLENECKS[lead.bottleneck]),
+        row('Interested in', lead.interest && PACKAGES[lead.interest] && PACKAGES[lead.interest].name)
     ];
     if (lead.message) lines.push('', `<b>Message:</b>\n${escapeHtml(lead.message)}`);
     if (scannerNote) lines.push('', `<i>${escapeHtml(scannerNote)}</i>`);

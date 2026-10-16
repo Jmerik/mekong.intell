@@ -8,7 +8,7 @@ export const PAGES = [
         id: 'home',
         path: '/',
         file: 'index.html',
-        title: 'Mekong Intelligence | Stop Guessing. Start Growing with Data.',
+        title: "Mekong Intelligence | Southeast Asia's Brand & Market Intelligence Firm",
         description: 'Brand and market intelligence for businesses in Cambodia and Vietnam. Get a free Quick Look at whether your business is Found, Trusted and Reached.',
         ogImage: '/image/og-local.png',
         jsonLd: ['organization', 'faq']
@@ -56,7 +56,7 @@ export const PAGES = [
         id: 'team',
         path: '/team',
         file: 'team.html',
-        title: 'About Us | Mekong Intelligence',
+        title: 'Team | Mekong Intelligence',
         description: 'Data analysis, AI-driven workflows and market intelligence from Phnom Penh. Meet the founder of Mekong Intelligence.',
         jsonLd: 'person'
     },
@@ -65,7 +65,7 @@ export const PAGES = [
         path: '/contact',
         file: 'contact.html',
         title: 'Contact | Mekong Intelligence',
-        description: 'Send us a message or reach us directly on Telegram. Based in Phnom Penh, Cambodia.'
+        description: 'Send us an inquiry or reach us directly on Telegram. Based in Phnom Penh, Cambodia.'
     },
     {
         id: 'privacy',

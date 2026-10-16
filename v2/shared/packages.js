@@ -6,7 +6,8 @@ const PACKAGES = {
     sprint: { name: '7-Day Sprint', modalTitle: 'Ask about the 7-Day Sprint' },
     blueprint: { name: '90-Day Blueprint', modalTitle: 'Ask about the 90-Day Blueprint' },
     retainer: { name: 'Market Intelligence Retainer', modalTitle: 'Ask about the Market Intelligence Retainer' },
-    call: { name: 'Call request', modalTitle: 'Book a Call' },
+    entry: { name: 'Market Entry Brief', modalTitle: 'Ask about the Market Entry Brief' },
+    call: { name: 'Call request', modalTitle: 'Book a Strategy Call' },
     contact: { name: 'Contact form message', modalTitle: 'Send us a message' }
 };
 
@@ -24,4 +25,15 @@ const FOCUS = {
     reached: 'Reached'
 };
 
-module.exports = { PACKAGES, AUDIENCES, FOCUS };
+// "What is your primary bottleneck?" on the contact form.
+const BOTTLENECKS = {
+    'ai-search': 'AI Search Visibility (GEO/AEO)',
+    funnel: 'Funnel Leakage / Low Conversions',
+    competitors: 'Competitor Tracking / Market Intelligence',
+    strategy: 'General Strategy Consultation'
+};
+
+// Which service a visitor was looking at when they opened the contact form (/contact?interest=sprint).
+const INTERESTS = ['quicklook', 'sprint', 'blueprint', 'retainer', 'entry'];
+
+module.exports = { PACKAGES, AUDIENCES, FOCUS, BOTTLENECKS, INTERESTS };

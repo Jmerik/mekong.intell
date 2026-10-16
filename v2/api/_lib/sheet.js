@@ -5,9 +5,9 @@
 //   LEAD_SHEET_WEBHOOK_URL   the Apps Script web app URL (ends in /exec)
 //   LEAD_SHEET_SECRET        shared secret, also stored in the script's properties
 
-const { PACKAGES, AUDIENCES, FOCUS } = require('../../shared/packages');
+const { PACKAGES, AUDIENCES, FOCUS, BOTTLENECKS } = require('../../shared/packages');
 
-const COLUMNS = ['Received (UTC)', 'Request', 'Audience', 'Focus', 'Name', 'Email', 'Telegram', 'Phone', 'Website / company', 'Message', 'Status'];
+const COLUMNS = ['Received (UTC)', 'Request', 'Audience', 'Focus', 'Name', 'Email', 'Telegram', 'Phone', 'Website / company', 'Message', 'Bottleneck', 'Interested in', 'Status'];
 
 function isConfigured(env = process.env) {
     return Boolean(env.LEAD_SHEET_WEBHOOK_URL && env.LEAD_SHEET_SECRET);
@@ -27,6 +27,8 @@ function toRow(lead, now = new Date()) {
         lead.phone,
         lead.website,
         lead.message,
+        BOTTLENECKS[lead.bottleneck] || '',
+        (lead.interest && PACKAGES[lead.interest] && PACKAGES[lead.interest].name) || '',
         'New'
     ];
 }

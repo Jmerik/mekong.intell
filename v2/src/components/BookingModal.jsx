@@ -62,7 +62,7 @@ export default function BookingModal({ request, audience, onClose }) {
                             <p className="text-mi-light/80 mb-6 text-sm">
                                 {isQuickLook
                                     ? `Tell us where to look and where to send the result. Free, delivered ${QUICK_LOOK.delivery}, based on public information only. No credit card required.`
-                                    : 'Fill out the details below. We typically respond within 2 hours on Telegram, or by phone or email if you prefer.'}
+                                    : `Fill out the details below. We reply ${SITE.replyTime}.`}
                             </p>
                             <LeadForm packageType={packageType} audience={audience} focus={focus} initialWebsite={website} idPrefix="m" onSuccess={setDone} />
                         </>

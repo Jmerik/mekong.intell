@@ -7,7 +7,7 @@ const formatDate = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-
 
 // One guide per page. All wording comes from content/guides.js.
 export default function GuidePage({ slug }) {
-    const { openModal } = useModal();
+    const { startQuickLook } = useModal();
     const guide = guideBySlug(slug);
     const related = guide.related.map((s) => guideBySlug(s));
 
@@ -45,7 +45,7 @@ export default function GuidePage({ slug }) {
                     <div className="mt-14 bg-mi-dark2 border border-mi-cyan/40 rounded-3xl p-8 text-center">
                         <h2 className="text-2xl font-bold text-white mb-2">Want this checked for your business?</h2>
                         <p className="text-mi-light/85 mb-6">The Free Quick Look runs these checks for you, based on public information only.</p>
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">{QUICK_LOOK.cta}</Button>
+                        <Button onClick={startQuickLook} className="mx-auto">{QUICK_LOOK.cta}</Button>
                         <p className="mt-4 text-sm"><a href="/sample-quick-look" className="text-mi-cyan underline hover:text-white">See a sample Quick Look first</a></p>
                     </div>
 

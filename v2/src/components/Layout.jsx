@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { SITE, NAV, QUICK_LOOK } from '../content/site.js';
+import { SITE, NAV, QUICK_LOOK, STRATEGY_CALL } from '../content/site.js';
 import { Button, Icons, Container } from './ui.jsx';
 import BookingModal from './BookingModal.jsx';
 import Consent, { CookieSettingsLink } from './Consent.jsx';
@@ -7,21 +7,24 @@ import Consent, { CookieSettingsLink } from './Consent.jsx';
 // Replaced at build time by scripts/build.mjs (PREVIEW_BANNER=0 hides the banner for launch).
 const SHOW_BANNER = process.env.PREVIEW_BANNER === '1';
 
-const ModalContext = createContext({ openModal: () => {}, audience: 'general' });
+const ModalContext = createContext({ openModal: () => {}, startQuickLook: () => {}, audience: 'general' });
 
 // Any component can open the booking form: const { openModal } = useModal(); openModal({ packageType: 'quicklook' })
+// startQuickLook() is the usual Quick Look button action: on a page with the search bar it scrolls to the bar and
+// focuses it; on any other page it opens the form.
 export const useModal = () => useContext(ModalContext);
 
 const navLinkClass = 'text-sm font-medium text-mi-light/80 hover:text-white transition-colors';
 
 function Nav({ current }) {
     const [menuOpen, setMenuOpen] = useState(false);
-    const { openModal } = useModal();
+    const { startQuickLook } = useModal();
 
-    const open = (request) => {
+    const quickLook = () => {
         setMenuOpen(false);
-        openModal(request);
+        startQuickLook();
     };
+    const active = (href) => current === href;
 
     return (
         <nav aria-label="Main" className="sticky top-0 z-40 bg-mi-dark1/95 backdrop-blur-md border-b border-mi-dark2">
@@ -30,30 +33,30 @@ function Nav({ current }) {
                     <img src="/image/logo.webp" alt="Mekong Intelligence" width="199" height="256" className="h-14 w-auto object-contain" />
                 </a>
 
-                <div className="hidden md:flex items-center gap-8">
+                <div className="hidden lg:flex items-center gap-6">
                     {NAV.map((link) => (
-                        <a key={link.href} href={link.href} aria-current={current === link.href ? 'page' : undefined}
-                            className={`${navLinkClass} ${current === link.href ? 'text-white' : ''}`}>{link.label}</a>
+                        <a key={link.href} href={link.href} aria-current={active(link.href) ? 'page' : undefined}
+                            className={`${navLinkClass} ${active(link.href) ? 'text-white border-b-2 border-mi-cyan pb-0.5' : ''}`}>{link.label}</a>
                     ))}
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" className="py-2 px-4 text-sm" onClick={() => open({ packageType: 'call' })}>Book a Call</Button>
-                        <Button variant="primary" className="py-2 px-4 text-sm" onClick={() => open({ packageType: 'quicklook' })}>Free Quick Look</Button>
+                        <Button href={STRATEGY_CALL.href} variant="outline" className="py-2 px-4 text-sm whitespace-nowrap">{STRATEGY_CALL.label}</Button>
+                        <Button variant="primary" className="py-2 px-4 text-sm whitespace-nowrap" onClick={quickLook}>Free Quick Look</Button>
                     </div>
                 </div>
 
-                <button className="md:hidden text-white p-2" aria-label="Toggle menu" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>
+                <button className="lg:hidden text-white p-2" aria-label="Toggle menu" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>
                     {menuOpen ? <Icons.X /> : <Icons.Menu />}
                 </button>
             </Container>
 
             {menuOpen && (
-                <div id="mobile-menu" className="md:hidden absolute top-full left-0 w-full bg-mi-dark1 border-b border-mi-dark2 p-6 flex flex-col gap-2 shadow-xl">
+                <div id="mobile-menu" className="lg:hidden absolute top-full left-0 w-full bg-mi-dark1 border-b border-mi-dark2 p-6 flex flex-col gap-2 shadow-xl">
                     {NAV.map((link) => (
-                        <a key={link.href} href={link.href} aria-current={current === link.href ? 'page' : undefined} className="text-mi-light py-3">{link.label}</a>
+                        <a key={link.href} href={link.href} aria-current={active(link.href) ? 'page' : undefined} className={`py-3 ${active(link.href) ? 'text-white font-semibold' : 'text-mi-light'}`}>{link.label}</a>
                     ))}
                     <div className="flex flex-col gap-3 pt-2">
-                        <Button variant="outline" onClick={() => open({ packageType: 'call' })}>Book a Call</Button>
-                        <Button variant="primary" onClick={() => open({ packageType: 'quicklook' })}>Free Quick Look</Button>
+                        <Button href={STRATEGY_CALL.href} variant="outline">{STRATEGY_CALL.label}</Button>
+                        <Button variant="primary" onClick={quickLook}>Free Quick Look</Button>
                     </div>
                 </div>
             )}
@@ -62,7 +65,7 @@ function Nav({ current }) {
 }
 
 function Footer() {
-    const { openModal } = useModal();
+    const { startQuickLook } = useModal();
     const linkClass = 'text-mi-light/80 hover:text-white transition-colors';
     return (
         <footer className="bg-mi-dark1 border-t border-mi-dark2">
@@ -73,8 +76,8 @@ function Footer() {
                         We show you where you are Found, Trusted and Reached, and where to focus first. From there, you decide how deep you want to go.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">{QUICK_LOOK.cta}</Button>
-                        <Button variant="outline" onClick={() => openModal({ packageType: 'call' })} className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">Book a Call</Button>
+                        <Button onClick={startQuickLook} className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">{QUICK_LOOK.cta}</Button>
+                        <Button href={STRATEGY_CALL.href} variant="outline" className="px-8 md:px-10 py-3 md:py-4 text-base md:text-lg">{STRATEGY_CALL.label}</Button>
                     </div>
                 </Container>
             </section>
@@ -99,8 +102,8 @@ function Footer() {
                     <div>
                         <h3 className="font-bold text-white mb-3">Company</h3>
                         <ul className="space-y-2">
-                            <li><a className={linkClass} href="/team">About Us</a></li>
-                            <li><a className={linkClass} href="/contact">Contact</a></li>
+                            <li><a className={linkClass} href="/team">Team</a></li>
+                            <li><a className={linkClass} href="/contact">Contact Us</a></li>
                             <li><a className={linkClass} href={SITE.telegramUrl} target="_blank" rel="noreferrer">Telegram</a></li>
                             <li><a className={linkClass} href="/privacy">Privacy Policy</a></li>
                         </ul>
@@ -121,9 +124,18 @@ export function ModalProvider({ audience = 'general', children }) {
     const [request, setRequest] = useState(null);
     const openModal = useCallback((req) => setRequest(req), []);
     const close = useCallback(() => setRequest(null), []);
+    const startQuickLook = useCallback(() => {
+        const input = typeof document !== 'undefined' && document.getElementById('ql-target');
+        if (input) {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            input.focus({ preventScroll: true });
+        } else {
+            setRequest({ packageType: 'quicklook' });
+        }
+    }, []);
 
     return (
-        <ModalContext.Provider value={{ openModal, audience }}>
+        <ModalContext.Provider value={{ openModal, startQuickLook, audience }}>
             {children}
             {request && <BookingModal request={request} audience={audience} onClose={close} />}
         </ModalContext.Provider>

@@ -5,7 +5,7 @@ import { QUICK_LOOK } from '../content/site.js';
 
 // Index of the guides. Each guide has its own page (src/pages/GuidePage.jsx).
 export default function Resources() {
-    const { openModal } = useModal();
+    const { startQuickLook } = useModal();
     return (
         <Layout current="/resources">
             <header className="bg-mi-dark1 pt-16 pb-10 text-center">
@@ -47,7 +47,7 @@ export default function Resources() {
 
                     <div className="mt-12 text-center">
                         <p className="text-mi-light/85 mb-4">Want these checks run for your business?</p>
-                        <Button onClick={() => openModal({ packageType: 'quicklook' })} className="mx-auto">{QUICK_LOOK.cta}</Button>
+                        <Button onClick={startQuickLook} className="mx-auto">{QUICK_LOOK.cta}</Button>
                     </div>
                 </Container>
             </section>
