@@ -25,7 +25,7 @@ export default function Team() {
                     <div className="bg-mi-dark2 rounded-3xl p-8 md:p-12 border border-mi-blue/30 grid md:grid-cols-3 gap-10 items-center shadow-2xl">
                         <div className="md:col-span-1">
                             <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-mi-dark1 shadow-2xl">
-                                <img src="/image/vosumtey.webp" alt="Vosumtey Seng, Founder of Mekong Intelligence" width="800" height="800" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                                <img src="/image/vosumtey.webp" alt="Vosumtey Seng, Founder of Mekong Intelligence" width="640" height="640" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                             </div>
                         </div>
                         <div className="md:col-span-2">
