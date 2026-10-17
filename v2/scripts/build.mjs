@@ -146,7 +146,7 @@ const template = fs.readFileSync(src('template.html'), 'utf8');
 const cssHash = hash(out('assets/styles.css'));
 const jsHash = hash(out('assets/app.js'));
 // Language versions of the same offer: the English main page and the German page point at each other.
-const ALTERNATES = { home: true, de: true };
+const ALTERNATES = {};   // /de is deliberately not linked to or from the English pages, so no hreflang pairs yet
 const alternates = (page) => (ALTERNATES[page.id]
     ? `    <link rel="alternate" hreflang="en" href="${siteUrl}/">\n    <link rel="alternate" hreflang="de" href="${siteUrl}/de">\n    <link rel="alternate" hreflang="x-default" href="${siteUrl}/">\n`
     : '');

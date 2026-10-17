@@ -73,8 +73,7 @@ function AudienceSwitch({ current }) {
                 ))}
             </div>
             <p className="mt-3 text-sm text-mi-light/80">
-                {AUDIENCE_LIST.find((a) => a.id === current).switchHint}{' '}
-                <a href="/de" lang="de" hrefLang="de" className="underline hover:text-white">Deutsch</a>
+                {AUDIENCE_LIST.find((a) => a.id === current).switchHint}
             </p>
         </nav>
     );

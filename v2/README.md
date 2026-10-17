@@ -263,7 +263,7 @@ Telegram account behind "Connect on Telegram" is monitored.
 - **Audience:** companies from Germany, Austria and Switzerland that buy, invest or expand in Cambodia and Vietnam, and regional companies that sell to German-speaking buyers. Leads are tagged "German-speaking (DE)".
 - **Content:** all German wording is in `src/content/de.js` (formal "Sie", no dashes, no prices). The page is `src/pages/LandingDe.jsx`. The three checks are cards, not tabs.
 - **Language plumbing:** `ModalProvider` takes `lang`; the nav, footer, search bar, example screens, booking dialog, form, field errors and cookie banner switch with it. English pages are unchanged.
-- **Also added:** `/datenschutz` (German draft of the privacy policy) and `/impressum` (placeholder, never indexed). `hreflang` links join `/` and `/de`. The English footer links to `/de`.
+- **Also added:** `/datenschutz` (German draft of the privacy policy) and `/impressum` (placeholder, never indexed). The German page is deliberately separate: no English page links to it and there are no `hreflang` pairs (`ALTERNATES` in `scripts/build.mjs`). `/de` does link to the English site, and it is in the sitemap at launch.
 - **Kept in English on purpose:** the product names (7-Day Sprint, 90-Day Blueprint, ...), the Telegram and sheet messages the team reads, and the contact page.
 - **Needs your decision before launch:**
   1. Whether the Quick Look can really be delivered in German (the page says "Deutsch oder Englisch, wie Sie es wünschen").
@@ -273,7 +273,6 @@ Telegram account behind "Connect on Telegram" is monitored.
 
 ### Audience differences (added after the German page)
 
-- The audience switch on `/` and `/international` now says in one line who each page is for, and links to `/de`.
+- The audience switch on `/` and `/international` now says in one line who each page is for.
 - Each landing page has its own FAQ (`src/content/faq.js`, `FAQ_BY_AUDIENCE`) and its own FAQPage structured data: local asks where we look (Google, Maps, Facebook, Telegram), international adds the channels for buyers abroad and the Market Entry Brief.
-- Visitors whose browser is set to German see a dismissible link to `/de` on the English pages. It never redirects.
 - Not done yet: a separate sample Quick Look per audience, and a "which direction?" question in the hero (sell in the region, into it, or out of it).

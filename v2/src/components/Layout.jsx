@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 import { SITE, NAV, QUICK_LOOK, STRATEGY_CALL } from '../content/site.js';
 import { DE } from '../content/de.js';
 import { Button, Icons, Container } from './ui.jsx';
@@ -121,31 +121,6 @@ function FooterDe() {
     );
 }
 
-// Offered, never forced: visitors whose browser is set to German get a link to /de on the English pages.
-// Dismissal is remembered for the browser session only; if storage is blocked the bar simply comes back.
-function LanguageHint() {
-    const [show, setShow] = useState(false);
-    useEffect(() => {
-        try {
-            const german = (navigator.languages && navigator.languages[0] || navigator.language || '').toLowerCase().startsWith('de');
-            if (german && sessionStorage.getItem('mi-de-hint') !== 'no') setShow(true);
-        } catch (e) {
-            // storage blocked: no hint
-        }
-    }, []);
-    if (!show) return null;
-    const dismiss = () => {
-        setShow(false);
-        try { sessionStorage.setItem('mi-de-hint', 'no'); } catch (e) { /* ignore */ }
-    };
-    return (
-        <p className="bg-mi-dark2 border-b border-mi-blue/30 text-sm text-mi-light/90 text-center px-4 py-2" lang="de">
-            Diese Seite gibt es auch auf Deutsch. <a href="/de" hrefLang="de" className="font-bold text-mi-cyan underline">Zur deutschen Version</a>
-            {' '}<button type="button" onClick={dismiss} className="ml-3 underline text-mi-light/70 hover:text-white">Schließen</button>
-        </p>
-    );
-}
-
 function Footer() {
     const { startQuickLook, lang } = useModal();
     if (lang === 'de') return <FooterDe />;
@@ -180,7 +155,6 @@ function Footer() {
                             <li><a className={linkClass} href="/resources">Resources</a></li>
                             <li><a className={linkClass} href="/services">Services</a></li>
                             <li><a className={linkClass} href="/sample-quick-look">Sample Quick Look</a></li>
-                            <li><a className={linkClass} href="/de" lang="de" hrefLang="de">Deutsch</a></li>
                         </ul>
                     </div>
                     <div>
@@ -234,7 +208,6 @@ export default function Layout({ current, children }) {
             {SHOW_BANNER && (
                 <p className="bg-mi-cyan text-mi-dark1 text-center text-sm font-semibold px-4 py-2">{lang === 'de' ? DE.banner : SITE.previewBanner}</p>
             )}
-            {lang !== 'de' && <LanguageHint />}
             <Nav current={current} />
             <main id="main" className="flex-1">{children}</main>
             <Footer />

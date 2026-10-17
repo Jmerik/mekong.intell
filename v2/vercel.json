@@ -7,7 +7,9 @@
   "redirects": [
     { "source": "/about", "destination": "/team", "permanent": false },
     { "source": "/local", "destination": "/", "permanent": true },
-    { "source": "/pricing", "destination": "/services", "permanent": true }
+    { "source": "/pricing", "destination": "/services", "permanent": true },
+    { "source": "/image/MI_Logo_NoText.png", "destination": "/image/og-image.png", "permanent": true },
+    { "source": "/image/vosumtey.jpg", "destination": "/image/vosumtey.webp", "permanent": true }
   ],
   "headers": [
     {
