@@ -31,6 +31,7 @@ export default function Privacy() {
                     <section>
                         <h2 className="text-xl font-bold text-white mb-3">The Quick Look</h2>
                         <p>The Quick Look is based on public information only. We look at what is publicly visible about the website or company you name.</p>
+                        <p className="mt-3">We may run parts of the Quick Look with automated tools. If so, we first email you a confirmation link, and the check starts only after you open it. The tools are provided by third parties: a web search provider and an AI provider receive the website address or company name you entered, not your email address, and an email provider delivers our messages to you. We keep the confirmation link for 24 hours and a short record that a website was checked for 30 days, so that the same website is not checked again straight away.</p>
                     </section>
 
                     <section>

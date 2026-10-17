@@ -3,6 +3,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "functions": {
+    "api/verify.js": { "maxDuration": 120 }
+  },
   "trailingSlash": false,
   "redirects": [
     { "source": "/about", "destination": "/team", "permanent": false },

@@ -76,7 +76,13 @@ export default function BookingModal({ request, audience, onClose }) {
                                 <Icons.CheckCircle2 size={32} />
                             </div>
                             <h2 id="booking-title" className="text-2xl font-bold text-white mb-4">{T ? T.received : 'Request received'}</h2>
-                            {T ? (
+                            {done.verify ? (
+                                <p className="text-mi-light/80 mb-8">
+                                    {T
+                                        ? <>Fast geschafft. Wir haben einen Bestätigungslink an <span className="text-mi-cyan font-bold">{done.email}</span> gesendet. Ihr Quick Look startet, sobald Sie ihn öffnen und bestätigen. Der Link ist 24 Stunden gültig. Schauen Sie auch im Spam-Ordner nach.</>
+                                        : <>Almost done. We sent a confirmation link to <span className="text-mi-cyan font-bold">{done.email}</span>. Your Quick Look starts when you open it and confirm. The link works for 24 hours. Please check your spam folder if you do not see it.</>}
+                                </p>
+                            ) : T ? (
                                 <p className="text-mi-light/80 mb-8">
                                     {isQuickLook
                                         ? <>{T.quicklookDone(done.website, done.email)[0]}<span className="text-mi-cyan font-bold">{done.website}</span>{T.quicklookDone(done.website, done.email)[2]}</>

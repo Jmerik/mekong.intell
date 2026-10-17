@@ -276,3 +276,10 @@ Telegram account behind "Connect on Telegram" is monitored.
 - The audience switch on `/` and `/international` now says in one line who each page is for.
 - Each landing page has its own FAQ (`src/content/faq.js`, `FAQ_BY_AUDIENCE`) and its own FAQPage structured data: local asks where we look (Google, Maps, Facebook, Telegram), international adds the channels for buyers abroad and the Market Entry Brief.
 - Not done yet: a separate sample Quick Look per audience, and a "which direction?" question in the hero (sell in the region, into it, or out of it).
+
+## Automatic Quick Look scanner (built, off by default)
+
+`api/_lib/scan/` holds the scanner, `api/verify.js` the email confirmation and `api/scan-admin.js` the owner controls.
+Limits: 0.20 USD per scan (hard ceiling in code), 2.00 USD per day to start (adjustable at run time up to a ceiling),
+40 USD per month. Setup, controls and every guard: `docs/scanner-setup.md`. It does nothing until `SCAN_ENABLED=1`
+and the Redis store, keys and email are configured.

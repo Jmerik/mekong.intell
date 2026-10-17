@@ -10,6 +10,7 @@ import GuidePage from './GuidePage.jsx';
 import LandingDe from './LandingDe.jsx';
 import PrivacyDe from './PrivacyDe.jsx';
 import Imprint from './Imprint.jsx';
+import ConfirmPage from './ConfirmPage.jsx';
 import { GUIDES } from '../content/guides.js';
 import { ModalProvider } from '../components/Layout.jsx';
 
@@ -26,6 +27,8 @@ export const PAGE_COMPONENTS = {
     de: withModal(LandingDe, 'de', 'de'),
     datenschutz: withModal(PrivacyDe, 'de', 'de'),
     impressum: withModal(Imprint, 'de', 'de'),
+    confirm: withModal(() => <ConfirmPage lang="en" />),
+    bestaetigen: withModal(() => <ConfirmPage lang="de" />, 'de', 'de'),
     resources: withModal(Resources),
     services: withModal(ServicesPage),
     team: withModal(Team),

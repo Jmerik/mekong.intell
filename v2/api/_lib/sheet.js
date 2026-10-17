@@ -15,7 +15,7 @@ function isConfigured(env = process.env) {
 
 // One row per lead, in the same order as COLUMNS. The Apps Script writes every cell as plain text,
 // so a visitor cannot plant a spreadsheet formula.
-function toRow(lead, now = new Date()) {
+function toRow(lead, now = new Date(), status = 'New') {
     return [
         now.toISOString(),
         PACKAGES[lead.packageType].name,
@@ -29,17 +29,17 @@ function toRow(lead, now = new Date()) {
         lead.message,
         BOTTLENECKS[lead.bottleneck] || '',
         (lead.interest && PACKAGES[lead.interest] && PACKAGES[lead.interest].name) || '',
-        'New'
+        status
     ];
 }
 
-async function appendToSheet(lead, { env = process.env, fetchImpl = fetch, timeoutMs = 8000 } = {}) {
+async function appendToSheet(lead, { env = process.env, fetchImpl = fetch, timeoutMs = 8000, status = 'New' } = {}) {
     const response = await fetchImpl(env.LEAD_SHEET_WEBHOOK_URL, {
         method: 'POST',
         // Apps Script answers a POST with a redirect to the result, which fetch follows.
         redirect: 'follow',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ secret: env.LEAD_SHEET_SECRET, columns: COLUMNS, row: toRow(lead) }),
+        body: JSON.stringify({ secret: env.LEAD_SHEET_SECRET, columns: COLUMNS, row: toRow(lead, new Date(), status) }),
         signal: AbortSignal.timeout(timeoutMs)
     });
     const text = await response.text();

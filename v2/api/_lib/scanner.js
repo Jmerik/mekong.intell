@@ -1,9 +1,10 @@
-// SCANNER PLACEHOLDER
+// The automatic scanner now lives in api/_lib/scan/ (see docs/scanner-setup.md). It is off unless configured;
+// until then every Quick Look request is forwarded to Telegram and handled by hand.
 //
-// The Free Quick Look scanner is the next project. Until then this stub keeps the rest of the
-// site honest: every Quick Look request is forwarded to Telegram and handled by hand.
+// This file keeps the original CONTRACT for a scan result (ratings and sourced findings). The built scanner
+// produces the same shape in api/_lib/scan/rules.js. runQuickLook() below is the old stub, kept for the contract tests.
 //
-// To connect the real scanner, replace the body of runQuickLook() and keep this contract:
+// Contract:
 //
 //   Input:   { target }   the visitor's website or company name, exactly as typed (max 300 chars)
 //   Output:  {

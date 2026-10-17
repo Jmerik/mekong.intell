@@ -105,6 +105,26 @@ export const PAGES = [
         excludeFromSitemap: true
     },
     {
+        // Behind the link in the confirmation email. Never indexed.
+        id: 'confirm',
+        path: '/confirm',
+        file: 'confirm.html',
+        title: 'Confirm your Free Quick Look | Mekong Intelligence',
+        description: 'Confirm your Quick Look request.',
+        alwaysNoindex: true,
+        excludeFromSitemap: true
+    },
+    {
+        id: 'bestaetigen',
+        path: '/bestaetigen',
+        file: 'bestaetigen.html',
+        lang: 'de',
+        title: 'Quick Look bestätigen | Mekong Intelligence',
+        description: 'Bestätigen Sie Ihre Quick-Look-Anfrage.',
+        alwaysNoindex: true,
+        excludeFromSitemap: true
+    },
+    {
         id: 'notfound',
         path: '/404',
         file: '404.html',

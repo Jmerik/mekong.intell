@@ -9,7 +9,11 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const require = createRequire(import.meta.url);
-const bookHandler = require(path.join(root, 'api', 'book.js'));
+const apiHandlers = {
+    '/api/book': require(path.join(root, 'api', 'book.js')),
+    '/api/verify': require(path.join(root, 'api', 'verify.js')),
+    '/api/scan-admin': require(path.join(root, 'api', 'scan-admin.js'))
+};
 // Same redirects as Vercel, read from vercel.json so the two cannot drift apart.
 const redirects = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8')).redirects || [];
 
@@ -39,14 +43,16 @@ const server = http.createServer(async (req, res) => {
         return res.end();
     }
 
-    if (url.pathname === '/api/book') {
+    if (apiHandlers[url.pathname]) {
         // Same shape as the Vercel runtime: parsed req.body, res.status().json().
         const chunks = [];
         for await (const chunk of req) chunks.push(chunk);
         try { req.body = JSON.parse(Buffer.concat(chunks).toString() || '{}'); } catch { req.body = undefined; }
         res.status = (code) => { res.statusCode = code; return res; };
         res.json = (data) => { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(data)); };
-        return bookHandler(req, res);
+        req.query = Object.fromEntries(url.searchParams);
+        res.setHeader = res.setHeader.bind(res);
+        return apiHandlers[url.pathname](req, res);
     }
 
     const file = findFile(url.pathname);

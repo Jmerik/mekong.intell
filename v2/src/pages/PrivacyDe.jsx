@@ -32,6 +32,7 @@ export default function PrivacyDe() {
                     <section>
                         <h2 className="text-xl font-bold text-white mb-3">Der Quick Look</h2>
                         <p>Der Quick Look beruht ausschließlich auf öffentlichen Informationen. Wir betrachten, was über die von Ihnen genannte Website oder das genannte Unternehmen öffentlich sichtbar ist.</p>
+                        <p className="mt-3">Teile des Quick Looks führen wir möglicherweise mit automatisierten Werkzeugen durch. Dann senden wir Ihnen zuerst einen Bestätigungslink per E-Mail, und die Prüfung beginnt erst, nachdem Sie ihn geöffnet haben. Die Werkzeuge stammen von externen Anbietern: Ein Anbieter für Websuche und ein KI-Anbieter erhalten die von Ihnen eingegebene Website-Adresse oder den Firmennamen, nicht Ihre E-Mail-Adresse. Ein E-Mail-Anbieter stellt unsere Nachrichten zu. Den Bestätigungslink speichern wir 24 Stunden und einen kurzen Vermerk, dass eine Website geprüft wurde, 30 Tage, damit dieselbe Website nicht sofort erneut geprüft wird.</p>
                     </section>
 
                     <section>

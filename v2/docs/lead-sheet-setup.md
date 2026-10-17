@@ -48,3 +48,8 @@ code later, use **Deploy > Manage deployments > Edit > New version**, otherwise 
 - The last column, **Status**, starts as `New`. Use it to track follow-up.
 - If one destination fails (say Telegram), the visitor still sees success because the other one has the lead.
   If both fail, the visitor sees an error and is pointed to Telegram.
+
+
+## Scanner drafts
+
+When the automatic scanner is on, each finished scan adds a row with Status `Scan draft ready` and the ratings and cost in the Message column. See `scanner-setup.md`.

@@ -7,30 +7,38 @@
 // configured destination failed. A lead is never reported as sent when nothing received it.
 const { validateLead, formatTelegramMessage } = require('./_lib/lead');
 const { isLimited, clientKey } = require('./_lib/rateLimit');
-const { runQuickLook } = require('./_lib/scanner');
 const sheet = require('./_lib/sheet');
+const telegram = require('./_lib/telegram');
+const { createScanner } = require('./_lib/scan/index');
 const { PACKAGES } = require('../shared/packages');
 
-const telegramConfigured = () => Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+const telegramConfigured = () => telegram.isConfigured();
+const sendToTelegram = (text) => telegram.send(text);
 
-async function sendToTelegram(text) {
-    const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            chat_id: process.env.TELEGRAM_CHAT_ID,
-            text,
-            parse_mode: 'HTML',
-            disable_web_page_preview: true
-        }),
-        signal: AbortSignal.timeout(8000)
-    });
-    if (!response.ok) {
-        throw new Error(`Telegram API ${response.status}: ${await response.text()}`);
-    }
-}
+// Why a Quick Look did not start the automatic path (shown to the team in Telegram, never to the visitor).
+const MANUAL_REASONS = {
+    not_configured: 'Scanner not connected yet',
+    bad_target: 'the website or name was not usable',
+    disposable_email: 'disposable email address',
+    switched_off: 'automatic scans are switched off',
+    daily_budget: "today's scan budget is used up",
+    monthly_budget: "this month's scan budget is used up",
+    recent_scan: 'this website was scanned in the last 30 days',
+    rate_ip: 'too many requests from this network',
+    rate_email: 'too many requests for this email address',
+    rate_global: 'too many scan requests this hour',
+    email_failed: 'the confirmation email could not be sent',
+    error: 'a technical problem'
+};
 
-module.exports = async function handler(req, res) {
+// One shared scanner per server instance. It is inert unless SCAN_ENABLED=1 and everything it needs is set up.
+const defaultScanner = () => createScanner({
+    notify: (text) => (telegramConfigured() ? sendToTelegram(text) : Promise.resolve()),
+    recordRow: (lead, status) => (sheet.isConfigured() ? sheet.appendToSheet(lead, { status }) : Promise.resolve())
+});
+
+function createHandler({ scanner = defaultScanner() } = {}) {
+return async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
 
     if (req.method !== 'POST') {
@@ -58,12 +66,17 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ success: false, errors });
     }
 
-    // SCANNER PLACEHOLDER: see api/_lib/scanner.js for the contract the real scanner must follow.
+    // Quick Look: start the automatic path only when the scanner is fully set up and every guard allows it
+    // (see api/_lib/scan/index.js). Otherwise the team prepares it by hand, exactly as before.
     let scannerNote;
+    let verify = false;
     if (lead.packageType === 'quicklook') {
-        const scan = await runQuickLook({ target: lead.website });
-        if (scan.status === 'not_configured') {
-            scannerNote = 'Scanner not connected yet: prepare this Quick Look by hand.';
+        const admission = await scanner.admit({ lead, ip: clientKey(req) });
+        if (admission.action === 'verify') {
+            verify = true;
+            scannerNote = 'Waiting for the visitor to confirm their email. The automatic scan starts after that and a draft follows here.';
+        } else {
+            scannerNote = `${MANUAL_REASONS[admission.reason] || 'Automatic scan not started'}: prepare this Quick Look by hand.`;
         }
     }
 
@@ -78,7 +91,7 @@ module.exports = async function handler(req, res) {
     if (destinations.length === 0) {
         // Nothing configured (local development or a fresh preview): keep the lead in the function logs.
         console.warn('No lead destination configured (Telegram or Google Sheet). Lead not stored:', lead);
-        return res.status(200).json({ success: true, delivered: false });
+        return res.status(200).json({ success: true, delivered: false, verify });
     }
 
     const results = await Promise.allSettled(destinations.map((d) => d.send()));
@@ -100,5 +113,9 @@ module.exports = async function handler(req, res) {
     }
 
     console.log(`New lead stored (${PACKAGES[lead.packageType].name}) in ${destinations.length - failed.length}/${destinations.length} destinations.`);
-    return res.status(200).json({ success: true, delivered: true });
+    return res.status(200).json({ success: true, delivered: true, verify });
 };
+}
+
+module.exports = createHandler();
+module.exports.createHandler = createHandler;

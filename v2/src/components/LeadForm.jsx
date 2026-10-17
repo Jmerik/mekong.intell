@@ -61,7 +61,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
             const data = await response.json().catch(() => ({}));
             if (response.ok) {
                 if (window.gtag) window.gtag('event', 'generate_lead', { package_type: packageType, audience, interest });
-                onSuccess({ email: (payload.email || '').trim(), website: form.website.trim() });
+                onSuccess({ email: (payload.email || '').trim(), website: form.website.trim(), verify: Boolean(data.verify) });
             } else if (data.errors) {
                 // The server's messages are English, so German visitors get the German text for each field.
                 setErrors(T ? Object.fromEntries(Object.keys(data.errors).map((key) => [key, T.errors[key] || T.generic])) : data.errors);
