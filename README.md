@@ -39,4 +39,9 @@ Without the Telegram variables (e.g. locally), leads are printed to the server l
 If Telegram rejects a message in production, the visitor sees an error with a Telegram link,
 and the full lead is written to the server log so it can be followed up by hand.
 
+## v2 preview (not live)
+
+A new multi-page site built around the free Quick Look lives in [`v2/`](v2/README.md). It deploys separately
+(a sample Vercel project with Root Directory `v2`) and does not affect this site.
+
 Change history and the audit write-up: see [AUDIT-LOG.md](AUDIT-LOG.md).
