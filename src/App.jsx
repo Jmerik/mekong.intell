@@ -679,8 +679,8 @@ const App = () => {
                                     <img
                                         src="/image/vosumtey.webp"
                                         alt="Vosumtey SENG, Founder of Mekong Intelligence"
-                                        width="800"
-                                        height="800"
+                                        width="640"
+                                        height="640"
                                         loading="lazy"
                                         decoding="async"
                                         className="w-full h-full object-cover"

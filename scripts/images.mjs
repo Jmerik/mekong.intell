@@ -23,7 +23,7 @@ await icon(32, 2, clear, 'favicon-32.png');
 await icon(180, 20, DARK, 'apple-touch-icon.png');
 
 // Founder photo.
-await sharp(asset('vosumtey.jpg')).resize(800, 800).webp({ quality: 80 }).toFile(out('image/vosumtey.webp'));
+await sharp(asset('vosumtey.jpg')).resize(640, 640).webp({ quality: 80 }).toFile(out('image/vosumtey.webp'));
 
 // Social share card (1200x630) for Facebook, LinkedIn, Telegram, X.
 const text = (y, size, fill, content, extra = '') =>
