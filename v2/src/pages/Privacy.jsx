@@ -22,7 +22,7 @@ export default function Privacy() {
                         <ul className="list-disc pl-6 space-y-1">
                             <li>your name and email address;</li>
                             <li>your Telegram username and/or phone number;</li>
-                            <li>the website or company name you ask us to look at, if you provide it;</li>
+                            <li>the website, social page link or company name you ask us to look at, and the city or province if you add it;</li>
                             <li>your message and the page or service you were interested in, if you provide them.</li>
                         </ul>
                         <p className="mt-3">We use this only to reply to your request and to discuss working together. We do not sell it or add you to marketing lists without asking.</p>

@@ -6,14 +6,14 @@ import { FoundMock, TrustedMock, ReachedMock } from './mocks.jsx';
 import { useModal } from './Layout.jsx';
 import { DE } from '../content/de.js';
 
-// The main call to action: type a website or company name, then leave contact details in the form.
+// The main call to action: type a website, a social page link or a company name, then leave contact details in the form.
 // SCANNER PLACEHOLDER: today this opens the Quick Look request form. When the scanner is live,
 // this is where the instant analysis should start (see api/_lib/scanner.js).
 export function QuickLookPill() {
     const { openModal, lang } = useModal();
     const text = lang === 'de'
         ? { label: DE.hero.label, placeholder: DE.hero.placeholder, button: DE.hero.button, missing: DE.hero.missing, note: DE.hero.note }
-        : { label: 'Website or company name', placeholder: HERO.placeholder, button: HERO.button, missing: 'Please enter your website or company name.', note: SITE.scannerEnabled ? HERO.note.live : HERO.note.manual };
+        : { label: 'Website, social page or company name', placeholder: HERO.placeholder, button: HERO.button, missing: 'Please enter your website, social page link or company name.', note: SITE.scannerEnabled ? HERO.note.live : HERO.note.manual };
     const inputRef = useRef(null);
     const [value, setValue] = useState('');
     const [missing, setMissing] = useState(false);

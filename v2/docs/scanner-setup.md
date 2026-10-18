@@ -9,6 +9,10 @@ goes to Telegram and the lead sheet and is prepared by hand.
 2. If every guard allows it, the visitor gets a **confirmation email**. Nothing is scanned yet.
 3. The email link opens a page with a button. Pressing it confirms the request (single use, 24 hours).
 4. The scan runs in the background: the website itself (free), up to 5 web searches, and 1 to 2 AI assistant checks.
+   Many Cambodian businesses have no website, so a visitor may give a social page link or just a name instead, plus an
+   optional city or province. Nothing on the social page itself is fetched: the page is looked up by its handle in the
+   web searches and the assistant check. In that case only the **Found** area is rated and the other two say N/A and why.
+   The report is never sent automatically, because there is no website domain to match the requester's email against.
 5. A **draft report** arrives in Telegram and the sheet. Only when `SCAN_AUTOSEND=1` and the requester's email is on
    the scanned domain is the report emailed automatically; otherwise you review and send it.
 
@@ -61,11 +65,11 @@ curl -s -X POST https://YOUR-SITE/api/scan-admin -H "Authorization: Bearer $SCAN
 ## Guards, in the order a request meets them
 
 - Honeypot and the existing in-memory rate limit (`/api/book`).
-- Only a website address or company name is accepted: no IP addresses, ports, other schemes, credentials or internal names.
+- Only a website address, a public Facebook, Instagram or Telegram page link, or a company name is accepted: no IP addresses, ports, other schemes, credentials or internal names. From a social link only the page handle is kept; share links, logins, groups, posts and profiles by number go to the manual queue.
 - Disposable email addresses go to the manual queue.
 - Budget and kill switch checked before an email is sent.
 - Shared limits: 3 requests per network address per hour, 2 per email address per day, 30 confirmation emails per hour overall.
-- The same website is scanned once per 30 days (claimed when the visitor confirms).
+- The same website, or the same social page, is scanned once per 30 days (claimed when the visitor confirms).
 - Confirmation email, single-use link, opened with a button (link scanners cannot trigger a scan).
 - Website fetching cannot reach internal addresses (private, loopback, link-local and cloud-metadata ranges are refused,
   re-checked at connect time and after each redirect), only ports 80 and 443, at most 3 pages, 400 KB, 6 seconds,
