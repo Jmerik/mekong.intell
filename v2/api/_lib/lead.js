@@ -1,6 +1,6 @@
 const { PACKAGES, AUDIENCES, FOCUS, BOTTLENECKS, INTERESTS } = require('../../shared/packages');
 
-const LIMITS = { name: 100, email: 254, telegram: 64, phone: 32, website: 300, message: 1500 };
+const LIMITS = { name: 100, email: 254, telegram: 64, phone: 32, website: 300, location: 80, message: 1500 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEGRAM_RE = /^@?[A-Za-z0-9_]{5,32}$/;
 const PHONE_RE = /^\+?[0-9 ()-]{6,20}$/;
@@ -15,6 +15,7 @@ function validateLead(body = {}) {
         telegram: clean(body.telegram),
         phone: clean(body.phone),
         website: clean(body.website),
+        location: clean(body.location),
         message: clean(body.message),
         audience: clean(body.audience) || 'general',
         focus: clean(body.focus),
@@ -45,7 +46,7 @@ function validateLead(body = {}) {
     if (lead.bottleneck && !BOTTLENECKS[lead.bottleneck]) errors.bottleneck = 'Please choose one of the options.';
     if (lead.interest && !INTERESTS.includes(lead.interest)) errors.interest = 'Unknown service.';
     if (lead.packageType === 'quicklook' && !lead.website) {
-        errors.website = 'Please enter your website or company name.';
+        errors.website = 'Please enter your website, social page link or company name.';
     }
 
     return { lead, errors };
@@ -67,7 +68,8 @@ function formatTelegramMessage(lead, { scannerNote } = {}) {
         row('Email', lead.email),
         row('Telegram', lead.telegram),
         row('Phone', lead.phone),
-        row('Website / company', lead.website),
+        row('Website / page / company', lead.website),
+        row('City / province', lead.location),
         row('Audience', AUDIENCES[lead.audience]),
         row('Focus', FOCUS[lead.focus]),
         row('Bottleneck', BOTTLENECKS[lead.bottleneck]),

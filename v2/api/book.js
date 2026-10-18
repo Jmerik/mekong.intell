@@ -18,7 +18,7 @@ const sendToTelegram = (text) => telegram.send(text);
 // Why a Quick Look did not start the automatic path (shown to the team in Telegram, never to the visitor).
 const MANUAL_REASONS = {
     not_configured: 'Scanner not connected yet',
-    bad_target: 'the website or name was not usable',
+    bad_target: 'the website, page link or name was not usable',
     disposable_email: 'disposable email address',
     switched_off: 'automatic scans are switched off',
     daily_budget: "today's scan budget is used up",

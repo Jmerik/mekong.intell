@@ -33,7 +33,7 @@ export const HERO = {
     headline: ["Southeast Asia's Brand\u00a0&", 'Market Intelligence', 'Firm.'],
     headlineAccentLine: 1,
     subheadline: 'Look. Fix. Count.',
-    placeholder: 'Your website or company name',
+    placeholder: 'Your website, Facebook page or company name',
     button: QUICK_LOOK.cta,
     note: {
         live: 'Instant analysis on whether your business is Found, Trusted, and Reached. No credit card required.',

@@ -14,7 +14,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEGRAM_RE = /^@?[A-Za-z0-9_]{5,32}$/;
 
 // One form for every request. There are three layouts:
-//   quicklook  website or company name + email. Name, Telegram and phone sit in an optional section.
+//   quicklook  website, social page link or company name + email, with an optional city or province. Name, Telegram and phone sit in an optional section.
 //   contact    the /contact inquiry form: name, one "business email or Telegram handle" field, company or website,
 //              primary bottleneck, message. `interest` carries the service the visitor came from.
 //   others     name + email, with Telegram, phone and a message optional (used by the booking dialog).
@@ -25,7 +25,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
     const isQuickLook = packageType === 'quicklook';
     const isContact = packageType === 'contact';
     const [form, setForm] = useState({
-        website: initialWebsite, name: '', email: '', telegram: '', phone: '', message: '', bottleneck: '', handle: '', company_fax: ''
+        website: initialWebsite, location: '', name: '', email: '', telegram: '', phone: '', message: '', bottleneck: '', handle: '', company_fax: ''
     });
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
@@ -111,13 +111,24 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
     const websiteField = (
         <div>
             <label htmlFor={id('website')} className={labelClass}>
-                {isContact ? 'Company Name / Website URL' : (T ? T.website : 'Website or company name')}{!isQuickLook && optional}
+                {isContact ? 'Company Name / Website URL' : (T ? T.website : 'Website, social page or company name')}{!isQuickLook && optional}
             </label>
             <input id={id('website')} name="website" required={isQuickLook} maxLength={300} type="text" autoComplete="url"
-                placeholder={isContact ? 'https://... or your company name' : 'https://... or your company name'}
+                placeholder={T ? T.websitePlaceholder : 'https://... or facebook.com/yourpage or your company name'}
                 className={inputClass} aria-invalid={!!errors.website} aria-describedby={describedBy('website')}
                 value={form.website} onChange={update('website')} />
             <FieldError id={`${id('website')}-error`} message={errors.website} />
+        </div>
+    );
+
+    const locationField = (
+        <div>
+            <label htmlFor={id('location')} className={labelClass}>{T ? T.location : 'City or province'}{optional}</label>
+            <input id={id('location')} name="location" maxLength={80} type="text" autoComplete="off"
+                placeholder={T ? T.locationPlaceholder : 'For example Siem Reap'}
+                className={inputClass} aria-invalid={!!errors.location} aria-describedby={describedBy('location')}
+                value={form.location} onChange={update('location')} />
+            <FieldError id={`${id('location')}-error`} message={errors.location} />
         </div>
     );
 
@@ -157,6 +168,7 @@ export default function LeadForm({ packageType, audience = 'general', focus = ''
             ) : (
                 <>
                     {websiteField}
+                    {isQuickLook && locationField}
                     {!isQuickLook && nameField}
                     <div>
                         <label htmlFor={id('email')} className={labelClass}>{T ? T.email : 'Email'}</label>

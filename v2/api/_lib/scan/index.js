@@ -17,6 +17,8 @@ const { escapeHtml } = require('../lead');
 
 const sha = (text) => crypto.createHash('sha256').update(String(text).toLowerCase()).digest('hex').slice(0, 32);
 const TOKEN_RE = /^[a-f0-9]{64}$/;
+// A website, or a social page, is scanned once per 30 days. A company name alone is not tracked (names are too ambiguous).
+const repeatKey = (target) => (target.kind === 'domain' ? `scan:domain:${target.domain}` : target.kind === 'social' ? `scan:social:${target.platform}:${target.handle.toLowerCase()}` : null);
 
 function createScanner({ env = process.env, store = storeFromEnv(env), fetchImpl = fetch, deps = {}, now = () => new Date(), notify = async () => {}, recordRow = async () => {} } = {}) {
     const config = loadConfig(env);
@@ -33,12 +35,14 @@ function createScanner({ env = process.env, store = storeFromEnv(env), fetchImpl
         try {
             const target = guard.normalizeTarget(lead.website);
             if (target.error) return { action: 'manual', reason: 'bad_target' };
+            const location = guard.sanitizeName(lead.location);
+            if (location) target.location = location;
             if (guard.isDisposableEmail(lead.email)) return { action: 'manual', reason: 'disposable_email' };
 
             const room = await budget.hasRoom(store, config, budget.toMicro(0.05), now());
             if (!room.ok) return { action: 'manual', reason: room.reason };
 
-            if (target.kind === 'domain' && await store.get(`scan:domain:${target.domain}`)) return { action: 'manual', reason: 'recent_scan' };
+            if (repeatKey(target) && await store.get(repeatKey(target))) return { action: 'manual', reason: 'recent_scan' };
 
             const hour = Math.floor(now().getTime() / 3600000);
             const day = budget.dayKey(now());
@@ -47,10 +51,10 @@ function createScanner({ env = process.env, store = storeFromEnv(env), fetchImpl
             if (await counter(`scan:rl:global:${hour}`, 3600) > config.limits.globalVerificationsPerHour) return { action: 'manual', reason: 'rate_global' };
 
             const token = (deps.randomToken || (() => crypto.randomBytes(32).toString('hex')))();
-            const payload = { lead: { email: lead.email, name: lead.name, website: lead.website, audience: lead.audience, telegram: lead.telegram, phone: lead.phone }, target, requestedAt: now().toISOString() };
+            const payload = { lead: { email: lead.email, name: lead.name, website: lead.website, audience: lead.audience, telegram: lead.telegram, phone: lead.phone, location: lead.location }, target, requestedAt: now().toISOString() };
             await store.set(`scan:verify:${token}`, JSON.stringify(payload), { ex: config.verifyTtlSeconds });
 
-            const label = target.kind === 'domain' ? target.domain : target.name;
+            const label = guard.targetLabel(target);
             const message = mail.verificationEmail({ lang: lead.audience === 'de' ? 'de' : 'en', link: `${config.siteUrl}${lead.audience === 'de' ? '/bestaetigen' : '/confirm'}?t=${token}`, targetLabel: label });
             try {
                 await (deps.sendEmail || ((m) => mail.sendEmail(m, { env, fetchImpl })))({ to: lead.email, ...message });
@@ -72,8 +76,9 @@ function createScanner({ env = process.env, store = storeFromEnv(env), fetchImpl
         if (!raw) return { status: 'expired' };
         let payload; try { payload = JSON.parse(raw); } catch { return { status: 'expired' }; }
         const lang = payload.lead && payload.lead.audience === 'de' ? 'de' : 'en';
-        if (payload.target.kind === 'domain') {
-            const first = await store.set(`scan:domain:${payload.target.domain}`, '1', { nx: true, ex: config.domainRepeatDays * 86400 });
+        const repeat = payload.target && repeatKey(payload.target);
+        if (repeat) {
+            const first = await store.set(repeat, '1', { nx: true, ex: config.domainRepeatDays * 86400 });
             if (!first) return { status: 'duplicate', payload, lang };
         }
         return { status: 'ok', payload, lang };
@@ -110,7 +115,7 @@ function createScanner({ env = process.env, store = storeFromEnv(env), fetchImpl
             return { ok: true, status, costUsd };
         } catch (error) {
             console.error('Scan failed:', error && error.message);
-            await notify(`⚠️ <b>Quick Look scan failed for ${escapeHtml(target.domain || target.name)}.</b> Please prepare it by hand.`).catch(() => {});
+            await notify(`⚠️ <b>Quick Look scan failed for ${escapeHtml(guard.targetLabel(target))}.</b> Please prepare it by hand.`).catch(() => {});
             return { ok: false };
         }
     }

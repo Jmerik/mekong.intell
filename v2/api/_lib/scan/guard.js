@@ -26,10 +26,34 @@ function validDomain(host) {
     return true;
 }
 
+// Public social pages that can be scanned in place of a website. The handle is the only part of the link that is kept.
+const SOCIAL_HOSTS = { 'facebook.com': 'facebook', 'fb.com': 'facebook', 'fb.me': 'facebook', 'instagram.com': 'instagram', 't.me': 'telegram', 'telegram.me': 'telegram' };
+const SOCIAL_NAME = { facebook: 'Facebook', instagram: 'Instagram', telegram: 'Telegram' };
+const HANDLE_RE = { facebook: /^[A-Za-z0-9._-]{3,80}$/, instagram: /^[A-Za-z0-9._]{1,30}$/, telegram: /^[A-Za-z0-9_]{5,32}$/ };
+// First path segments that are not a page: sharing, login, groups, posts, profiles by number and so on.
+const NOT_A_PAGE = new Set([
+    'share', 'sharer', 'sharer.php', 'dialog', 'login', 'login.php', 'groups', 'events', 'marketplace', 'watch', 'hashtag', 'photo', 'photo.php',
+    'permalink.php', 'story.php', 'profile.php', 'people', 'public', 'policies', 'help', 'ads', 'gaming', 'stories', 'reel', 'reels', 'videos',
+    'search', 'plugins', 'p', 'tv', 'explore', 'accounts', 'direct', 'joinchat', 'addstickers', 'share.php'
+]);
+
+function parseSocial(host, path) {
+    const key = Object.keys(SOCIAL_HOSTS).find((h) => host === h || host.endsWith(`.${h}`));
+    if (!key) return null;
+    const platform = SOCIAL_HOSTS[key];
+    let segments = path.split('/').filter(Boolean).map((part) => { try { return decodeURIComponent(part); } catch { return part; } });
+    // /pg/<page>, /pages/<page>/<id> and t.me/s/<channel> all carry the page name in the second segment.
+    if (segments.length > 1 && ['pg', 'pages', 's'].includes(segments[0].toLowerCase())) segments = segments.slice(1);
+    const handle = segments[0] || '';
+    if (!handle || NOT_A_PAGE.has(handle.toLowerCase()) || !HANDLE_RE[platform].test(handle)) return { error: 'social_link' };
+    return { kind: 'social', platform, handle };
+}
+
 // Turn what the visitor typed into a safe target, or say why not.
-//   { kind: 'domain', domain }   a website address (scheme, path, "www." and case are ignored)
-//   { kind: 'name', name }       a company name (letters, digits and . & ' , - ( ) only)
-//   { error }                    anything else
+//   { kind: 'domain', domain }            a website address (scheme, path, "www." and case are ignored)
+//   { kind: 'social', platform, handle }  a public Facebook, Instagram or Telegram page link (only the handle is kept)
+//   { kind: 'name', name }                a company name (letters, digits, marks and . & ' , - ( ) only)
+//   { error }                             anything else
 function normalizeTarget(input) {
     const raw = typeof input === 'string' ? input.trim() : '';
     if (!raw || raw.length > 300) return { error: 'empty_or_long' };
@@ -37,13 +61,15 @@ function normalizeTarget(input) {
     if (!/\s/.test(raw)) {
         const looksLikeAddress = /[./:]/.test(raw);
         if (looksLikeAddress) {
-            let text = raw.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
+            const text = raw.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
             if (/^[a-z][a-z0-9+.-]*:/i.test(raw) && !/^https?:\/\//i.test(raw)) return { error: 'scheme' };   // javascript:, file:, ftp: ...
-            if (/@/.test(text.split(/[/?#]/)[0])) return { error: 'credentials' };
-            text = text.split(/[/?#]/)[0];
-            if (/:\d+$/.test(text)) return { error: 'port' };
-            const host = domainToASCII(text.toLowerCase().replace(/^www\./, ''));
+            const hostPart = text.split(/[/?#]/)[0];
+            if (/@/.test(hostPart)) return { error: 'credentials' };
+            if (/:\d+$/.test(hostPart)) return { error: 'port' };
+            const host = domainToASCII(hostPart.toLowerCase().replace(/^www\./, ''));
             if (!validDomain(host)) return { error: 'bad_domain' };
+            const social = parseSocial(host, text.slice(hostPart.length).split(/[?#]/)[0]);
+            if (social) return social;
             return { kind: 'domain', domain: host };
         }
     }
@@ -52,12 +78,18 @@ function normalizeTarget(input) {
     return { kind: 'name', name };
 }
 
-// Letters, digits, spaces and . & ' , - ( ) only. Everything else (quotes, brackets, slashes, newlines,
-// control characters, HTML) is removed, so a company name can never carry instructions or markup.
+// How a target is written in emails, Telegram and the report: "example.com", "Angkor Cafe, Siem Reap", "angkorcafe (Facebook)".
+function targetLabel(target) {
+    const base = target.kind === 'domain' ? target.domain : target.kind === 'social' ? `${target.handle} (${SOCIAL_NAME[target.platform]})` : target.name;
+    return target.location ? `${base}, ${target.location}` : base;
+}
+
+// Letters, combining marks (Khmer vowel signs and subscripts are marks), digits, spaces and . & ' , - ( ) only.
+// Everything else (quotes, brackets, slashes, newlines, control characters, HTML) is removed, so a company name can never carry instructions or markup.
 function sanitizeName(text) {
     return String(text || '')
         .normalize('NFKC')
-        .replace(/[^\p{L}\p{N} .&',()-]/gu, ' ')
+        .replace(/[^\p{L}\p{M}\p{N} .&',()-]/gu, ' ')
         .replace(/\s+/g, ' ')
         .trim()
         .slice(0, 80);
@@ -75,4 +107,4 @@ function emailMatchesTarget(email, target) {
     return a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`);
 }
 
-module.exports = { normalizeTarget, sanitizeName, validDomain, emailDomain, isDisposableEmail, isFreeMail, emailMatchesTarget };
+module.exports = { normalizeTarget, targetLabel, sanitizeName, validDomain, emailDomain, isDisposableEmail, isFreeMail, emailMatchesTarget };

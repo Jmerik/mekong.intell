@@ -12,10 +12,13 @@ const SYSTEM = [
 
 const hostMatches = (host, domain) => host === domain || host.endsWith(`.${domain}`);
 
+const PLATFORM = { facebook: 'Facebook', instagram: 'Instagram', telegram: 'Telegram' };
+
 function questionFor(target) {
-    return target.kind === 'domain'
-        ? `What is the business behind the website ${target.domain}? Search once and answer briefly.`
-        : `What is the business called ${target.name}? Search once and answer briefly.`;
+    const where = target.location ? ` in ${target.location}` : '';
+    if (target.kind === 'domain') return `What is the business behind the website ${target.domain}? Search once and answer briefly.`;
+    if (target.kind === 'social') return `What is the business behind the ${PLATFORM[target.platform]} page "${target.handle}"${where}? Search once and answer briefly.`;
+    return `What is the business called ${target.name}${where}? Search once and answer briefly.`;
 }
 
 // Worst case for one probe, used to reserve budget: generous input (search results), full output, one search.
@@ -56,7 +59,7 @@ async function runProbe(target, { client, config }) {
             for (const citation of block.citations || []) { try { hosts.add(new URL(citation.url).hostname.toLowerCase().replace(/^www\./, '')); } catch { /* skip */ } }
         }
     }
-    const brand = target.kind === 'domain' ? target.domain.split('.')[0] : target.name.toLowerCase();
+    const brand = target.kind === 'domain' ? target.domain.split('.')[0] : target.kind === 'social' ? target.handle.toLowerCase() : target.name.toLowerCase();
     return {
         costMicro,
         value: {
