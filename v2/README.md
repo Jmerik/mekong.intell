@@ -14,7 +14,7 @@ Vercel project to review it. **Do not point the public domain at it until the Qu
 | `/services` | The tiers in detail, with a Local Market / International / Regional toggle. **No prices yet** (see below) |
 | `/resources` | Index of the three guides |
 | `/resources/ai-search-visibility`, `/resources/digital-footprint-check`, `/resources/response-and-follow-up` | The guides, one page each, with byline, date and Article structured data |
-| `/team` | Team: founder profile, partner and how we work (`/about` redirects here) |
+| `/team` | Team: founder profile and how we work (`/about` redirects here) |
 | `/contact` | Channels and office on the left, inquiry form on the right (`/contact?interest=sprint` pre-selects a service) |
 | `/privacy` | Draft privacy policy |
 
@@ -194,8 +194,7 @@ anyway, because each request will cost money.
   marked up twice.
 - **Guides:** one page each, written as short checklists with no statistics. The byline is "Mekong Intelligence"
   (not a named person) until you decide who should be credited. Dates are ISO and feed the Article markup.
-- **Team page:** Jan Hanken added as Partner with two facts from the brand guide (leads the German-speaking segment;
-  material for that segment is written in German). Initials instead of a photo. Vosumtey Seng still has no pronouns.
+- **Team page:** founder profile only (a partner entry was added and later removed at the owner's request). Vosumtey Seng still has no pronouns.
 - **Per-audience share images** for `/` and `/international`; the other pages use the generic one.
 - **Not done on purpose: an EuroCham proof strip.** See "Open claim to confirm" below.
 
