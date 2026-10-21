@@ -36,19 +36,36 @@ async function readSite(domain, { fetchPage, maxPages }) {
 function searchPlan(target) {
     const brand = brandOf(target);
     const quoted = brand.length >= 3 ? `"${brand}"` : brand;
-    const first = target.kind === 'domain' ? target.domain : `"${target.name}"`;
+    const where = target.location ? ` ${target.location}` : '';
+    if (target.kind === 'social') {
+        const other = target.platform === 'facebook' ? 'instagram.com' : 'facebook.com';
+        return [
+            { area: 'found', query: `"${target.handle}" ${target.platform}` },
+            { area: 'found', query: `"${target.handle}"${where || ' business'}` },
+            { area: 'trusted', query: `"${target.handle}" site:linkedin.com` },
+            { area: 'trusted', query: `"${target.handle}" site:${other}` },
+            { area: 'trusted', query: `"${target.handle}" reviews` }
+        ];
+    }
+    const first = target.kind === 'domain' ? target.domain : `"${target.name}"${where}`;
     return [
         { area: 'found', query: first },
-        { area: 'found', query: `${quoted} company` },
+        { area: 'found', query: `${quoted} company${where}` },
         { area: 'trusted', query: `${quoted} site:linkedin.com` },
         { area: 'trusted', query: `${quoted} site:facebook.com` },
         { area: 'trusted', query: `${quoted} reviews` }
     ];
 }
 
-const matchesTarget = (target, results, area) => results.some((r) => target.kind === 'domain' && area === 'found'
-    ? r.host === target.domain || r.host.endsWith(`.${target.domain}`)
-    : r.title.toLowerCase().includes(brandOf(target).toLowerCase()) && brandOf(target).length >= 3);
+// A domain is "found" when a result comes from it. A name is found when a result title includes it, and a social page
+// when a result's title or address includes the handle (the address is how a page shows up, e.g. facebook.com/handle).
+const matchesTarget = (target, results, area) => results.some((r) => {
+    if (target.kind === 'domain' && area === 'found') return r.host === target.domain || r.host.endsWith(`.${target.domain}`);
+    const brand = brandOf(target).toLowerCase();
+    if (brand.length < 3) return false;
+    const text = target.kind === 'social' ? `${r.title} ${r.path || ''}` : r.title;
+    return text.toLowerCase().includes(brand);
+});
 
 async function runScan({ target, ctx, config, deps = {}, now = () => new Date() }) {
     const fetchPage = deps.fetchPage || ((url) => safeFetch(url));
@@ -58,7 +75,7 @@ async function runScan({ target, ctx, config, deps = {}, now = () => new Date() 
 
     const facts = { target, date, site: { fetched: false, https: false, reason: null, signals: null }, searches: [], probes: [] };
     if (target.kind === 'domain') facts.site = await readSite(target.domain, { fetchPage, maxPages: config.maxPages });
-    else facts.site.reason = 'name';
+    else facts.site.reason = target.kind;   // 'name' or 'social': there is no website to read
 
     const searchWorst = toMicro(config.braveQueryUsd);
     let searchFailures = 0;

@@ -12,14 +12,14 @@ export const DE = {
     tagline: 'Schluss mit Raten. Wachsen mit Daten.',
 
     hero: {
-        label: 'Website oder Firmenname',
+        label: 'Website, Social-Media-Seite oder Firmenname',
         headline: ['Marken- und', 'Marktintelligenz', 'für Südostasien.'],
         accentLine: 1,
         subheadline: 'Prüfen. Beheben. Nachzählen.',
         line: 'Für Unternehmen aus Deutschland, Österreich und der Schweiz, die in Kambodscha und Vietnam einkaufen, investieren oder expandieren.',
-        placeholder: 'Ihre Website oder Ihr Firmenname',
+        placeholder: 'Ihre Website, Facebook-Seite oder Ihr Firmenname',
         button: 'Kostenlosen Quick Look anfordern',
-        missing: 'Bitte geben Sie Ihre Website oder Ihren Firmennamen ein.',
+        missing: 'Bitte geben Sie Ihre Website, Social-Media-Seite oder Ihren Firmennamen ein.',
         note: `Eine kostenlose erste Einschätzung, ob Ihr Unternehmen gefunden wird, vertrauenswürdig wirkt und erreichbar ist. Zustellung ${DE_DELIVERY}, ausschließlich auf Basis öffentlicher Informationen. Keine Kreditkarte nötig.`
     },
 
@@ -120,7 +120,7 @@ export const DE = {
         items: [
             {
                 question: 'Was ist der kostenlose Quick Look?',
-                answer: `Eine kostenlose erste Einschätzung, ob Ihr Unternehmen gefunden wird, vertrauenswürdig wirkt und erreichbar ist. Sie nennen uns eine Website oder einen Firmennamen und eine E-Mail-Adresse. Wir senden Ihnen ${DE_DELIVERY} eine kurze Zusammenfassung mit Quellenangaben.`
+                answer: `Eine kostenlose erste Einschätzung, ob Ihr Unternehmen gefunden wird, vertrauenswürdig wirkt und erreichbar ist. Sie nennen uns eine Website, einen Link zu Ihrer Facebook-, Instagram- oder Telegram-Seite oder einen Firmennamen und eine E-Mail-Adresse. Wir senden Ihnen ${DE_DELIVERY} eine kurze Zusammenfassung mit Quellenangaben.`
             },
             {
                 question: 'Was bedeuten Gefunden, Vertraut und Erreicht?',
@@ -198,7 +198,9 @@ export const FORM_TEXT = {
         quicklookDone: (website, email) => [`Danke. Wir erstellen Ihren Quick Look für `, website, ` und senden ihn ${DE_DELIVERY} an ${email}. Er beruht ausschließlich auf öffentlichen Informationen.`],
         otherDone: (title) => [`Danke. Ihre Anfrage ist bei uns eingegangen: `, title, `. Wir melden uns in Kürze.`],
         name: 'Name', namePlaceholder: 'Ihr vollständiger Name', optional: ' (optional)',
-        website: 'Website oder Firmenname',
+        website: 'Website, Social-Media-Seite oder Firmenname',
+        websitePlaceholder: 'https://... oder facebook.com/ihreseite oder Ihr Firmenname',
+        location: 'Stadt oder Provinz', locationPlaceholder: 'Zum Beispiel Siem Reap',
         email: 'E-Mail', emailPlaceholder: 'name@firma.de',
         telegram: 'Telegram-Benutzername', phone: 'Telefon / WhatsApp',
         legend: 'Schnellere Wege, Sie zu erreichen',
@@ -215,7 +217,8 @@ export const FORM_TEXT = {
         errors: {
             name: 'Bitte geben Sie Ihren Namen an.',
             email: 'Bitte geben Sie eine gültige E-Mail-Adresse an.',
-            website: 'Bitte geben Sie Ihre Website oder Ihren Firmennamen an.',
+            website: 'Bitte geben Sie Ihre Website, Social-Media-Seite oder Ihren Firmennamen an.',
+            location: 'Bitte prüfen Sie Stadt oder Provinz.',
             telegram: 'Bitte prüfen Sie den Telegram-Benutzernamen (zum Beispiel @name).',
             phone: 'Bitte prüfen Sie die Telefonnummer.',
             message: 'Die Nachricht ist zu lang.'

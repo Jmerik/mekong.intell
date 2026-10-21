@@ -7,7 +7,7 @@ import { QUICK_LOOK } from './site.js';
 const SHARED = [
     {
         question: 'What is the Free Quick Look?',
-        answer: `A free first read on whether your business is Found, Trusted and Reached. You give us a website or company name and an email address. We send you a short, sourced summary ${QUICK_LOOK.delivery}.`
+        answer: `A free first read on whether your business is Found, Trusted and Reached. You give us a website, a link to your Facebook, Instagram or Telegram page, or a company name, and an email address. We send you a short, sourced summary ${QUICK_LOOK.delivery}.`
     },
     {
         question: 'What do Found, Trusted and Reached mean?',

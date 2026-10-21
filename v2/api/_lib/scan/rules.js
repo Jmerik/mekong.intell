@@ -6,6 +6,7 @@
 
 const RATINGS = ['Strong', 'Developing', 'Priority focus', 'N/A'];
 const AREAS = ['found', 'trusted', 'reached'];
+const { targetLabel } = require('./guard');
 
 const list = (items) => items.join(', ');
 const channelNames = (s) => [
@@ -14,7 +15,7 @@ const channelNames = (s) => [
 ].filter(Boolean);
 
 function brandOf(target) {
-    return target.kind === 'domain' ? target.domain.split('.')[0] : target.name;
+    return target.kind === 'domain' ? target.domain.split('.')[0] : target.kind === 'social' ? target.handle : target.name;
 }
 
 function foundRating(facts) {
@@ -61,10 +62,10 @@ function buildFindings(facts) {
         const hosts = [...new Set(s.results.map((r) => r.host))].slice(0, 3);
         const top = hosts.length ? ` The top results came from ${list(hosts)}.` : ' The search returned no results.';
         if (s.area === 'found') {
-            const own = domain ? (s.hit ? `returned a page from ${domain}.` : `did not return a page from ${domain}.`) : (s.hit ? 'returned a result whose title includes the name.' : 'returned no result whose title includes the name.');
+            const own = domain ? (s.hit ? `returned a page from ${domain}.` : `did not return a page from ${domain}.`) : (s.hit ? 'returned a result that includes the name.' : 'returned no result that includes the name.');
             add('found', `A web search for "${s.query}" ${own}${s.hit ? '' : top}`, 'Web search, query as quoted');
         } else {
-            add('trusted', `A web search for "${s.query}" ${s.hit ? 'returned a result whose title includes the name. Check that it is the right company.' : 'did not return a result whose title includes the name.'}`, 'Web search, query as quoted');
+            add('trusted', `A web search for "${s.query}" ${s.hit ? 'returned a result that includes the name. Check that it is the right company.' : 'did not return a result that includes the name.'}`, 'Web search, query as quoted');
         }
     }
     for (const p of facts.probes) {
@@ -99,6 +100,7 @@ const FIXES = {
     noContact: { name: 'Add one-click contact buttons to the website', detail: 'For example email, WhatsApp or Telegram, so an interested buyer can reach you in one step.', effort: 'About 1 hour' },
     noHttps: { name: 'Switch the website to HTTPS', detail: 'Browsers warn visitors about sites without it. Most hosts offer it free.', effort: 'About 1 hour' },
     noPrivacy: { name: 'Add a short privacy page and link it in the footer', detail: 'It shows buyers that the business handles their details with care.', effort: 'About 30 minutes' },
+    notFoundNoSite: { name: 'Claim a Google Business Profile and use the same name everywhere', detail: 'A listing with address, hours and a phone number gives searches and maps something reliable to show.', effort: 'About 1 hour' },
     noMeta: { name: 'Add a page title and a description to the homepage', detail: 'They are what a buyer reads first in a search result.', effort: 'About 15 minutes' }
 };
 
@@ -106,7 +108,7 @@ function chooseFixes(facts, ratings) {
     const picks = [];
     const s = facts.site.signals;
     const foundSearches = facts.searches.filter((x) => x.area === 'found' && x.results);
-    if (foundSearches.length && !foundSearches.some((x) => x.hit)) picks.push(FIXES.notFound);
+    if (foundSearches.length && !foundSearches.some((x) => x.hit)) picks.push(facts.target.kind === 'domain' ? FIXES.notFound : FIXES.notFoundNoSite);
     if (facts.site.fetched && !facts.site.https) picks.push(FIXES.noHttps);
     if (facts.site.fetched && channelNames(s).length === 0) picks.push(FIXES.noContact);
     if (facts.site.fetched && !s.social.size && !facts.searches.some((x) => x.area === 'trusted' && x.hit)) picks.push(FIXES.noSocial);
@@ -127,9 +129,14 @@ function buildReport(facts) {
     } else if (facts.target.kind === 'name') {
         notAssessed.trusted.unshift('Website details: not read (a company name was given, not a website address).');
         notAssessed.reached.unshift('Contact routes on the website: not read (a company name was given, not a website address).');
+    } else if (facts.target.kind === 'social') {
+        const page = 'a social page link was given, not a website address';
+        notAssessed.trusted.unshift(`Website details: not read (${page}).`);
+        notAssessed.trusted.unshift('Details on the social page itself: not read in this scan. Only search results about it were checked.');
+        notAssessed.reached.unshift(`Contact routes on the website: not read (${page}).`);
     }
     const report = {
-        target: facts.target.kind === 'domain' ? facts.target.domain : facts.target.name,
+        target: targetLabel(facts.target),
         isoDate: facts.date,
         method: 'Automated checks of public information on the date above: a web search tool, one AI assistant with web search, and the website itself. Results differ by place, tool and day, so each check is a data point, not a ranking.',
         areas: [
